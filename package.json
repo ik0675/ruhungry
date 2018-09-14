@@ -4,7 +4,9 @@
   "description": "ruhungry dev app",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "client": "cd client && yarn start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,11 @@
   "bugs": {
     "url": "https://github.com/ik0675/ruhungry/issues"
   },
-  "homepage": "https://github.com/ik0675/ruhungry#readme"
+  "homepage": "https://github.com/ik0675/ruhungry#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.0"
+  }
 }
