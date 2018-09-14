@@ -1,11 +1,0 @@
-Project with Ick Namgung, Gyuwon Kim
-
-Project features
-
-1. sign up and log in
-2. 친구목록 (상태창)
-3. 친구 추가
-4. 자기 상태창 (on/off, what I want to eat)
-5. 친구한테 메시지 / 채팅 (버전 1)  ———————————————————— to be continued
-6. 5분마다 refresh then if available해서 친구목록과 비교 후 매칭 매칭시 알람 기능 추가 구현
-7. 설정 탭 구현 > 점심시간 등을 설정한 후 자동으로 그 시간에 on/off
