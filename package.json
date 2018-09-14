@@ -1,16 +1,19 @@
 {
   "name": "ruhungry",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.5.1",
-    "react-dom": "^16.5.1",
-    "react-scripts": "1.1.5"
-  },
+  "version": "1.0.0",
+  "description": "ruhungry dev app",
+  "main": "server.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ik0675/ruhungry.git"
+  },
+  "author": "Gyuwon Kim & Ick Namgung",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ik0675/ruhungry/issues"
+  },
+  "homepage": "https://github.com/ik0675/ruhungry#readme"
 }
