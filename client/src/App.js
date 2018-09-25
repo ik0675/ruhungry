@@ -7,12 +7,13 @@ class App extends Component {
     this.state = {
       id: '',
       password: '',
-      res : ''
+      loggedIn: false,
     };
 
     this.handleIdChange = this.handleIdChange.bind(this);
     this.handlePwChange = this.handlePwChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.login = this.login.bind(this);
   }
 
   handleIdChange(e) {
@@ -28,25 +29,32 @@ class App extends Component {
   }
 
   handleSubmit(e) {
-    alert('Submit Button has been pressed!');
     e.preventDefault();
-    alert(JSON.stringify(this.state));
+    this.login();
   }
 
-  componentDidMount() {
-    this.runApiTest()
-      .then(res => {
-        console.log(res);
-        this.setState({
-          res : res.test,
-        });
+  login = async () => {
+    const res = await fetch('/api/login', {
+      method  : 'POST',
+      headers : {
+                  'Content-Type': 'application/json'
+                },
+      body    : JSON.stringify({
+                  id      : this.state.id,
+                  password: this.state.password,
+                })
+    });
+    if (res.status === 200) {
+      // login successful
+      this.setState({
+        loggedIn: true
       });
-  }
-
-  runApiTest = async () => {
-    const res = await fetch('api/test');
-    const body = await res.json();
-    return body;
+      alert('Logged In');
+    }
+    else {
+      // incorrect validation info
+      alert('Incorrect ID / Password!');
+    }
   }
 
   render() {
@@ -56,10 +64,6 @@ class App extends Component {
                 onIdChange={this.handleIdChange}
                 onPwChange={this.handlePwChange}
                 onSubmit={this.handleSubmit} />
-
-      // <div className="App">
-      //   {this.state.res}
-      // </div>
     );
   }
 }

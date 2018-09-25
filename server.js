@@ -13,7 +13,8 @@ connection.connect((err) => {
 
 let port = process.env.PORT || 4000;
 
-app.use(express.json());
+app.use(express.json());       // to support JSON-encoded bodies
+app.use(express.urlencoded()); // to support URL-encoded bodies
 
 app.post('/api/login', (req, res) => {
   let id = req.body.id;
@@ -25,12 +26,14 @@ app.post('/api/login', (req, res) => {
     if (err)
       throw err;
 
-    if (rows === []) {
+    if (rows.length === 0) {
       // incorrect id or password
-      res.send(400);
+      console.log('incorrect info');
+      res.sendStatus(400);
     }
     else {
-      res.send(200);
+      console.log('logged in');
+      res.sendStatus(200);
     }
   });
 })
@@ -47,7 +50,7 @@ app.post('/api/sign_up', (req, res) => {
 
     if (rows !== []) {
       // user already exists
-      res.send(400);
+      res.sendStatus(400);
     }
     else {
       connection.query(`INSERT INTO account(id, password)
@@ -55,7 +58,7 @@ app.post('/api/sign_up', (req, res) => {
         if (err)
           throw err;
 
-        res.send(200);
+        res.sendStatus(200);
       });
     }
   });
