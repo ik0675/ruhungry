@@ -1,5 +1,9 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
+# mysql
+mysql_info.js
+mysql_schema
+
 # dependencies
 /node_modules
 
