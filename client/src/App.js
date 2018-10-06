@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import MainPage from './components/MainPage';
+import SignUp from './components/SignUp';
+import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -8,11 +10,13 @@ class App extends Component {
       id: '',
       password: '',
       loggedIn: false,
+      isToggleOn: false
     };
 
     this.handleIdChange = this.handleIdChange.bind(this);
     this.handlePwChange = this.handlePwChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
     this.login = this.login.bind(this);
   }
 
@@ -31,6 +35,12 @@ class App extends Component {
   handleSubmit(e) {
     e.preventDefault();
     this.login();
+  }
+
+  handleToggle() {
+    this.setState({
+      isToggleOn: !this.state.isToggleOn
+    });
   }
 
   login = async () => {
@@ -59,11 +69,18 @@ class App extends Component {
 
   render() {
     return (
-      <MainPage
-                info={this.state}
-                onIdChange={this.handleIdChange}
-                onPwChange={this.handlePwChange}
-                onSubmit={this.handleSubmit} />
+      <div className="loginForm">
+        <MainPage
+                  info={this.state}
+                  onIdChange={this.handleIdChange}
+                  onPwChange={this.handlePwChange}
+                  onSubmit={this.handleSubmit} />
+
+        <SignUp   info={this.state}
+                  onToggle={this.handleToggle}/>
+
+        <p className="mt-5 mb-3 text-muted">© 2018-Present</p>
+      </div>
     );
   }
 }
