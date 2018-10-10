@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import MainPage from './components/MainPage';
-import SignUp from './components/SignUp';
-import './App.css';
+import MainPage from './MainPage';
+import SignUp from './SignUp';
+import './css/index.css';
 
-class App extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -85,4 +85,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Login;
