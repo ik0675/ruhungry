@@ -1,7 +1,8 @@
 import React , { Component } from 'react';
-import './css/MainPage.css';
 
-class MainPage extends Component {
+import './css/Login.css';
+
+class Login extends Component {
     render() {
         return (
             <form onSubmit={this.props.onSubmit}>
@@ -25,4 +26,4 @@ class MainPage extends Component {
     }
 }
 
-export default MainPage;
+export default Login;
