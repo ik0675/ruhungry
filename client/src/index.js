@@ -4,6 +4,8 @@ import './index.css';
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
+//bootstrap environment problem?
+
 
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
