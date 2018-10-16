@@ -1,7 +1,12 @@
 let express = require('express');
 let info = require('./mysql_info');
 let mysql = require('mysql');
+let crypto = require('./cipher');
+
 let app = express();
+let http = require('http').Server(app);
+let io = require('socket.io')(http);
+let ioHelper = require('./ioHelper');
 
 let connection = mysql.createConnection(info);
 
@@ -11,6 +16,7 @@ connection.connect((err) => {
   console.log(`Connected to database at localhost`);
 });
 
+
 let port = process.env.PORT || 4000;
 
 app.use(express.json());       // to support JSON-encoded bodies
@@ -19,6 +25,7 @@ app.use(express.urlencoded()); // to support URL-encoded bodies
 app.post('/api/login', (req, res) => {
   let id = req.body.id;
   let password = req.body.password;
+  password = crypto.cryptoCipher(password);
 
   connection.query(`SELECT id, name FROM account where id='${id}'
                     AND password='${password}'`,
@@ -59,8 +66,12 @@ app.post('/api/login', (req, res) => {
 app.post('/api/signUp', (req, res) => {
   let userInfo = req.body;
   let id = userInfo.id;
-  let password = userInfo.password;
+  let password = crypto.cryptoCipher(userInfo.password);
   let name = userInfo.name;
+  let sessionId = crypto.cryptoGenerateHash(id);
+
+  console.log('password', userInfo.password);
+  console.log('ciphed', password);
 
   connection.query(`SELECT * FROM account where id='${id}'`,
                    (err, rows, field) => {
@@ -82,8 +93,8 @@ app.post('/api/signUp', (req, res) => {
         });
       }
       else {
-        connection.query(`INSERT INTO account(id, password, name)
-                          VALUES ('${id}', '${password}', '${name}')`,
+        connection.query(`INSERT INTO account(id, password, name, session_id)
+                          VALUES ('${id}', '${password}', '${name}', '${sessionId}')`,
                           (err) => {
           if (err){
             // database can't be reached
@@ -106,4 +117,12 @@ app.post('/api/signUp', (req, res) => {
   });
 });
 
-app.listen(port, () => console.log(`API server running at ${port}`));
+io.on('connection', (socket) => {
+  console.log('a user connected with id=', socket.id);
+
+  socket.on('loggedIn', (user) => {
+    console.log('a user logged in ', user);
+  });
+});
+
+http.listen(port, () => console.log(`API server running at ${port}`));
