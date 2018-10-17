@@ -31,7 +31,7 @@ class App extends Component {
     if (this.state.id === '') {
       try {
         let sessionId = sessionStorage.getItem('sessionId');
-        if (typeof sessionId !== 'undefined') {
+        if (sessionId !== null) {
           // session id is set. try logging in
           const res = await fetch('/api/login/session', {
             method : 'POST',
@@ -61,8 +61,8 @@ class App extends Component {
       id: '',
       name: '',
     });
-    sessionStorage.removeItem('sessionId');
-    this.props.history.push('/');
+    sessionStorage.removeItem('sessionId'); // remove stored sessionId
+    this.props.history.push('/'); // redirect to login page
   }
 
   render() {
