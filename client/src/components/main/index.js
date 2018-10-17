@@ -7,14 +7,15 @@ class Main extends Component {
   constructor(props) {
     super(props);
 
+    // redirect to login page if not logged in
     if (this.props.user.id === '' || this.props.user.name === '')
       this.props.history.push('/');
-    return;
   }
   render() {
     return (
       <div>
         Hello, {this.props.user.name}
+        <button onClick={this.props.handleLogout}>로그아웃</button>
       </div>
     )
   }

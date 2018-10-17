@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import { withRouter } from 'react-router';
 import { Route, withRouter } from 'react-router-dom';
 import io from 'socket.io-client';
 
@@ -17,6 +16,7 @@ class App extends Component {
     this.checkSession(); // check session and login if possible
 
     this.handleLoginId = this.handleLoginId.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   handleLoginId(user) {
@@ -56,13 +56,23 @@ class App extends Component {
     }
   }
 
+  handleLogout = async () => {
+    await this.setState({
+      id: '',
+      name: '',
+    });
+    sessionStorage.removeItem('sessionId');
+    this.props.history.push('/');
+  }
+
   render() {
     return (
         <div>
           <Route exact path="/" component={
             () => <LoginPage handleLoginId={this.handleLoginId} />} />
           <Route path="/main" component={
-            () => <Main user={this.state} />} />
+            () => <Main user={this.state}
+                        handleLogout={this.handleLogout}/>} />
         </div>
     );
   }
