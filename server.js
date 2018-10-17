@@ -27,7 +27,7 @@ app.post('/api/login', (req, res) => {
   let password = req.body.password;
   password = crypto.cryptoCipher(password);
 
-  connection.query(`SELECT id, name FROM account where id='${id}'
+  connection.query(`SELECT id, name, session_id FROM account where id='${id}'
                     AND password='${password}'`,
                     (err, rows, field) => {
     if (err) {
@@ -50,6 +50,44 @@ app.post('/api/login', (req, res) => {
       else {
         // login successful
         console.log('logged in');
+        console.log('session_id', rows[0].session_id);
+        res.json({
+          status: true,
+          message: 'Sign in successful',
+          user: {
+            id: rows[0].id,
+            name: rows[0].name,
+            sessionId: rows[0].session_id,
+          }
+        });
+      }
+    }
+  });
+})
+
+app.post('/api/login/session', (req, res) => {
+  let sessionId = req.body.sessionId;
+
+  connection.query(`SELECT id, name, session_id FROM account where session_id='${sessionId}'`,
+                    (err, rows, field) => {
+    if (err) {
+      // database can't be accessed
+      console.log('Login error', err);
+      res.json({
+        status: false,
+      });
+    }
+    else {
+      if (rows.length === 0) {
+        // incorrect user or password
+        console.log('incorrect session_id');
+        res.json({
+          status: false,
+        });
+      }
+      else {
+        // login successful
+        console.log('logged in');
         res.json({
           status: true,
           message: 'Sign in successful',
@@ -61,7 +99,7 @@ app.post('/api/login', (req, res) => {
       }
     }
   });
-})
+});
 
 app.post('/api/signUp', (req, res) => {
   let userInfo = req.body;
@@ -69,9 +107,6 @@ app.post('/api/signUp', (req, res) => {
   let password = crypto.cryptoCipher(userInfo.password);
   let name = userInfo.name;
   let sessionId = crypto.cryptoGenerateHash(id);
-
-  console.log('password', userInfo.password);
-  console.log('ciphed', password);
 
   connection.query(`SELECT * FROM account where id='${id}'`,
                    (err, rows, field) => {

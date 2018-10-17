@@ -9,6 +9,7 @@ import './css/index.css';
 class LoginPage extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       id: '',
       password: '',
@@ -64,6 +65,8 @@ class LoginPage extends Component {
       if (loginInfo.status) {
         // redirect to mainPage
         await this.props.handleLoginId(loginInfo.user);
+        // set session id
+        sessionStorage.setItem('sessionId', loginInfo.user.sessionId);
         //React Route Built-in (push -> redirect)
         this.props.history.push("/main");
         // return 안하면 main으로 redirect 된후에도 login panel 에서 setState(밑에코드)가 돌아감
