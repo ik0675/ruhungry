@@ -146,7 +146,7 @@ const getFriendList = (res, connection, id) => {
       let friendUsers = {onlineFriends: [], offlineFriends: []};
       for (let i = 0; i < rows.length; ++i) {
         let friend = {id: rows[i].id, name: rows[i].name};
-        let status = rows[0].socket_id;
+        let status = rows[i].socket_id;
         if (status) {
           friendUsers.onlineFriends.push(friend);
         } else {

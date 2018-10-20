@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router';
+import { withRouter, Redirect } from 'react-router';
 
 import Login from './Login';
 import SignUp from './SignUp';
@@ -63,8 +63,6 @@ class LoginPage extends Component {
       });
       const loginInfo = await res.json();
       if (loginInfo.status) {
-        // redirect to mainPage
-        console.log('login successful');
         // set session id
         sessionStorage.setItem('sessionId', loginInfo.user.sessionId);
         this.props.handleLogin(loginInfo.user);
@@ -101,6 +99,11 @@ class LoginPage extends Component {
   }
 
   render() {
+    if (this.props.isLogin === 'true') {
+      return (
+        <Redirect to='/main' />
+      );
+    }
     let msg = undefined;
     if (this.state.loginInfo !== null) {
       if (!this.state.loginInfo.status)

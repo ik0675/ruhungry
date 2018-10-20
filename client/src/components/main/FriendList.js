@@ -11,9 +11,17 @@ export default class FriendList extends Component {
     this.getFriendList();
   }
 
+  componentDidMount() {
+    this.socket.on('friendConnected', (user) => {
+      this.props.handleFriendConnect(user);
+    });
+    this.socket.on('friendDisconnected', (user) => {
+      this.props.handleFriendDisconnect(user);
+    });
+  }
+
   getFriendList = async() => {
     if (this.props.user.id !== '') {
-      console.log('starting getFriendList...');
       const res = await fetch('/api/getFriendList', {
         method : 'POST',
         headers: {
@@ -24,16 +32,6 @@ export default class FriendList extends Component {
       const friendUsers = await res.json();
       this.props.getFriends(friendUsers);
     }
-  }
-
-  componentDidMount() {
-    this.socket.on('friendConnected', (user) => {
-      this.props.handleFriendConnect(user);
-    });
-
-    this.socket.on('friendDisconnected', (user) => {
-      this.props.handleFriendDisconnect(user);
-    });
   }
 
   render() {

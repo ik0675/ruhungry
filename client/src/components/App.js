@@ -27,13 +27,11 @@ class App extends Component {
             });
           }
           else {
-            console.log('login successful');
             this.setState({
               isLogin: 'true',
               id: loginInfo.user.id,
               name: loginInfo.user.name,
             });
-            console.log('emiting log in...');
             this.socket.emit('login', {id: loginInfo.user.id, name: loginInfo.user.name});
           }
           this.isLogin = true;
@@ -47,12 +45,10 @@ class App extends Component {
   }
 
   checkSession = async () => {
-    console.log('checking session...');
     try {
       let sessionId = sessionStorage.getItem('sessionId');
       if (sessionId !== null) {
         // session id is set. try logging in
-        console.log('session id set. trying logging in...');
         const res = await fetch('/api/login/session', {
           method : 'POST',
           headers: {
@@ -63,7 +59,7 @@ class App extends Component {
         const loginInfo = await res.json();
         return loginInfo;
       } else {
-        console.log('no session id.');
+        // no session id set
       }
     }
     catch (err) {
@@ -79,9 +75,8 @@ class App extends Component {
       name: user.name,
     });
     this.socket.emit('login', user);
-
+    
     let pathname = this.props.location.state ? this.props.location.state : '/main';
-    console.log('redirecting to ', pathname + this.props.location.search);
     this.props.history.push(pathname + this.props.location.search);
   }
 
@@ -91,7 +86,6 @@ class App extends Component {
       id: '',
       name: '',
     });
-    console.log('logging out');
     this.socket.emit('logout');
     sessionStorage.removeItem('sessionId'); // remove stored sessionId
     this.props.history.push('/');
@@ -108,7 +102,8 @@ class App extends Component {
     return (
         <div>
           <Route exact path='/' component={
-            () => <LoginPage handleLogin={this.handleLogin} />} />
+            () => <LoginPage isLogin={this.state.isLogin}
+                             handleLogin={this.handleLogin} />} />
           <Route path="/main" component={
             () => <Main isLogin={this.state.isLogin}
                         user={{id: this.state.id, name: this.state.name}}

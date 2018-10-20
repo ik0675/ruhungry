@@ -1,33 +1,29 @@
 let db = require('../database/ioDB');
-
+let socketToId = []
 module.exports = (io, connection) => {
   // user logged in
   io.on('connection', (socket) => {
-    let userConnected = undefined;
-    socket.on('login', (user) => {
+    socket.on('login', async (user) => {
       console.log('Login: user logged in with id=', user);
-      userConnected = user;
-      db.updateSocketIdThenEmit(io, connection, socket, userConnected);
-    });
-
-    socket.on('friendConnected', (friend) => {
-      console.log('friend Connect');
-    });
-
-    socket.on('friendDisconnected', (friend) => {
-      console.log('friend disconnect');
+      user = {id: user.id, name: user.name};
+      socketToId[socket.id] = user;
+      db.updateSocketIdThenEmit(io, connection, socket, user);
     });
 
     // user logged out
     socket.on('logout', () => {
-      console.log('Logout: a user with id=%s and socketId=%s logged out', userConnected.id, socket.id);
-      db.userLogout(io, connection, socket, userConnected);
+      let user = socketToId[socket.id];
+      delete socketToId[socket.id];
+      console.log('Logout: a user with id=%s and socketId=%s logged out', user.id, socket.id);
+      db.userLogout(io, connection, socket, user);
     })
     // user closed out the browser
     socket.on('disconnect', () => {
-      if (userConnected !== undefined) {
-        console.log('Disconnect: a user with id=%s and socketId=%s disconnected', userConnected.id, socket.id);
-        db.userLogout(io, connection, socket, userConnected);
+      let user = socketToId[socket.id];
+      if (user !== undefined) {
+        delete socketToId[socket.id];
+        console.log('Disconnect: a user with id=%s and socketId=%s disconnected', user.id, socket.id);
+        db.userLogout(io, connection, socket, user);
       }
     });
   });

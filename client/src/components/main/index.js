@@ -36,28 +36,38 @@ class Main extends Component {
     });
   }
 
+  checkUserInList(list, user) {
+    for (let i = 0; i < list.length; ++i) {
+      if (list[i].id === user.id)
+        return i;
+    }
+    return -1;
+  }
+
   handleFriendConnect(user) {
-    let onlineFriends = [...this.state.onlineFriends, user];
-    let offlineFriends = [...this.state.offlineFriends];
-    let index = offlineFriends.indexOf(user);
-    offlineFriends = offlineFriends.splice(index, 1);
-    console.log('connected friend, new friends = ',onlineFriends);
-    this.setState({
-      onlineFriends: onlineFriends,
-      offlineFriends: offlineFriends,
-    });
+    if (this.checkUserInList(this.state.onlineFriends, user) === -1) {
+      let onlineFriends = [...this.state.onlineFriends, user];
+      let offlineFriends = [...this.state.offlineFriends];
+      let index = this.checkUserInList(offlineFriends, user);
+      offlineFriends.splice(index, 1);
+      this.setState({
+        onlineFriends: onlineFriends,
+        offlineFriends: offlineFriends,
+      });
+    }
   }
 
   handleFriendDisconnect(user) {
-    let offlineFriends = [...this.state.offlineFriends, user];
-    let onlineFriends = [...this.state.onlineFriends];
-    let index = onlineFriends.indexOf(user);
-    onlineFriends = onlineFriends.splice(index, 1);
-    console.log('disconnected friend, new friends = ', onlineFriends);
-    this.setState({
-      onlineFriends: onlineFriends,
-      offlineFriends: offlineFriends,
-    });
+    if (this.checkUserInList(this.state.offlineFriends, user) === -1) {
+      let offlineFriends = [...this.state.offlineFriends, user];
+      let onlineFriends = [...this.state.onlineFriends];
+      let index = this.checkUserInList(onlineFriends, user);
+      onlineFriends.splice(index, 1);
+      this.setState({
+        onlineFriends: onlineFriends,
+        offlineFriends: offlineFriends,
+      });
+    }
   }
 
   render() {
