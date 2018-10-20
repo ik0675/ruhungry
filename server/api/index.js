@@ -2,7 +2,6 @@ let db = require('../database/clientDB');
 
 module.exports = (app, connection, crypto) => {
   app.post('/api/login', (req, res) => {
-    console.log('api login...');
     let id = req.body.id;
     let password = req.body.password;
     password = crypto.cryptoCipher(password);
@@ -27,9 +26,7 @@ module.exports = (app, connection, crypto) => {
   });
 
   app.post('/api/getFriendList', (req, res) => {
-    console.log('requesting friend list...');
     let id = req.body.id;
-    console.log('api id', id);
     db.getFriendList(res, connection, id);
   });
 }

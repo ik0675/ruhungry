@@ -24,7 +24,6 @@ const updateSocketIdThenEmit = (io, connection, socket, user) => {
         query = `SELECT socket_id
                  FROM account
                  WHERE id='${friendId}'`;
-        console.log('query == ', query);
         connection.query(query, (err, rows, field) => {
           if (err) {
             // database err
@@ -35,9 +34,7 @@ const updateSocketIdThenEmit = (io, connection, socket, user) => {
           for (let j = 0; j < socketIds.length; ++j) {
             if (socketIds[j].socket_id !== 'null') {
               console.log('sending friend connected socket emit to %s, with data=', socketIds[j].socket_id, user);
-              // io.sockets.connected[socketIds[j].socket_id].emit('friendConnected', user);
               io.to(socketIds[j].socket_id).emit('friendConnected', user);
-              //socket.broadcast.emit('friendConnected', user);
             }
           }
         });
@@ -81,7 +78,6 @@ const userLogout = (io, connection, socket, user) => {
           for (let j = 0; j < socketIds.length; ++j) {
             if (socketIds[j].socket_id !== 'null') {
               console.log('sending friend disconnected socket emit to %s, with data=%s', socketIds[j].socket_id, user);
-              // io.sockets.connected[socketIds[j].socket_id].emit('friendDisconnected', user);
               io.to(socketIds[j].socket_id).emit('friendDisconnected', user);
             }
           }

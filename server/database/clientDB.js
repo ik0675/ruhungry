@@ -53,14 +53,12 @@ const loginWithSessionId = (res, connection, sessionId) => {
     else {
       if (rows.length === 0) {
         // incorrect user or password
-        console.log('incorrect session_id');
         res.json({
           status: false,
         });
       }
       else {
         // login successful
-        console.log('logged in');
         res.json({
           status: true,
           message: 'Sign in successful',
@@ -90,7 +88,6 @@ const signUp = (res, connection, id, password, name, sessionId) => {
     else {
       if (rows.length > 0) {
         // user email already exists
-        console.log('User email already exist');
         res.json({
           status: false,
           message: 'Email already exists.\nPlease try again.'
