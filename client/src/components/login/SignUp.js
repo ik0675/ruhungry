@@ -36,6 +36,11 @@ class SignUp extends Component {
 
   handleSubmit() {
     this.props.onSubmit(this.state);
+    this.setState({
+      id: '',
+      password: '',
+      name: '',
+    });
   }
 
   render() {
