@@ -1,6 +1,6 @@
 // database queries related to client
-const loginWithIdPw = (res, connection, id, password) => {
-  let query = `SELECT id, name, session_id
+const loginWithIdPw = (req, res, connection, id, password) => {
+  let query = `SELECT id, name
                FROM account
                WHERE id='${id}'
                 AND password='${password}'`;
@@ -22,15 +22,13 @@ const loginWithIdPw = (res, connection, id, password) => {
         });
       } else {
         // login successful
-        console.log('logged in');
-        console.log('session_id', rows[0].session_id);
+        req.session.loginInfo = {id: rows[0].id, name: rows[0].name};
         res.json({
           status: true,
           message: 'Sign in successful',
           user: {
             id: rows[0].id,
             name: rows[0].name,
-            sessionId: rows[0].session_id,
           }
         });
       }
@@ -38,41 +36,7 @@ const loginWithIdPw = (res, connection, id, password) => {
   });
 }
 
-const loginWithSessionId = (res, connection, sessionId) => {
-  let query = `SELECT id, name, session_id
-               FROM account
-               WHERE session_id='${sessionId}'`;
-  connection.query(query, (err, rows, field) => {
-    if (err) {
-      // database can't be accessed
-      console.log('Login error', err);
-      res.json({
-        status: false,
-      });
-    }
-    else {
-      if (rows.length === 0) {
-        // incorrect user or password
-        res.json({
-          status: false,
-        });
-      }
-      else {
-        // login successful
-        res.json({
-          status: true,
-          message: 'Sign in successful',
-          user: {
-            id: rows[0].id,
-            name: rows[0].name
-          }
-        });
-      }
-    }
-  });
-}
-
-const signUp = (res, connection, id, password, name, sessionId) => {
+const signUp = (res, connection, id, password, name) => {
   let query = `SELECT *
                FROM account
                WHERE id='${id}'`;
@@ -94,8 +58,8 @@ const signUp = (res, connection, id, password, name, sessionId) => {
         });
       }
       else {
-        query = `INSERT INTO account(id, password, name, session_id)
-                  VALUES ('${id}', '${password}', '${name}', '${sessionId}')`;
+        query = `INSERT INTO account(id, password, name)
+                  VALUES ('${id}', '${password}', '${name}')`;
         connection.query(query, (err) => {
           if (err){
             // database err
@@ -157,7 +121,6 @@ const getFriendList = (res, connection, id) => {
 
 module.exports = {
   loginWithIdPw: loginWithIdPw,
-  loginWithSessionId: loginWithSessionId,
   signUp: signUp,
   getFriendList: getFriendList,
 }

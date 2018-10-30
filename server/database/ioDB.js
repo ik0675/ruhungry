@@ -32,7 +32,7 @@ const updateSocketIdThenEmit = (io, connection, socket, user) => {
           // emit socket to every friend
           let socketIds = rows;
           for (let j = 0; j < socketIds.length; ++j) {
-            if (socketIds[j].socket_id !== 'null') {
+            if (socketIds[j].socket_id !== null) {
               console.log('sending friend connected socket emit to %s, with data=', socketIds[j].socket_id, user);
               io.to(socketIds[j].socket_id).emit('friendConnected', user);
             }
@@ -76,7 +76,7 @@ const userLogout = (io, connection, socket, user) => {
           // emit socket to every friend
           let socketIds = rows;
           for (let j = 0; j < socketIds.length; ++j) {
-            if (socketIds[j].socket_id !== 'null') {
+            if (socketIds[j].socket_id !== null) {
               console.log('sending friend disconnected socket emit to %s, with data=%s', socketIds[j].socket_id, user);
               io.to(socketIds[j].socket_id).emit('friendDisconnected', user);
             }

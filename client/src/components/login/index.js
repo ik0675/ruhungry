@@ -63,8 +63,6 @@ class LoginPage extends Component {
       });
       const loginInfo = await res.json();
       if (loginInfo.status) {
-        // set session id
-        sessionStorage.setItem('sessionId', loginInfo.user.sessionId);
         this.props.handleLogin(loginInfo.user);
       } else {
         this.setState({

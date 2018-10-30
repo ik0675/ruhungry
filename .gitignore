@@ -26,3 +26,6 @@ yarn-error.log*
 
 #client
 /client/node_modules
+
+#server
+/server/sessionSecret.js
