@@ -20,11 +20,21 @@ class Main extends Component {
     this.handleFriendDisconnect = this.handleFriendDisconnect.bind(this);
   }
 
+  componentWillMount() {
+    this._mounted = true;
+  }
+
+  componentWillUnmount() {
+    this._mounted = false;
+  }
+
   getFriends(users) {
-    this.setState({
-      onlineFriends: users.onlineFriends,
-      offlineFriends: users.offlineFriends,
-    });
+    if (this._mounted) {
+      this.setState({
+        onlineFriends: users.onlineFriends,
+        offlineFriends: users.offlineFriends,
+      });
+    }
   }
 
   handleLogout = () => {

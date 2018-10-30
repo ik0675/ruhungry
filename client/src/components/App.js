@@ -78,7 +78,6 @@ class App extends Component {
         <Loading loadingFor="checking session to login..."/>
       );
     } else if (this.isLogingOut) {
-      console.log('running loading for logout');
       return (
         <Loading loadingFor='logging out...' />
       )

@@ -7,7 +7,6 @@ export default class FriendList extends Component {
     super(props);
 
     this.socket = this.props.socket;
-
     this.getFriendList();
   }
 
@@ -20,17 +19,17 @@ export default class FriendList extends Component {
     });
   }
 
-  getFriendList = async() => {
+  getFriendList = () => {
     if (this.props.user.id !== '') {
-      const res = await fetch('/api/getFriendList', {
-        method : 'POST',
-        headers: {
-                    'Content-Type': 'application/json'
-                 },
-        body   : JSON.stringify({id: this.props.user.id})
-      });
-      const friendUsers = await res.json();
-      this.props.getFriends(friendUsers);
+      fetch('/api/getFriendList', {
+          method : 'POST',
+          headers: {
+                      'Content-Type': 'application/json'
+                   },
+          body   : JSON.stringify({id: this.props.user.id})
+      })
+      .then(res => res.json())
+      .then(friendUsers => { this.props.getFriends(friendUsers); })
     }
   }
 
