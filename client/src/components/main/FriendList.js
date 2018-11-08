@@ -38,7 +38,21 @@ export default class FriendList extends Component {
       return <li className="friend online" key={i}>{user.name}</li>;
     })
     const offlineFriendList = this.props.friends.offlineFriends.map((user, i) => {
-      return <li className="friend offline" key={i}>{user.name}</li>;
+      let logout = user.logout;
+      if (logout > 60) {
+        logout = parseInt(logout / 60, 10);
+        if (logout > 24) {
+          logout = parseInt(logout / 24, 10);
+          logout += ' days ago';
+        } else {
+          logout += ' hours ago';
+        }
+      } else if (logout === 0) {
+        logout = 'less than a minute ago';
+      } else {
+        logout += ' minutes ago';
+      }
+      return <li className="friend offline" key={i}>{user.name}<span> - {logout}</span></li>;
     })
     return (
       <div className="friendList">

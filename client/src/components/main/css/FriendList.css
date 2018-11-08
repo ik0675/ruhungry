@@ -23,3 +23,6 @@
   vertical-align: middle;
   margin-right: 10px;
 }
+.friend.offline span {
+  font-size: 80%;
+}

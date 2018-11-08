@@ -45,7 +45,7 @@ const updateSocketIdThenEmit = (io, connection, socket, user) => {
 
 const userLogout = (io, connection, socket, user) => {
   let query = `UPDATE account
-               SET socket_id=null
+               SET socket_id=null, logout=now()
                WHERE id='${user.id}'`;
   connection.query(query, (err) => {
     if (err) {
@@ -65,7 +65,7 @@ const userLogout = (io, connection, socket, user) => {
       let friendList = rows;
       for (let i = 0; i < friendList.length; ++i) {
         let friendId = friendList[i].friend_id;
-        query = `SELECT socket_id
+        query = `SELECT socket_id, TIMESTAMPDIFF(MINUTE, logout, now()) as logout
                  FROM account
                  WHERE id='${friendId}'`;
         connection.query(query, (err, rows, field) => {
@@ -77,6 +77,8 @@ const userLogout = (io, connection, socket, user) => {
           let socketIds = rows;
           for (let j = 0; j < socketIds.length; ++j) {
             if (socketIds[j].socket_id !== null) {
+              user = { ...user, logout: rows[j].logout }
+              console.log(user);
               console.log('sending friend disconnected socket emit to %s, with data=%s', socketIds[j].socket_id, user);
               io.to(socketIds[j].socket_id).emit('friendDisconnected', user);
             }

@@ -99,14 +99,14 @@ const getFriendList = (res, connection, id) => {
     }
     friendIds += ')';
 
-    query = `SELECT id, name, socket_id
+    query = `SELECT id, name, socket_id, TIMESTAMPDIFF(MINUTE, logout, now()) as logout
              FROM account
              WHERE id in ${friendIds}`;
 
     connection.query(query, (err, rows, field) => {
       let friendUsers = {onlineFriends: [], offlineFriends: []};
       for (let i = 0; i < rows.length; ++i) {
-        let friend = {id: rows[i].id, name: rows[i].name};
+        let friend = {id: rows[i].id, name: rows[i].name, logout: rows[i].logout};
         let status = rows[i].socket_id;
         if (status) {
           friendUsers.onlineFriends.push(friend);
