@@ -35,17 +35,15 @@ export default class FriendList extends Component {
 
   render() {
     const onlineFriendList = this.props.friends.onlineFriends.map((user, i) => {
-      return <li className="friend" key={i}>{user.id} : {user.name}</li>;
+      return <li className="friend online" key={i}>{user.name}</li>;
     })
     const offlineFriendList = this.props.friends.offlineFriends.map((user, i) => {
-      return <li className="friend" key={i}>{user.id} : {user.name}</li>;
+      return <li className="friend offline" key={i}>{user.name}</li>;
     })
     return (
-      <div>
+      <div className="friendList">
         <p>Friend List</p>
-        <p>online</p>
         {onlineFriendList}
-        <p>offline</p>
         {offlineFriendList}
       </div>
     );
