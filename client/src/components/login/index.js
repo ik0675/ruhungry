@@ -3,6 +3,7 @@ import { withRouter, Redirect } from 'react-router';
 
 import Login from './Login';
 import SignUp from './SignUp';
+import logo from './hungry.png';
 
 import './css/index.css';
 
@@ -122,6 +123,7 @@ class LoginPage extends Component {
 
     return (
       <div className="loginForm">
+        <img src={logo} alt={"logo"} className="brand-logo"/>
         {typeof msg !== 'undefined' && msg}
         <Login    info={this.state}
                   onIdChange={this.handleIdChange}

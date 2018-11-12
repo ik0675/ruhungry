@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router';
 
+import logo from './../login/hungry.png';
 import './css/index.css';
 
 import FriendList from './FriendList';
@@ -91,10 +92,20 @@ class Main extends Component {
     let friends = {onlineFriends, offlineFriends};
     return (
       <div>
-        <p>
-          Hello, {user.name}
-          <button className="logoutButton" onClick={this.handleLogout}>로그아웃</button>
-        </p>
+        <div className="header">
+        <nav className="navbar navbar-dark bg-dark">
+          <div className="container-fluid">
+            <a className="navbar-brand navbar-left">
+              <img alt="" src={logo} width="30" height="30"/> RUHungry
+            </a>
+
+            <div className="navbar-text navbar-right">
+              Hello, {user.name}  
+              <button className="logoutButton" onClick={this.handleLogout}>로그아웃</button>
+            </div>
+          </div>
+        </nav>
+      </div>
 
         <FriendList socket={this.props.socket}
                     user={user}
@@ -108,3 +119,5 @@ class Main extends Component {
 }
 
 export default withRouter(Main);
+
+

@@ -3,3 +3,11 @@
   border-radius: 5px;
   background-color: none;
 }
+
+.navbar-right > button {
+  margin-left: 10px;
+}
+
+.navbar-brand > img {
+  margin-right: 5px;
+}
