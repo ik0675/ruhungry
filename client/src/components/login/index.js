@@ -3,7 +3,7 @@ import { withRouter, Redirect } from 'react-router';
 
 import Login from './Login';
 import SignUp from './SignUp';
-import logo from './hungry.png';
+import logo from './hungry.jpg';
 
 import './css/index.css';
 

@@ -1,8 +1,8 @@
 .loginForm {
-  /* position: relative; */
-  /* top: 50%;
+  position: absolute;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); */
+  transform: translate(-50%, -50%);
   width: 100%;
   max-width: 330px;
   padding: 15px;
@@ -28,7 +28,7 @@
   font-style: italic;
 }
 
-.loginForm > img {
+.brand-logo {
   width: 100%;
   padding-bottom: 15px;
 }

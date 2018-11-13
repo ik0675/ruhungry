@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router';
 
-import logo from './../login/hungry.png';
+import logo from './../login/hungry.jpg';
 import './css/index.css';
 
 import FriendList from './FriendList';
