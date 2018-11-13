@@ -41,12 +41,12 @@ export default class FriendList extends Component {
       return <li className="friend" key={i}>{user.id} : {user.name}</li>;
     })
     return (
-      <div>
-        <p>Friend List</p>
-        <p>online</p>
-        {onlineFriendList}
-        <p>offline</p>
-        {offlineFriendList}
+      <div className="friendList">
+        <h1>Friend List</h1>
+        <h2>online</h2>
+          {onlineFriendList}
+        <h2>offline</h2>
+          {offlineFriendList}
       </div>
     );
   }

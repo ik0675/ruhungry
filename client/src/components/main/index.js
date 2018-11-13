@@ -5,6 +5,7 @@ import logo from './../login/hungry.jpg';
 import './css/index.css';
 
 import FriendList from './FriendList';
+import Posts from './Posts';
 
 class Main extends Component {
   constructor(props) {
@@ -92,20 +93,21 @@ class Main extends Component {
     let friends = {onlineFriends, offlineFriends};
     return (
       <div>
+        {/* NavBar */}
         <div className="header">
-        <nav className="navbar navbar-dark bg-dark">
-          <div className="container-fluid">
-            <a className="navbar-brand navbar-left">
-              <img alt="" src={logo} width="30" height="30"/> RUHungry
-            </a>
+          <nav className="navbar navbar-dark bg-dark">
+            <div className="container-fluid">
+              <a className="navbar-brand navbar-left">
+                <img className="nav-logo" alt="" src={logo} width="30" height="30"/> RUHungry
+              </a>
 
-            <div className="navbar-text navbar-right">
-              Hello, {user.name}  
-              <button className="logoutButton" onClick={this.handleLogout}>로그아웃</button>
+              <div className="navbar-text navbar-right">
+                Hello, {user.name}  
+                <button className="logoutButton" onClick={this.handleLogout}>로그아웃</button>
+              </div>
             </div>
-          </div>
-        </nav>
-      </div>
+          </nav>
+        </div>
 
         <FriendList socket={this.props.socket}
                     user={user}
@@ -113,6 +115,8 @@ class Main extends Component {
                     getFriends={this.getFriends}
                     handleFriendConnect={this.handleFriendConnect}
                     handleFriendDisconnect={this.handleFriendDisconnect} />
+
+        <Posts />
       </div>
     )
   }
