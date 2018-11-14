@@ -12,7 +12,7 @@ const Posts = () => {
                         <div className="w-50 text-right">
                               <h5 className="card-title">Title</h5>
                               <p className="card-text">Some text ehre</p>
-                              <a href="#" class="btn btn-primary">Go somewhere</a>
+                              <a className="btn btn-primary">Go somewhere</a>
                         </div>
                   </div>
                   </div>
@@ -21,7 +21,7 @@ const Posts = () => {
                         <div className="w-50">
                               <h5 className="card-title">Title</h5>
                               <p className="card-text">Some text ehre</p>
-                              <a href="#" class="btn btn-primary">Go somewhere</a>
+                              <a className="btn btn-primary">Go somewhere</a>
                         </div>
                         <div className="w-50 text-right">
                               <img className="" src={logo} alt="sans" width="200px"/>
@@ -33,7 +33,7 @@ const Posts = () => {
                         <div className="w-50">
                               <h5 className="card-title">Title</h5>
                               <p className="card-text">Some text ehre</p>
-                              <a href="#" class="btn btn-primary">Go somewhere</a>
+                              <a className="btn btn-primary">Go somewhere</a>
                         </div>
                         <div className="w-50 text-right">
                               <img className="" src={logo} alt="sans" width="200px"/>
