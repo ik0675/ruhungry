@@ -1,92 +1,82 @@
 // database queries related to io's
 const updateSocketIdThenEmit = (io, connection, socket, user) => {
-  let query = `UPDATE account
-               SET socket_id='${socket.id}'
-               WHERE id='${user.id}'`;
-  connection.query(query, (err) => {
-    if (err){
-      // database err
-      console.log(err);
-    }
-
+  let query = `UPDATE
+                 account
+               SET
+                 socket_id='${socket.id}'
+               WHERE
+                 id='${user.id}'`;
+  connection.update(query)
+  .then(() => {
     // get friend list
-    query = `SELECT friend_id
-             FROM friend_list
-             WHERE id='${user.id}'`;
-    connection.query(query, (err, rows, field) => {
-      if (err) {
-        // database err
-        console.log(err);
+    query = `SELECT
+               account.socket_id
+             FROM
+               account,
+               (
+                 SELECT
+                   friend_id
+                 FROM
+                   friend_list
+                 WHERE
+                   id='${user.id}'
+               ) AS friend_list
+            WHERE
+              account.id=friend_list.friend_id;`
+    return connection.select(query);
+  })
+  .then(socketIds => {
+    for (let i = 0; i < socketIds.length; ++i) {
+      if (socketIds[i].socket_id !== null) {
+        console.log('sending friend connected socket emit to %s, with data=', socketIds[i].socket_id, user);
+        io.to(socketIds[i].socket_id).emit('friendConnected', user);
       }
-      let friendList = rows;
-      for (let i = 0; i < friendList.length; ++i) {
-        let friendId = friendList[i].friend_id;
-        query = `SELECT socket_id
-                 FROM account
-                 WHERE id='${friendId}'`;
-        connection.query(query, (err, rows, field) => {
-          if (err) {
-            // database err
-            console.log(err);
-          }
-          // emit socket to every friend
-          let socketIds = rows;
-          for (let j = 0; j < socketIds.length; ++j) {
-            if (socketIds[j].socket_id !== null) {
-              console.log('sending friend connected socket emit to %s, with data=', socketIds[j].socket_id, user);
-              io.to(socketIds[j].socket_id).emit('friendConnected', user);
-            }
-          }
-        });
-      }
-    });
-  });
+    }
+  })
+  .catch(err => {
+    console.error('IO error in updateSocketIdThenEmit!', err);
+  })
 }
 
 const userLogout = (io, connection, socket, user) => {
-  let query = `UPDATE account
-               SET socket_id=null, logout=now()
-               WHERE id='${user.id}'`;
-  connection.query(query, (err) => {
-    if (err) {
-      // database err
-      console.log(err);
+  let query = `UPDATE
+                 account
+               SET
+                 socket_id=null, logout=now()
+               WHERE
+                 id='${user.id}'`;
+  connection.update(query)
+  .then(() => {
+    query = `SELECT
+               account.socket_id,
+               TIMESTAMPDIFF(MINUTE, account.logout, now()) AS logout
+             FROM
+               account,
+               (
+                 SELECT
+                   friend_id
+                 FROM
+                   friend_list
+                 WHERE
+                   id='${user.id}'
+               ) AS friend_list
+             WHERE
+               account.id=friend_list.friend_id
+            `;
+    return connection.select(query);
+  })
+  .then(socketIds => {
+    for (let i = 0; i < socketIds.length; ++i) {
+      if (socketIds[i].socket_id !== null) {
+        user = { ...user, logout: socketIds[i].logout }
+        console.log('sending friend disconnected socket emit to %s, with data=%s', socketIds[i].socket_id, user);
+        io.to(socketIds[i].socket_id).emit('friendDisconnected', user);
+      }
     }
-
-    // get friend list
-    query = `SELECT friend_id
-             FROM friend_list
-             WHERE id='${user.id}'`;
-    connection.query(query, (err, rows, field) => {
-      if (err) {
-        // database err
-        console.log(err);
-      }
-      let friendList = rows;
-      for (let i = 0; i < friendList.length; ++i) {
-        let friendId = friendList[i].friend_id;
-        query = `SELECT socket_id, TIMESTAMPDIFF(MINUTE, logout, now()) as logout
-                 FROM account
-                 WHERE id='${friendId}'`;
-        connection.query(query, (err, rows, field) => {
-          if (err) {
-            // database err
-            console.log(err);
-          }
-          // emit socket to every friend
-          let socketIds = rows;
-          for (let j = 0; j < socketIds.length; ++j) {
-            if (socketIds[j].socket_id !== null) {
-              user = { ...user, logout: rows[j].logout }
-              console.log(user);
-              console.log('sending friend disconnected socket emit to %s, with data=%s', socketIds[j].socket_id, user);
-              io.to(socketIds[j].socket_id).emit('friendDisconnected', user);
-            }
-          }
-        });
-      }
-    });
-  });
+  })
+  .catch(err => {
+    console.error('IO error in userLogout!', err);
+  })
 }
 
 module.exports = {
