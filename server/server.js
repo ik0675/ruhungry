@@ -1,6 +1,6 @@
 let express = require('express');
 let info = require('./mysql_info');
-let mysql = require('mysql');
+let promiseifyDB = require('./database/promiseifyDB');
 let crypto = require('./cipher');
 let session = require('express-session');
 let mySQLSession = require('express-mysql-session');
@@ -13,17 +13,13 @@ let ioHelper = require('./ioHelper');
 let sessionObj = require('./sessionSecret');
 let mySQLStore = mySQLSession(session);
 
-let connection = mysql.createConnection(info);
+let connection = new promiseifyDB(info);
 let sessionStore = new mySQLStore({...info,
                                    clearExpired: true,
                                    checkExpirationInterval: 900000,
                                    connectionLimit: 1});
 
-connection.connect((err) => {
-  if (err)
-    throw err;
-  console.log(`Connected to database at localhost`);
-});
+connection.connect();
 
 
 let port = process.env.PORT || 4000;
