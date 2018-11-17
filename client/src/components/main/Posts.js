@@ -1,44 +1,60 @@
 import React from 'react';
 import logo from './../login/hungry.jpg';
 
+import './css/Posts.css';
+
 const Posts = () => {
       return (
-            <div>
-                  <div className="card">
-                  <div className="card-body d-flex">
-                        <div className="w-50 text-left">
-                              <img className="" src={logo} alt="sans" width="200px"/>
-                        </div> 
-                        <div className="w-50 text-right">
-                              <h5 className="card-title">Title</h5>
-                              <p className="card-text">Some text ehre</p>
-                              <a className="btn btn-primary">Go somewhere</a>
+            <div className="container">
+                  <div className="card d-block">
+                        <div className="row no-gutters">
+                              <div className="col-auto">
+                                    <img src={logo} className="img-fluid" alt=""></img>
+                                    <img src={logo} className="img-fluid" alt=""></img>
+                              </div>
+                              <div className="col">
+                                    <div className="card-body">
+                                          <h4 className="card-title">울프강 스테이크 하우스</h4>
+                                                <p className="card-text">김규원 님께서 점심먹기를 요청하셨습니다</p>
+                                          <a href="#" className="btn btn-outline-success btn-md">허락</a>
+                                          <a href="#" className="btn btn-outline-danger btn-md">거절</a>
+                                    </div>
+                              </div>
                         </div>
                   </div>
-                  </div>
-                  <div className="card">
-                  <div className="card-body d-flex">
-                        <div className="w-50">
-                              <h5 className="card-title">Title</h5>
-                              <p className="card-text">Some text ehre</p>
-                              <a className="btn btn-primary">Go somewhere</a>
-                        </div>
-                        <div className="w-50 text-right">
-                              <img className="" src={logo} alt="sans" width="200px"/>
-                        </div>
-                  </div>
-                  </div>
-                  <div className="card">
-                  <div className="card-body d-flex">
-                        <div className="w-50">
-                              <h5 className="card-title">Title</h5>
-                              <p className="card-text">Some text ehre</p>
-                              <a className="btn btn-primary">Go somewhere</a>
-                        </div>
-                        <div className="w-50 text-right">
-                              <img className="" src={logo} alt="sans" width="200px"/>
+
+                  <div className="card d-block">
+                        <div className="row no-gutters">
+                              <div className="col-auto">
+                                    <img src={logo} className="img-fluid" alt=""></img>
+                                    <img src={logo} className="img-fluid" alt=""></img>
+                              </div>
+                              <div className="col">
+                                    <div className="card-body">
+                                          <h4 className="card-title">Title</h4>
+                                                <p className="card-text">Description</p>
+                                          <a href="#" className="btn btn-outline-success btn-md">허락</a>
+                                          <a href="#" className="btn btn-outline-danger btn-md">거절</a>
+                                    </div>
+                              </div>
                         </div>
                   </div>
+
+                  <div className="card d-block">
+                        <div className="row no-gutters">
+                              <div className="col-auto">
+                                    <img src={logo} className="img-fluid" alt=""></img>
+                                    <img src={logo} className="img-fluid" alt=""></img>
+                              </div>
+                              <div className="col">
+                                    <div className="card-body">
+                                          <h4 className="card-title">Title</h4>
+                                                <p className="card-text">Description</p>
+                                          <a href="#" className="btn btn-outline-success btn-md">허락</a>
+                                          <a href="#" className="btn btn-outline-danger btn-md">거절</a>
+                                    </div>
+                              </div>
+                        </div>
                   </div>
             </div>
       );

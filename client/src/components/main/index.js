@@ -92,10 +92,10 @@ class Main extends Component {
     let user = this.props.user;
     let friends = {onlineFriends, offlineFriends};
     return (
-      <div>
+      <div className="wrapper">
         {/* NavBar */}
         <div className="header">
-          <nav className="navbar navbar-dark bg-dark">
+          <nav className="navbar navbar-default">
             <div className="container-fluid">
               <a className="navbar-brand navbar-left">
                 <img className="nav-logo" alt="" src={logo} width="30" height="30"/> RUHungry
@@ -115,8 +115,8 @@ class Main extends Component {
                     getFriends={this.getFriends}
                     handleFriendConnect={this.handleFriendConnect}
                     handleFriendDisconnect={this.handleFriendDisconnect} />
-
         <Posts />
+        
       </div>
     )
   }

@@ -123,7 +123,7 @@ class LoginPage extends Component {
 
     return (
       <div className="loginForm">
-        <img src={logo} alt={"logo"} className="brand-logo"/>
+        <img src={logo} alt="logo" className="brand-logo"/>
         {typeof msg !== 'undefined' && msg}
         <Login    info={this.state}
                   onIdChange={this.handleIdChange}

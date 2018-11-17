@@ -1,0 +1,25 @@
+.container {
+    float: left;
+    background-color: rgb(233, 233, 233);
+}
+
+.img-fluid {
+    width: 250px;
+    padding-left: 20px;
+}
+
+.d-block {
+    margin: 20px 0px 20px 0px;
+}
+
+.card-body {
+    background-color: #e3f2fd;
+}
+
+.btn-md {
+    width: 25%;
+}
+
+.btn-outline-success {
+    margin-right: 100px;
+}
