@@ -55,7 +55,7 @@ export default class FriendList extends Component {
        return <li className="friend offline" key={i}>{user.name}<span> - {logout}</span></li>;
     })
     return (
-      <div className="friendList sidenav" >
+      <div className="friendList" >
         <h1>Friend List</h1>
         <h2>online</h2>
           {onlineFriendList}

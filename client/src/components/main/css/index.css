@@ -15,3 +15,7 @@
 .navbar-default {
   background-color: #e3f2fd;
 }
+
+.header {
+  border-bottom: 1px double gray;
+}
