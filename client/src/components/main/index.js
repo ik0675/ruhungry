@@ -15,6 +15,7 @@ class Main extends Component {
       isLogin: this.props.isLogin,
       onlineFriends: [],
       offlineFriends: [],
+      clickedFriend: null
     };
 
     this.getFriends = this.getFriends.bind(this);
@@ -82,13 +83,26 @@ class Main extends Component {
     }
   }
 
+  onFriendClick = (i, status) => {
+    let friend;
+    if (status) {
+      friend = this.state.onlineFriends[i];
+    } else {
+      friend = this.state.offlineFriends[i];
+      i += this.state.onlineFriends.length;
+    }
+    this.setState({
+      clickedFriend: { ...friend, index: i }
+    })
+  }
+
   render() {
     if (this.props.isLogin === 'false') {
       return (
         <Redirect to='/' />
       );
     }
-    let { onlineFriends, offlineFriends } = this.state;
+    let { onlineFriends, offlineFriends, clickedFriend } = this.state;
     let user = this.props.user;
     let friends = {onlineFriends, offlineFriends};
     return (
@@ -102,7 +116,7 @@ class Main extends Component {
               </a>
 
               <div className="navbar-text navbar-right">
-                Hello, {user.name}  
+                Hello, {user.name}
                 <button className="logoutButton" onClick={this.handleLogout}>로그아웃</button>
               </div>
             </div>
@@ -112,16 +126,16 @@ class Main extends Component {
         <FriendList socket={this.props.socket}
                     user={user}
                     friends={friends}
+                    clickedFriend={clickedFriend}
+                    onFriendClick={this.onFriendClick}
                     getFriends={this.getFriends}
                     handleFriendConnect={this.handleFriendConnect}
                     handleFriendDisconnect={this.handleFriendDisconnect} />
         <Posts />
-        
+
       </div>
     )
   }
 }
 
 export default withRouter(Main);
-
-

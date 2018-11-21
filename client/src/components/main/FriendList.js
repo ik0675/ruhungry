@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import FriendAction from './FriendAction';
+
 import './css/FriendList.css';
 
 export default class FriendList extends Component {
@@ -34,8 +36,10 @@ export default class FriendList extends Component {
   }
 
   render() {
+    const { clickedFriend } = this.props;
+    const friendAction = () => <FriendAction yOff={clickedFriend.index} />;
     const onlineFriendList = this.props.friends.onlineFriends.map((user, i) => {
-      return <li className="friend online" key={i}>{user.name}</li>;
+      return <li className="friend online" key={i} onClick={()=>{this.props.onFriendClick(i, true)}}>{user.name}</li>;
     })
     const offlineFriendList = this.props.friends.offlineFriends.map((user, i) => {
       let logout = user.logout;
@@ -50,12 +54,13 @@ export default class FriendList extends Component {
        } else {
          logout += ' m';
        }
-       return <li className="friend offline" key={i}>{user.name}<span>{logout}</span></li>;
+       return <li className="friend offline" key={i} onClick={() => {this.props.onFriendClick(i, false)}}>{user.name}<span>{logout}</span></li>;
     })
     return (
-      <div className="friendList" >
+      <div className="friendList">
         {onlineFriendList}
         {offlineFriendList}
+        {clickedFriend !== null && friendAction()}
       </div>
     );
   }
