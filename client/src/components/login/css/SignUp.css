@@ -9,3 +9,7 @@
 .sign input {
   margin-bottom: 5px;
 }
+
+.sign button {
+  width: 100%;
+}
