@@ -221,6 +221,7 @@ class Main extends Component {
         />
 
         <Posts
+          user={user}
           posts={posts}
           acceptDenyInvitation={this.acceptDenyInvitation}
         />
