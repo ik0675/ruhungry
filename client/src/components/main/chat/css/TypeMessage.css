@@ -1,0 +1,29 @@
+#TypeMessage {
+  width: 100%;
+  height: 7%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  padding-top: 1%;
+  padding-bottom: 1%;
+}
+
+#TypeMessage > #typeMessage {
+  display: inline-block;
+  width: 85%;
+  height: 20px;
+  font-size: 14px;
+  line-height: 20px;
+  padding-left: 10px;
+}
+
+#TypeMessage > #sendMessage {
+  display: inline-block;
+  width: 15%;
+  height: 20px;
+  font-size: 12px;
+  line-height: 20px;
+  border: 0;
+  background-color: rgba(1, 1, 1, 0.7);
+  color: white;
+}

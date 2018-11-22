@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router';
+import PropTypes from 'prop-types';
 
-import logo from './../login/hungry.jpg';
 import './css/index.css';
 
+import Header from './Header';
 import FriendList from './FriendList';
 import Posts from './Posts';
+import Chat from './chat/Chat';
+
+const propTypes = {
+  isLogin: PropTypes.string
+}
+
+const defaultProps = {
+  isLogin: 'false'
+}
 
 class Main extends Component {
   constructor(props) {
@@ -15,7 +25,10 @@ class Main extends Component {
       isLogin: this.props.isLogin,
       onlineFriends: [],
       offlineFriends: [],
-      clickedFriend: null
+      clickedFriend: null,
+      toggleSetting: false,
+      chat: false,
+      invitation: false
     };
 
     this.getFriends = this.getFriends.bind(this);
@@ -84,6 +97,12 @@ class Main extends Component {
   }
 
   onFriendClick = (i, status) => {
+    if (i === -1) {
+      this.setState({
+        toggleSetting: false
+      })
+      return;
+    }
     let friend;
     if (status) {
       friend = this.state.onlineFriends[i];
@@ -91,9 +110,41 @@ class Main extends Component {
       friend = this.state.offlineFriends[i];
       i += this.state.onlineFriends.length;
     }
-    this.setState({
-      clickedFriend: { ...friend, index: i }
-    })
+    const prevClicked = this.state.clickedFriend;
+    if (prevClicked !== null
+        && friend.id === prevClicked.id) {
+      this.setState({
+        clickedFriend: null,
+        toggleSetting: false
+      })
+    } else {
+      this.setState({
+        clickedFriend: { ...friend, index: i },
+        toggleSetting: true
+      })
+    }
+  }
+
+  openChat = () => {
+    const friend = this.state.clickedFriend;
+    if (friend !== null) {
+      this.setState({
+        chat: true
+      })
+    } else {
+      alert('browser err');
+    }
+  }
+
+  createInvitation = () => {
+    const friend = this.state.clickedFriend;
+    if (friend !== null) {
+      this.setState({
+        invitation: true
+      })
+    } else {
+      alert('browser err');
+    }
   }
 
   render() {
@@ -102,40 +153,43 @@ class Main extends Component {
         <Redirect to='/' />
       );
     }
-    let { onlineFriends, offlineFriends, clickedFriend } = this.state;
+    let {
+      onlineFriends, offlineFriends,
+      clickedFriend, chat, invitation,
+      toggleSetting
+    } = this.state;
     let user = this.props.user;
     let friends = {onlineFriends, offlineFriends};
     return (
       <div className="wrapper">
-        {/* NavBar */}
-        <div className="header">
-          <nav className="navbar navbar-default">
-            <div className="container-fluid">
-              <a className="navbar-brand navbar-left">
-                <img className="nav-logo" alt="" src={logo} width="30" height="30"/> RUHungry
-              </a>
-
-              <div className="navbar-text navbar-right">
-                Hello, {user.name}
-                <button className="logoutButton" onClick={this.handleLogout}>로그아웃</button>
-              </div>
-            </div>
-          </nav>
-        </div>
+        <Header
+          user={user}
+          handleLogout={this.handleLogout}
+        />
 
         <FriendList socket={this.props.socket}
                     user={user}
                     friends={friends}
                     clickedFriend={clickedFriend}
+                    toggleSetting={toggleSetting}
                     onFriendClick={this.onFriendClick}
                     getFriends={this.getFriends}
                     handleFriendConnect={this.handleFriendConnect}
-                    handleFriendDisconnect={this.handleFriendDisconnect} />
+                    handleFriendDisconnect={this.handleFriendDisconnect}
+                    openChat={this.openChat}
+                    createInvitation={this.createInvitation}
+        />
+
         <Posts />
+
+        {chat && <Chat friend={clickedFriend}/> }
 
       </div>
     )
   }
 }
+
+Main.propTypes = propTypes;
+Main.defaultProps = defaultProps;
 
 export default withRouter(Main);

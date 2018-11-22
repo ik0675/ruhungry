@@ -1,10 +1,45 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import FriendAction from './FriendAction';
 
 import './css/FriendList.css';
 
-export default class FriendList extends Component {
+const undefinedFunc = (name) => {
+  return () => {
+    alert(`${name} is not defined!`);
+  }
+}
+
+const propTypes = {
+  socket                : PropTypes.object,
+  user                  : PropTypes.object,
+  friends               : PropTypes.object,
+  clickedFriend         : PropTypes.object,
+  toggleSetting         : PropTypes.bool,
+  onFriendClick         : PropTypes.func,
+  getFriends            : PropTypes.func,
+  handleFriendConnect   : PropTypes.func,
+  handleFriendDisconnect: PropTypes.func,
+  openChat              : PropTypes.func,
+  createInvitation      : PropTypes.func,
+}
+
+const defaultProps = {
+  socket                : null,
+  user                  : null,
+  friends               : null,
+  clickedFriend         : null,
+  toggleSetting         : false,
+  onFriendClick         : undefinedFunc('onFriendClick'),
+  getFriends            : undefinedFunc('getFriends'),
+  handleFriendConnect   : undefinedFunc('handleFriendConnect'),
+  handleFriendDisconnect: undefinedFunc('handleFriendDisconnect'),
+  openChat              : undefinedFunc('openChat'),
+  createInvitation      : undefinedFunc('createInvitation'),
+}
+
+class FriendList extends Component {
   constructor(props) {
     super(props);
 
@@ -36,10 +71,23 @@ export default class FriendList extends Component {
   }
 
   render() {
-    const { clickedFriend } = this.props;
-    const friendAction = () => <FriendAction yOff={clickedFriend.index} />;
+    const { clickedFriend, toggleSetting } = this.props;
+    const friendAction = () => <FriendAction
+                                  yOff={clickedFriend.index}
+                                  onFriendClick={this.props.onFriendClick}
+                                  openChat={this.props.openChat}
+                                  createInvitation={this.props.createInvitation}
+                               />;
     const onlineFriendList = this.props.friends.onlineFriends.map((user, i) => {
-      return <li className="friend online" key={i} onClick={()=>{this.props.onFriendClick(i, true)}}>{user.name}</li>;
+      return <li
+                className="friend online"
+                key={i}
+                onClick={ () => {
+                  this.props.onFriendClick(i, true)}
+                }
+             >
+              {user.name}
+             </li>;
     })
     const offlineFriendList = this.props.friends.offlineFriends.map((user, i) => {
       let logout = user.logout;
@@ -54,14 +102,28 @@ export default class FriendList extends Component {
        } else {
          logout += ' m';
        }
-       return <li className="friend offline" key={i} onClick={() => {this.props.onFriendClick(i, false)}}>{user.name}<span>{logout}</span></li>;
+       return <li
+                className="friend offline"
+                key={i}
+                onClick={ () => {
+                  this.props.onFriendClick(i, false)}
+                }
+              >
+                {user.name}
+                <span>{logout}</span>
+              </li>;
     })
     return (
       <div className="friendList">
         {onlineFriendList}
         {offlineFriendList}
-        {clickedFriend !== null && friendAction()}
+        {toggleSetting && clickedFriend !== null && friendAction()}
       </div>
     );
   }
 }
+
+FriendList.propTypes = propTypes;
+FriendList.defaultProps = defaultProps;
+
+export default FriendList;

@@ -1,0 +1,17 @@
+.logoutButton {
+  margin-left: 10px;
+  border-radius: 5px;
+  background-color: none;
+}
+
+.navbar-right > button {
+  margin-left: 10px;
+}
+
+.nav-logo {
+  margin-right: 5px;
+}
+
+.navbar-default {
+  background-color: #e3f2fd;
+}

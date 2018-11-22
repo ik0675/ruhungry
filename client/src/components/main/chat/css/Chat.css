@@ -1,0 +1,12 @@
+#ChatInfo {
+  width: 100%;
+  height: 7%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #e3f2fd;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: 1px solid black;
+}
