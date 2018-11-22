@@ -44,4 +44,12 @@ module.exports = (app, connection, crypto) => {
     delete req.session.loginInfo;
     res.send('loggout');
   });
+
+  app.post('/api/createPost', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    const id = loginInfo.id;
+    const name = loginInfo.name;
+    const post = req.body.post;
+    db.createPost(res, connection, id, name, post);
+  })
 }

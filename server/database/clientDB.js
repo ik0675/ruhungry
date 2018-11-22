@@ -92,12 +92,6 @@ const signUp = (res, connection, id, password, name) => {
 }
 
 const getFriendList = (res, connection, id) => {
-  // let query = `SELECT
-  //                friend_id
-  //              FROM
-  //                friend_list
-  //              WHERE
-  //                id='${id}'`;
   let query = ` SELECT
                   account.id,
                   account.name,
@@ -116,26 +110,6 @@ const getFriendList = (res, connection, id) => {
                 WHERE
                   account.id=friend_list.friend_id`;
   connection.select(query)
-  // .then(friends => {
-  //   let friendIds = '(';
-  //   for (let i = 0; i < friends.length; ++i) {
-  //     friendIds += "'" + friends[i].friend_id + "'";
-  //     if (i < friends.length - 1)
-  //       friendIds += ',';
-  //   }
-  //   friendIds += ')';
-  //
-  //   query = `SELECT
-  //              id,
-  //              name,
-  //              socket_id,
-  //              TIMESTAMPDIFF(MINUTE, logout, now()) as logout
-  //            FROM
-  //              account
-  //            WHERE
-  //              id in ${friendIds}`;
-  //   return connection.select(query);
-  // })
   .then(users => {
     let friendUsers = {onlineFriends: [], offlineFriends: []};
     for (let i = 0; i < users.length; ++i) {
@@ -159,8 +133,33 @@ const getFriendList = (res, connection, id) => {
   })
 }
 
+const createPost = (res, connection, id, name, post) => {
+  let query = `INSERT INTO
+                post
+                (
+                  id,
+                  name,
+                  post
+                )
+                VALUES
+                (
+                  '${id}',
+                  '${name}',
+                  '${post}'
+                )`;
+    connection.insert(query)
+    .then( () => {
+      res.json({ status: true })
+    })
+    .catch( (err) => {
+      console.log(err);
+      res.json({ status: false })
+    })
+}
+
 module.exports = {
   loginWithIdPw: loginWithIdPw,
   signUp: signUp,
   getFriendList: getFriendList,
+  createPost: createPost,
 }
