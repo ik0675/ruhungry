@@ -39,6 +39,9 @@ class Posts extends Component {
     e.preventDefault();
     const { userPost } = this.state;
     alert(userPost);
+    this.setState({
+      userPost: ''
+    })
   }
 
   render() {

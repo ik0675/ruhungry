@@ -74,4 +74,7 @@ const PostInvitation = (props) => {
   )
 }
 
+PostInvitation.propTypes = propTypes;
+PostInvitation.defaultProps = defaultProps;
+
 export default PostInvitation;
