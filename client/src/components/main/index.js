@@ -41,12 +41,6 @@ class Main extends Component {
           author: { id: 'ik0675@gmail.com', name: '남궁익' }
         },
         {
-          restaurant: 울프강,
-          userImg: logo,
-          kind: 'invitation',
-          status: null
-        },
-        {
           restaurant: 쉑쉑,
           userImg: logo,
           kind: 'invitation',
@@ -54,6 +48,12 @@ class Main extends Component {
         },
         {
           restaurant: 새마을식당,
+          userImg: logo,
+          kind: 'invitation',
+          status: null
+        },
+        {
+          restaurant: 울프강,
           userImg: logo,
           kind: 'invitation',
           status: null
