@@ -10,6 +10,7 @@
 
 .nav-logo {
   margin-right: 5px;
+  cursor: pointer;
 }
 
 .navbar-default {

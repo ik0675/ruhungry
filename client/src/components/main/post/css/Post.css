@@ -1,0 +1,48 @@
+/* .btn-md {
+  width: 25%;
+}
+
+.btn-outline-success {
+  margin-right: 100px;
+  margin-left: 50px;
+}
+
+.column {
+  margin-top: 100px;
+  margin-bottom: 10px;
+}
+
+.image {
+  flex-shrink: 0;
+}
+
+.temp {
+  padding: 10px;
+  max-width: 240px;
+  max-height: 150px;
+  height: auto;
+  width: 70%;
+} */
+
+
+.Post {
+  width: 95%;
+  max-width: 500px;
+  min-height: 100px;
+  margin-left: 2.5%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.Post-author {
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  border-bottom: 1px dotted lightgray;
+}
+.Post-writing {
+  width: 100%;
+  padding: 10px;
+}

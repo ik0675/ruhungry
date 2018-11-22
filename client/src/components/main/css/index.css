@@ -3,6 +3,7 @@
   top: 0;
   left: 0;
   width: 100%;
+  min-width: 300px;
   height: 60px;
   overflow: hidden;
   border-bottom: 1px double gray;
@@ -10,7 +11,7 @@
 }
 
 .friendList {
-  width: 200px;
+  width: 150px;
   height: 100vh;
   background-color: rgb(245, 245, 245);
   border-right: 1px double gray;
@@ -19,14 +20,23 @@
   top: 60px;
   left: 0;
 }
+@media screen and (max-width: 500px) {
+  .friendList {
+    display: none;
+  }
+}
 
-.container {
-  position: absolute;
-  top: 50px;
-  left: calc(50% + 200px);
-  width: calc(100% - 200px);
-  min-width: 500px;
-  transform: translateX(-50%);
+#Posts {
+  position: relative;
+  width: calc(100% - 150px);
+  top: 60px;
+  left: 150px;
+}
+@media screen and (max-width: 500px) {
+  #Posts {
+    width: 100%;
+    left: 0;
+  }
 }
 
 #Chat {

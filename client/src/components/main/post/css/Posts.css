@@ -1,0 +1,8 @@
+#PostContainer {
+  position: absolute;
+  width: 100%;
+  max-width: 500px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}

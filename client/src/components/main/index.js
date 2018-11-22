@@ -6,8 +6,12 @@ import './css/index.css';
 
 import Header from './Header';
 import FriendList from './FriendList';
-import Posts from './Posts';
+import Posts from './post/Posts';
 import Chat from './chat/Chat';
+import logo from '../login/hungry.jpg';
+import 울프강 from './울프강.jpeg';
+import 쉑쉑 from './쉑쉑.jpeg';
+import 새마을식당 from './새마을식당.jpg';
 
 const propTypes = {
   isLogin: PropTypes.string
@@ -28,7 +32,33 @@ class Main extends Component {
       clickedFriend: null,
       toggleSetting: false,
       chat: false,
-      invitation: false
+      invitation: false,
+      posts: [
+        {
+          kind: 'writing',
+          writing: 'testestst',
+          imgs: [],
+          author: { id: 'ik0675@gmail.com', name: '남궁익' }
+        },
+        {
+          restaurant: 울프강,
+          userImg: logo,
+          kind: 'invitation',
+          status: null
+        },
+        {
+          restaurant: 쉑쉑,
+          userImg: logo,
+          kind: 'invitation',
+          status: null
+        },
+        {
+          restaurant: 새마을식당,
+          userImg: logo,
+          kind: 'invitation',
+          status: null
+        },
+      ]
     };
 
     this.getFriends = this.getFriends.bind(this);
@@ -147,6 +177,16 @@ class Main extends Component {
     }
   }
 
+  acceptDenyInvitation = (status, index) => {
+    let invitation = { ...this.state.posts[index] };
+    invitation.status = status;
+    let posts = [ ...this.state.posts ];
+    posts[index] = invitation;
+    this.setState({
+      posts: posts
+    })
+  }
+
   render() {
     if (this.props.isLogin === 'false') {
       return (
@@ -156,12 +196,12 @@ class Main extends Component {
     let {
       onlineFriends, offlineFriends,
       clickedFriend, chat, invitation,
-      toggleSetting
+      toggleSetting, posts
     } = this.state;
     let user = this.props.user;
     let friends = {onlineFriends, offlineFriends};
     return (
-      <div className="wrapper">
+      <div id="Main">
         <Header
           user={user}
           handleLogout={this.handleLogout}
@@ -180,7 +220,10 @@ class Main extends Component {
                     createInvitation={this.createInvitation}
         />
 
-        <Posts />
+        <Posts
+          posts={posts}
+          acceptDenyInvitation={this.acceptDenyInvitation}
+        />
 
         {chat && <Chat friend={clickedFriend}/> }
 
