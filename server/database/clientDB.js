@@ -1,3 +1,6 @@
+const uuid4 = require('uuid/v4');
+const escaper = require('../api/escape');
+
 // database queries related to client
 const loginWithIdPw = (req, res, connection, id, password) => {
   let query = `SELECT
@@ -169,7 +172,6 @@ const createPost = (res, connection, id, name, post) => {
         createdAt: rows[0].created_at,
         num: rows[0].num
       }
-      console.log(result);
       res.json(result)
     })
     .catch( (err) => {
@@ -211,12 +213,11 @@ const getPosts = (res, connection, id) => {
     for (let i = 0; i < posts.length; ++i) {
       let post = {
         kind: 'post',
-        post: posts[i].post,
+        post: escaper.unescape(posts[i].post),
         author: { id: posts[i].id, name: posts[i].name },
         createdAt: posts[i].created_at,
         num: posts[i].num
       }
-      console.log(post);
       result.push(post);
     }
     res.json(result);
@@ -227,10 +228,72 @@ const getPosts = (res, connection, id) => {
   })
 }
 
+const getChatNumber = (res, connection, ids) => {
+  let condition = '';
+  let chat_id;
+  for (let i = 0; i < ids.length; ++i) {
+    condition += `id='${ids[i]}'`;
+    if (i < ids.length - 1)
+      condition += ' OR ';
+  }
+  let query = `SELECT
+                 chat_id
+               FROM
+                 chat_meta
+               WHERE
+                 ${condition}
+               GROUP BY
+                 chat_id
+               HAVING
+                 COUNT(DISTINCT id)=${ids.length};`;
+  connection.select(query)
+  .then( (chat_ids) => {
+    if (chat_ids.length === 0) {
+      // no exisitng chat between(among) users  18446744073709551615
+      // create one
+      chat_id = uuid4();
+      let values = '';
+      for (let i = 0; i < ids.length; ++i) {
+        values += `('${chat_id}', '${ids[i]}', NOW())`;
+        if (i < ids.length - 1)
+          values += ',';
+      }
+      query = `INSERT INTO
+               chat_meta
+                 (
+                   chat_id,
+                   id,
+                   modified_at
+                 )
+               VALUES
+                 ${values}`
+      return connection.insert(query);
+    } else if (chat_ids.length > 1) {
+      // database error.
+      // there shouldn't be more than one row
+      res.json({ status: false });
+      return false;
+    } else {
+      res.json({ status: true, chat_id: chat_ids[0].chat_id });
+      return false;
+    }
+  })
+  .then( (status) => {
+    if (status) {
+      res.json({ status: true, chat_id: chat_id });
+    }
+  })
+  .catch( err => {
+    console.log(err);
+    res.json({ status: false });
+  })
+}
+
 module.exports = {
   loginWithIdPw: loginWithIdPw,
   signUp: signUp,
   getFriendList: getFriendList,
   createPost: createPost,
-  getPosts: getPosts
+  getPosts: getPosts,
+  getChatNumber: getChatNumber,
 }

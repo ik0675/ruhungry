@@ -167,7 +167,11 @@ class Main extends Component {
     if (friend !== null) {
       this.setState({
         chat: true
-      })
+      }); // open chat UI
+      // get chat_id. Create one if not exist
+      fetch('/api/getChatNumber')
+      .then(data => data.json())
+
     } else {
       alert('browser err');
     }

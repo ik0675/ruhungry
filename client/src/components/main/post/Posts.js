@@ -42,7 +42,7 @@ class Posts extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { userPost } = this.state;
+    let { userPost } = this.state;
     fetch('/api/createPost', {
       method : 'POST',
       headers: {

@@ -1,4 +1,5 @@
 let db = require('../database/clientDB');
+const escaper = require('./escape.js');
 
 module.exports = (app, connection, crypto) => {
   app.post('/api/login', (req, res) => {
@@ -49,7 +50,7 @@ module.exports = (app, connection, crypto) => {
     const loginInfo = req.session.loginInfo;
     const id = loginInfo.id;
     const name = loginInfo.name;
-    const post = req.body.post;
+    const post = escaper.escape(req.body.post);
     db.createPost(res, connection, id, name, post);
   })
 
@@ -60,6 +61,24 @@ module.exports = (app, connection, crypto) => {
     } else {
       const id = loginInfo.id;
       db.getPosts(res, connection, id);
+    }
+  })
+
+  app.get('/api/getChatNumber', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      res.json({ status: false });
+    } else if (req.query.ids === undefined) {
+      res.json({ status: false });
+    } else {
+      const ids = JSON.parse(req.query.ids);
+      if (ids.length < 2) {
+        res.json({ status: false });
+      } else if (ids.includes(loginInfo.id)) {
+        db.getChatNumber(res, connection, ids);
+      } else {
+        res.json({ status: false });
+      }
     }
   })
 }

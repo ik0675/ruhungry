@@ -49,6 +49,10 @@ class promiseifyDB {
       })
     })
   }
+
+  escape(string) {
+    return this.db.escape(string);
+  }
 }
 
 module.exports = promiseifyDB;
