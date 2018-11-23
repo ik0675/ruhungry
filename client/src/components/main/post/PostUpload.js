@@ -37,4 +37,7 @@ const PostUpload = (props) => {
   )
 }
 
+PostUpload.propTypes = propTypes;
+PostUpload.defaultProps = defaultProps;
+
 export default PostUpload;

@@ -11,12 +11,14 @@ const propTypes = {
   user                : PropTypes.object,
   posts               : PropTypes.array,
   acceptDenyInvitation: PropTypes.func,
+  addPost             : PropTypes.func,
 }
 
 const defaultProps = {
   user                : null,
   posts               : [],
-  acceptDenyInvitation: () => { alert('acceptDenyInvitation is not defined!'); }
+  acceptDenyInvitation: () => { alert('acceptDenyInvitation is not defined!'); },
+  addPost             : () => { alert('addPost is not defined!'); },
 }
 
 class Posts extends Component {
@@ -27,6 +29,9 @@ class Posts extends Component {
       userPost: '',
       userImgs: [],
     }
+
+    if (this.props.id !== '')
+      this.props.getPosts();
   }
 
   handlePostChange = (e) => {
@@ -38,22 +43,37 @@ class Posts extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     const { userPost } = this.state;
-    alert(userPost);
-    this.setState({
-      userPost: ''
+    fetch('/api/createPost', {
+      method : 'POST',
+      headers: {
+                  'Content-Type': 'application/json'
+               },
+      body   : JSON.stringify({ post: userPost })
+    })
+    .then(data => data.json())
+    .then(result => {
+      if (result.status) {
+        this.props.addPost(result);
+      } else {
+        alert('database err. Please try again');
+      }
+      this.setState({
+        userPost: '',
+      })
     })
   }
 
   render() {
     const posts = this.props.posts;
     const renderPosts = posts.map( (post, i) => {
-      if (post.kind === 'writing') {
+      if (post.kind === 'post') {
         return <Post
                  key={i}
                  index={i}
-                 writing={post.writing}
+                 post={post.post}
                  imgs={post.imgs}
                  author={post.author}
+                 createdAt={post.createdAt}
                />
       } else {
         return <PostInvitation

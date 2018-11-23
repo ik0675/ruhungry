@@ -14,11 +14,17 @@ import 쉑쉑 from './쉑쉑.jpeg';
 import 새마을식당 from './새마을식당.jpg';
 
 const propTypes = {
-  isLogin: PropTypes.string
+  isLogin     : PropTypes.string,
+  user        : PropTypes.object,
+  socket      : PropTypes.object,
+  handleLogout: PropTypes.func,
 }
 
 const defaultProps = {
-  isLogin: 'false'
+  isLogin     : 'false',
+  user        : null,
+  socket      : null,
+  handleLogout: () => { alert('handleLogout is not defined!'); }
 }
 
 class Main extends Component {
@@ -35,10 +41,11 @@ class Main extends Component {
       invitation: false,
       posts: [
         {
-          kind: 'writing',
-          writing: 'testestst',
+          kind: 'post',
+          post: 'testestst',
           imgs: [],
-          author: { id: 'ik0675@gmail.com', name: '남궁익' }
+          author: { id: 'ik0675@gmail.com', name: '남궁익' },
+          createdAt: 300
         },
         {
           restaurant: 쉑쉑,
@@ -187,6 +194,22 @@ class Main extends Component {
     })
   }
 
+  getPosts = () => {
+    fetch('/api/getPosts')
+    .then(data => data.json())
+    .then(posts => {
+      this.setState({
+        posts: [ ...posts, ...this.state.posts ]
+      })
+    })
+  }
+
+  addPost = (post) => {
+    this.setState({
+      posts: [ post, ...this.state.posts ]
+    });
+  }
+
   render() {
     if (this.props.isLogin === 'false') {
       return (
@@ -224,6 +247,8 @@ class Main extends Component {
           user={user}
           posts={posts}
           acceptDenyInvitation={this.acceptDenyInvitation}
+          addPost={this.addPost}
+          getPosts={this.getPosts}
         />
 
         {chat && <Chat friend={clickedFriend}/> }

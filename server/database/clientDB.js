@@ -149,7 +149,28 @@ const createPost = (res, connection, id, name, post) => {
                 )`;
     connection.insert(query)
     .then( () => {
-      res.json({ status: true })
+      query = `SELECT
+                 num,
+                 MINUTE(TIMEDIFF(NOW(), created_at)) AS created_at
+               FROM
+                 post
+               WHERE
+                 id='${id}' AND post='${post}'
+               ORDER BY num DESC
+               LIMIT 1`;
+      return connection.select(query)
+    })
+    .then( (rows) => {
+      let result = {
+        status: true,
+        kind: 'post',
+        post: post,
+        author: { id, name },
+        createdAt: rows[0].created_at,
+        num: rows[0].num
+      }
+      console.log(result);
+      res.json(result)
     })
     .catch( (err) => {
       console.log(err);
@@ -157,9 +178,59 @@ const createPost = (res, connection, id, name, post) => {
     })
 }
 
+const getPosts = (res, connection, id) => {
+  let query = `SELECT
+                 friend_id AS id
+               FROM
+                 friend_list
+               WHERE
+                 id='${id}'`;
+  connection.select(query)
+  .then( (ids) => {
+    let idArray = `('${id}'`;
+    for (let i = 0; i < ids.length; ++i) {
+      idArray += ", '" + ids[i].id + "'";
+    }
+    idArray += ')';
+    query = `SELECT
+               num,
+               id,
+               name,
+               post,
+               TIMESTAMPDIFF(MINUTE, created_at, NOW()) AS created_at
+             FROM
+               post
+             WHERE
+               id in ${idArray}
+             ORDER BY num DESC
+             LIMIT 15`;
+    return connection.select(query)
+  })
+  .then( (posts) => {
+    let result = [];
+    for (let i = 0; i < posts.length; ++i) {
+      let post = {
+        kind: 'post',
+        post: posts[i].post,
+        author: { id: posts[i].id, name: posts[i].name },
+        createdAt: posts[i].created_at,
+        num: posts[i].num
+      }
+      console.log(post);
+      result.push(post);
+    }
+    res.json(result);
+  })
+  .catch( err => {
+    console.log(err)
+    res.json({ status: false })
+  })
+}
+
 module.exports = {
   loginWithIdPw: loginWithIdPw,
   signUp: signUp,
   getFriendList: getFriendList,
   createPost: createPost,
+  getPosts: getPosts
 }

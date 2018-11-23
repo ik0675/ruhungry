@@ -43,7 +43,10 @@
   padding: 10px;
   border-bottom: 1px dotted lightgray;
 }
-.Post-writing {
+.Post-author span {
+  float: right;
+}
+.Post-post {
   width: 100%;
   padding: 10px;
 }

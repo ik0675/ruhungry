@@ -5,8 +5,8 @@ import './css/PostInvitation.css';
 
 const propTypes = {
   index               : PropTypes.number,
-  restaurant          : PropTypes.image,
-  userImg             : PropTypes.image,
+  restaurant          : PropTypes.string,
+  userImg             : PropTypes.string,
   status              : PropTypes.bool,
   acceptDenyInvitation: PropTypes.func,
 }
@@ -28,7 +28,6 @@ const PostInvitation = (props) => {
         <div className="invitation bottom">
           <button
             className="btn accept"
-            role="button"
             onClick={ () => {
               props.acceptDenyInvitation(true, props.index)
             }}
@@ -37,7 +36,6 @@ const PostInvitation = (props) => {
           </button>
           <button
             className="btn deny"
-            role="button"
             onClick={ () => {
               props.acceptDenyInvitation(false, props.index)
             }}
@@ -66,8 +64,8 @@ const PostInvitation = (props) => {
   return (
     <div className="Post-invitation">
       <div className="invitation top">
-        <img src={restaurant} />
-        <img src={userImg} />
+        <img src={restaurant} alt="restaurant"/>
+        <img src={userImg} alt="user"/>
       </div>
       { invitationStatus() }
     </div>

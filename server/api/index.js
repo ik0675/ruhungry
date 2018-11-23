@@ -52,4 +52,14 @@ module.exports = (app, connection, crypto) => {
     const post = req.body.post;
     db.createPost(res, connection, id, name, post);
   })
+
+  app.get('/api/getPosts', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      res.json({ status: false })
+    } else {
+      const id = loginInfo.id;
+      db.getPosts(res, connection, id);
+    }
+  })
 }
