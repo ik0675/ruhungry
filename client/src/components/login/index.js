@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withRouter, Redirect } from 'react-router';
 import { connect } from 'react-redux';
 
@@ -9,8 +10,8 @@ import logo from './hungry.jpg';
 import './css/index.css';
 
 const propTypes = {
-  socket: PropTypes.object.isRequired,
-  msg   : PropTypes.string.isRequired,
+  socket: PropTypes.object,
+  msg   : PropTypes.string,
 }
 
 const defaultProps = {
@@ -19,35 +20,18 @@ const defaultProps = {
 }
 
 class LoginPage extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    id        : '',
+    password  : '',
+    isToggleOn: false,
+    loginInfo : null,
+    signUpInfo: null,
+  };
 
-    this.state = {
-      id: '',
-      password: '',
-      isToggleOn: false,
-      loginInfo: null,
-      signUpInfo: null,
-    };
-
-    this.handleIdChange = this.handleIdChange.bind(this);
-    this.handlePwChange = this.handlePwChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleToggle = this.handleToggle.bind(this);
-    this.handleSignUp = this.handleSignUp.bind(this);
-    this.login = this.login.bind(this);
-  }
-
-  handleIdChange(e) {
+  handleChange = (e) => {
     this.setState({
-      id: e.target.value
-    });
-  }
-
-  handlePwChange(e) {
-    this.setState({
-      password: e.target.value
-    });
+      [e.target.name] : e.target.value
+    })
   }
 
   handleSubmit(e) {
@@ -136,14 +120,16 @@ class LoginPage extends Component {
       <div className="loginForm">
         <img src={logo} alt="logo" className="brand-logo"/>
         {typeof msg !== 'undefined' && msg}
-        <Login    info={this.state}
-                  onIdChange={this.handleIdChange}
-                  onPwChange={this.handlePwChange}
-                  onSubmit={this.handleSubmit} />
+        <Login    id={ this.state.id }
+                  password={ this.state.password }
+                  handleChange={ this.handleChange }
+                  onSubmit={ this.handleSubmit }
+        />
 
         <SignUp   info={this.state}
                   onToggle={this.handleToggle}
-                  onSubmit={this.handleSignUp} />
+                  onSubmit={this.handleSignUp}
+        />
 
         <p className="mt-5 mb-3 text-muted">© 2018-Present</p>
       </div>
