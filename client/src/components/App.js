@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, withRouter, Switch } from 'react-router-dom';
 import io from 'socket.io-client';
 
 import LoginPage from './login';
@@ -84,14 +84,16 @@ class App extends Component {
     }
     return (
         <div>
-          <Route exact path='/' component={
-            () => <LoginPage isLogin={isLogin}
-                             handleLogin={this.handleLogin} />} />
-          <Route path="/main" component={
-            () => <Main isLogin={isLogin}
-                        user={{id: id, name: name}}
-                        socket={this.socket}
-                        handleLogout={this.handleLogout}/>} />
+          <Switch>
+            <Route exact path='/' component={
+              () => <LoginPage isLogin={isLogin}
+                               handleLogin={this.handleLogin} />} />
+            <Route path="/main" component={
+              () => <Main isLogin={isLogin}
+                          user={{id: id, name: name}}
+                          socket={this.socket}
+                          handleLogout={this.handleLogout}/>} />
+          </Switch>
         </div>
     );
   }
