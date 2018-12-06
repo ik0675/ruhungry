@@ -24,8 +24,6 @@ class LoginPage extends Component {
     id        : '',
     password  : '',
     isToggleOn: false,
-    loginInfo : null,
-    signUpInfo: null,
   };
 
   handleChange = (e) => {
@@ -99,21 +97,20 @@ class LoginPage extends Component {
       );
     }
     let msg = undefined;
-    if (this.state.loginInfo !== null) {
-      if (!this.state.loginInfo.status)
-        msg = <div className="alertMsg red italic">
-                {this.state.loginInfo.message}
-              </div>;
-    }
-    else if (this.state.signUpInfo !== null) {
-      if (this.state.signUpInfo.status)
-        msg = <div className="alertMsg green italic">
-                {this.state.signUpInfo.message}
-              </div>
-      else
-        msg = <div className="alertMsg red italic">
-                {this.state.signUpInfo.message}
-              </div>
+    if (this.props.msg !== null) {
+      if (!this.props.status) {
+        msg = (
+          <div className="alertMsg red italic">
+            {this.props.message}
+          </div>
+        );
+      } else {
+        msg = (
+          <div className="alertMsg green italic">
+            {this.props.message}
+          </div>
+        );
+      }
     }
 
     return (
