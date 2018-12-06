@@ -1,11 +1,22 @@
 import React, { Component } from 'react';
 import { withRouter, Redirect } from 'react-router';
+import { connect } from 'react-redux';
 
 import Login from './Login';
 import SignUp from './SignUp';
 import logo from './hungry.jpg';
 
 import './css/index.css';
+
+const propTypes = {
+  socket: PropTypes.object.isRequired,
+  msg   : PropTypes.string.isRequired,
+}
+
+const defaultProps = {
+  socket: undefined,
+  msg   : undefined,
+}
 
 class LoginPage extends Component {
   constructor(props) {
@@ -140,4 +151,16 @@ class LoginPage extends Component {
   }
 }
 
-export default withRouter(LoginPage);
+LoginPage.propTypes = propTypes;
+LoginPage.defaultProps = defaultProps;
+
+const mapStateToProps = state => ({
+  socket: state.login.socket,
+  msg   : state.login.msg,
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginPage));
