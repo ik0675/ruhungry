@@ -18,7 +18,6 @@ export const dispatchLogin = ({ id, password }) => dispatch => {
     if (data.status) {
       const socket = io('localhost:4000');
       socket.emit('login', { id: data.id, name: data.name });
-      console.log(data);
       return dispatch({
         type: types.LOGIN,
         data: {
@@ -30,13 +29,32 @@ export const dispatchLogin = ({ id, password }) => dispatch => {
     }
     return dispatch({
       type: types.LOGIN_FAIL,
-      data : data.msg,
+      data: {
+              status: data.status,
+              msg   : data.msg,
+            }
     })
   })
-  .catch( err => {
+  .catch( err => console.log(err) )
+}
+
+export const dispatchSignup = (user) => dispatch => {
+  fetch('/api/signUp', {
+    method  : 'POST',
+    headers : {
+                'Content-Type': 'application/json'
+              },
+    body    : JSON.stringify(user)
+  })
+  .then( res => res.json() )
+  .then( data => {
     return dispatch({
-      type: types.LOGIN_FAIL,
-      data : err.msg,
+      type: types.SIGNUP,
+      data: {
+              status: data.status,
+              msg   : data.msg
+            }
     })
   })
+  .catch( err => console.log(err) )
 }

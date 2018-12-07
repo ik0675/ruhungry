@@ -49,24 +49,8 @@ class LoginPage extends Component {
     });
   }
 
-  handleSignUp = async (user) => {
-    try {
-      const res = await fetch('/api/signUp', {
-        method  : 'POST',
-        headers : {
-                    'Content-Type': 'application/json'
-                  },
-        body    : JSON.stringify(user)
-      });
-      const signUpInfo = await res.json();
-      this.setState({
-        signUpInfo: signUpInfo,
-        isToggleOn: false,
-        loginInfo: null,
-      });
-    } catch(err) {
-      console.log(err);
-    }
+  handleSignUp = (user) => {
+
   }
 
   render() {
@@ -124,7 +108,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  login: actions.dispatchLogin,
+  login : actions.dispatchLogin,
+  signup: actions.dispatchSignup,
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginPage));

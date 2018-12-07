@@ -23,6 +23,11 @@ export default function loginReducers(state = initialState, action) {
         ...state,
         msg: action.data
       }
+    case types.SIGNUP:
+      return {
+        ...state,
+        msg: action.data
+      }
     default:
       return state;
   }

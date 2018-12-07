@@ -53,7 +53,7 @@ const signUp = (res, connection, id, password, name) => {
       // user email already exists
       res.json({
         status: false,
-        message: 'Email already exists.\nPlease try again.'
+        msg: 'Email already exists.\nPlease try again.'
       });
       return false;
     }
@@ -79,7 +79,7 @@ const signUp = (res, connection, id, password, name) => {
       // sign up successful
       res.json({
         status: true,
-        message: 'Sign Up successful!.\nPlease sign in again.'
+        msg: 'Sign Up successful!.\nPlease sign in again.'
       });
     }
   })
@@ -88,7 +88,7 @@ const signUp = (res, connection, id, password, name) => {
     console.log('Sign Up error', err);
     res.json({
       status: false,
-      message: 'Sign in failed.\nPlease try again. ERROR 1'
+      msg: 'Sign in failed.\nPlease try again. ERROR 1'
     });
   })
 }
