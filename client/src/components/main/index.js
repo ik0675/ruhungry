@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
-import { withRouter, Redirect } from 'react-router';
 import PropTypes from 'prop-types';
+import { withRouter, Redirect } from 'react-router';
+import { connect } from 'react-redux';
 
 import './css/index.css';
 
 import Header from './header/Header';
-import FriendList from './FriendList';
+import FriendList from './friends/FriendList';
 import Posts from './post/Posts';
 import Chat from './chat/Chat';
 
-// import logo from '../../public/hungry.jpg';
-// import 울프강 from '../../public/울프강.jpeg';
-// import 쉑쉑 from '../../public/쉑쉑.jpeg';
-// import 새마을식당 from '../../public/새마을식당.jpg';
-
 const propTypes = {
-  user        : PropTypes.object,
+  id          : PropTypes.string.isRequired,
+  name        : PropTypes.string.isRequired,
   socket      : PropTypes.object,
   handleLogout: PropTypes.func,
 }
@@ -31,7 +28,6 @@ class Main extends Component {
     super(props);
 
     this.state = {
-      isLogin: this.props.isLogin,
       onlineFriends: [],
       offlineFriends: [],
       clickedFriend: null,
@@ -66,10 +62,6 @@ class Main extends Component {
       //   },
       // ]
     };
-
-    this.getFriends = this.getFriends.bind(this);
-    this.handleFriendConnect = this.handleFriendConnect.bind(this);
-    this.handleFriendDisconnect = this.handleFriendDisconnect.bind(this);
   }
 
   componentWillMount() {
@@ -80,7 +72,7 @@ class Main extends Component {
     this._mounted = false;
   }
 
-  getFriends(users) {
+  getFriends = (users) => {
     if (this._mounted) {
       this.setState({
         onlineFriends: users.onlineFriends,
@@ -98,7 +90,7 @@ class Main extends Component {
     });
   }
 
-  checkUserInList(list, user) {
+  checkUserInList = (list, user) => {
     for (let i = 0; i < list.length; ++i) {
       if (list[i].id === user.id)
         return i;
@@ -106,7 +98,7 @@ class Main extends Component {
     return -1;
   }
 
-  handleFriendConnect(user) {
+  handleFriendConnect = (user) => {
     if (this.checkUserInList(this.state.onlineFriends, user) === -1) {
       let onlineFriends = [...this.state.onlineFriends, user];
       let offlineFriends = [...this.state.offlineFriends];
@@ -119,7 +111,7 @@ class Main extends Component {
     }
   }
 
-  handleFriendDisconnect(user) {
+  handleFriendDisconnect = (user) => {
     if (this.checkUserInList(this.state.offlineFriends, user) === -1) {
       let offlineFriends = [...this.state.offlineFriends, user];
       let onlineFriends = [...this.state.onlineFriends];
@@ -224,7 +216,7 @@ class Main extends Component {
       clickedFriend, chat, invitation,
       toggleSetting, posts
     } = this.state;
-    let user = this.props.user;
+    let user = { id: this.props.id, name: this.props.name };
     let friends = {onlineFriends, offlineFriends};
     return (
       <div id="Main">
@@ -233,17 +225,18 @@ class Main extends Component {
           handleLogout={this.handleLogout}
         />
 
-        <FriendList socket={this.props.socket}
-                    user={user}
-                    friends={friends}
-                    clickedFriend={clickedFriend}
-                    toggleSetting={toggleSetting}
-                    onFriendClick={this.onFriendClick}
-                    getFriends={this.getFriends}
-                    handleFriendConnect={this.handleFriendConnect}
-                    handleFriendDisconnect={this.handleFriendDisconnect}
-                    openChat={this.openChat}
-                    createInvitation={this.createInvitation}
+        {/*<FriendList
+          socket={this.props.socket}
+          user={user}
+          friends={friends}
+          clickedFriend={clickedFriend}
+          toggleSetting={toggleSetting}
+          onFriendClick={this.onFriendClick}
+          getFriends={this.getFriends}
+          handleFriendConnect={this.handleFriendConnect}
+          handleFriendDisconnect={this.handleFriendDisconnect}
+          openChat={this.openChat}
+          createInvitation={this.createInvitation}
         />
 
         <Posts
@@ -252,7 +245,7 @@ class Main extends Component {
           acceptDenyInvitation={this.acceptDenyInvitation}
           addPost={this.addPost}
           getPosts={this.getPosts}
-        />
+        /> */}
 
         {chat && <Chat friend={clickedFriend}/> }
 
@@ -264,4 +257,14 @@ class Main extends Component {
 Main.propTypes = propTypes;
 Main.defaultProps = defaultProps;
 
-export default withRouter(Main);
+const mapStateToProps = state => ({
+  id    : state.login.id,
+  name  : state.login.name,
+  socket: state.login.socket,
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
