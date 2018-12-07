@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { withRouter, Redirect } from 'react-router';
 import { connect } from 'react-redux';
 
+import * as actions from '../../actions/login';
+
 import Login from './Login';
 import SignUp from './SignUp';
 import logo from './hungry.jpg';
@@ -32,42 +34,19 @@ class LoginPage extends Component {
     })
   }
 
-  handleSubmit(e) {
+  handleSubmit = (e) => {
     e.preventDefault();
-    this.login();
+    const user = {
+      id      : this.state.id,
+      password: this.state.password
+    }
+    this.props.login(user);
   }
 
-  handleToggle() {
+  handleToggle = () => {
     this.setState({
       isToggleOn: !this.state.isToggleOn
     });
-  }
-
-  login = async () => {
-    try {
-      const res = await fetch('/api/login', {
-        method  : 'POST',
-        headers : {
-                    'Content-Type': 'application/json'
-                  },
-        body    : JSON.stringify({
-                    id      : this.state.id,
-                    password: this.state.password,
-                  })
-      });
-      const loginInfo = await res.json();
-      if (loginInfo.status) {
-        this.props.handleLogin(loginInfo.user);
-      } else {
-        this.setState({
-          loginInfo: loginInfo,
-          isToggleOn: false,
-          signUpInfo: null,
-        });
-      }
-    } catch(err) {
-      console.log(err)
-    }
   }
 
   handleSignUp = async (user) => {
@@ -117,15 +96,17 @@ class LoginPage extends Component {
       <div className="loginForm">
         <img src={logo} alt="logo" className="brand-logo"/>
         {typeof msg !== 'undefined' && msg}
-        <Login    id={ this.state.id }
-                  password={ this.state.password }
-                  handleChange={ this.handleChange }
-                  onSubmit={ this.handleSubmit }
+        <Login
+          id={ this.state.id }
+          password={ this.state.password }
+          handleChange={ this.handleChange }
+          onSubmit={ this.handleSubmit }
         />
 
-        <SignUp   info={this.state}
-                  onToggle={this.handleToggle}
-                  onSubmit={this.handleSignUp}
+        <SignUp
+          info={this.state}
+          onToggle={this.handleToggle}
+          onSubmit={this.handleSignUp}
         />
 
         <p className="mt-5 mb-3 text-muted">© 2018-Present</p>
@@ -143,7 +124,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-
+  login: actions.dispatchLogin,
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginPage));

@@ -16,14 +16,13 @@ const loginWithIdPw = (req, res, connection, id, password) => {
       console.log('incorrect login info');
       res.json({
         status: false,
-        message: 'Incorrect Email or password.\nPlease try again'
+        msg: 'Incorrect Email or password.\nPlease try again'
       });
     } else {
       // login successful
       req.session.loginInfo = {id: rows[0].id, name: rows[0].name};
       res.json({
         status: true,
-        message: 'Sign in successful',
         user: {
           id: rows[0].id,
           name: rows[0].name,
@@ -36,7 +35,7 @@ const loginWithIdPw = (req, res, connection, id, password) => {
     console.log('Login error', err);
     res.json({
       status: false,
-      message: 'Sign in failed.\nPlease try again.'
+      msg: 'Sign in failed.\nPlease try again.'
     });
   })
 }
