@@ -16,6 +16,7 @@ class SignUp extends Component {
     id      : '',
     password: '',
     name    : '',
+    toggle  : false,
   }
 
   handleChange = (e) => {
@@ -24,12 +25,22 @@ class SignUp extends Component {
     })
   }
 
+  handleToggle = () => {
+    this.setState( (prevState) => ({
+      id      : '',
+      password: '',
+      name    : '',
+      toggle  : !prevState.toggle,
+    }) )
+  }
+
   handleSubmit = () => {
     this.props.onSubmit(this.state);
     this.setState({
       id      : '',
       password: '',
       name    : '',
+      toggle  : false,
     });
   }
 
@@ -39,18 +50,18 @@ class SignUp extends Component {
         <button
           className='btn btn-md btn-info btn-block'
           type="submit"
-          onClick={this.props.onToggle}
+          onClick={ this.handleToggle }
         >
           회원가입
         </button>
-        { this.props.info.isToggleOn &&
+        { this.state.toggle &&
           <div className="form-group">
             <input
               placeholder="이름"
               type="text"
               className='form-control'
-              onChange={this.handleChange}
-              value={this.state.name}
+              onChange={ this.handleChange }
+              value={ this.state.name }
               name="name"
             />
 
@@ -58,8 +69,8 @@ class SignUp extends Component {
               placeholder="Email"
               type="text"
               className='form-control'
-              onChange={this.handleIDChange}
-              value={this.state.id}
+              onChange={ this.handleChange }
+              value={ this.state.id }
               name="id"
             />
 
@@ -67,14 +78,14 @@ class SignUp extends Component {
               placeholder="Password"
               type="password"
               className='form-control'
-              onChange={this.handlePWChange}
-              value={this.state.password}
+              onChange={ this.handleChange }
+              value={ this.state.password }
               name="password"
             />
 
             <button
               className='btn btn-md btn-secondary btn-block'
-              onClick={this.handleSubmit}
+              onClick={ this.handleSubmit }
             >
               제출
             </button>

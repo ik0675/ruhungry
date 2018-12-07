@@ -13,7 +13,7 @@ import './css/index.css';
 
 const propTypes = {
   socket: PropTypes.object,
-  msg   : PropTypes.string,
+  msg   : PropTypes.object,
 }
 
 const defaultProps = {
@@ -25,7 +25,6 @@ class LoginPage extends Component {
   state = {
     id        : '',
     password  : '',
-    isToggleOn: false,
   };
 
   handleChange = (e) => {
@@ -41,16 +40,6 @@ class LoginPage extends Component {
       password: this.state.password
     }
     this.props.login(user);
-  }
-
-  handleToggle = () => {
-    this.setState({
-      isToggleOn: !this.state.isToggleOn
-    });
-  }
-
-  handleSignUp = (user) => {
-
   }
 
   render() {
@@ -88,9 +77,7 @@ class LoginPage extends Component {
         />
 
         <SignUp
-          info={this.state}
-          onToggle={this.handleToggle}
-          onSubmit={this.handleSignUp}
+          onSubmit={ this.props.signup }
         />
 
         <p className="mt-5 mb-3 text-muted">© 2018-Present</p>
