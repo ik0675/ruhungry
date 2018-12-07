@@ -4,25 +4,23 @@ import PropTypes from 'prop-types';
 
 import './css/index.css';
 
-import Header from './Header';
+import Header from './header/Header';
 import FriendList from './FriendList';
 import Posts from './post/Posts';
 import Chat from './chat/Chat';
 
-import logo from '../../public/hungry.jpg';
-import 울프강 from '../../public/울프강.jpeg';
-import 쉑쉑 from '../../public/쉑쉑.jpeg';
-import 새마을식당 from '../../public/새마을식당.jpg';
+// import logo from '../../public/hungry.jpg';
+// import 울프강 from '../../public/울프강.jpeg';
+// import 쉑쉑 from '../../public/쉑쉑.jpeg';
+// import 새마을식당 from '../../public/새마을식당.jpg';
 
 const propTypes = {
-  isLogin     : PropTypes.string,
   user        : PropTypes.object,
   socket      : PropTypes.object,
   handleLogout: PropTypes.func,
 }
 
 const defaultProps = {
-  isLogin     : 'false',
   user        : null,
   socket      : null,
   handleLogout: () => { alert('handleLogout is not defined!'); }
@@ -40,33 +38,33 @@ class Main extends Component {
       toggleSetting: false,
       chat: false,
       invitation: false,
-      posts: [
-        {
-          kind: 'post',
-          post: 'testestst',
-          imgs: [],
-          author: { id: 'ik0675@gmail.com', name: '남궁익' },
-          createdAt: 300
-        },
-        {
-          restaurant: 쉑쉑,
-          userImg: logo,
-          kind: 'invitation',
-          status: null
-        },
-        {
-          restaurant: 새마을식당,
-          userImg: logo,
-          kind: 'invitation',
-          status: null
-        },
-        {
-          restaurant: 울프강,
-          userImg: logo,
-          kind: 'invitation',
-          status: null
-        },
-      ]
+      // posts: [
+      //   {
+      //     kind: 'post',
+      //     post: 'testestst',
+      //     imgs: [],
+      //     author: { id: 'ik0675@gmail.com', name: '남궁익' },
+      //     createdAt: 300
+      //   },
+      //   {
+      //     restaurant: 쉑쉑,
+      //     userImg: logo,
+      //     kind: 'invitation',
+      //     status: null
+      //   },
+      //   {
+      //     restaurant: 새마을식당,
+      //     userImg: logo,
+      //     kind: 'invitation',
+      //     status: null
+      //   },
+      //   {
+      //     restaurant: 울프강,
+      //     userImg: logo,
+      //     kind: 'invitation',
+      //     status: null
+      //   },
+      // ]
     };
 
     this.getFriends = this.getFriends.bind(this);
@@ -216,7 +214,7 @@ class Main extends Component {
   }
 
   render() {
-    if (this.props.isLogin === 'false') {
+    if (this.props.socket === null) {
       return (
         <Redirect to='/' />
       );

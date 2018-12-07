@@ -7,7 +7,6 @@ import * as actions from '../../actions/login';
 
 import Login from './Login';
 import SignUp from './SignUp';
-import logo from './hungry.jpg';
 
 import './css/index.css';
 
@@ -72,7 +71,7 @@ class LoginPage extends Component {
 
     return (
       <div className="loginForm">
-        <img src={logo} alt="logo" className="brand-logo"/>
+        <img src="/hungry.jpg" alt="logo" className="brand-logo"/>
         { msg }
         <Login
           id={ this.state.id }

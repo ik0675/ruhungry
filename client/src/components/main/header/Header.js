@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import './css/Header.css';
 
-import logo from './../login/hungry.jpg';
-
 const propTypes = {
   user        : PropTypes.object,
   handleLogout: PropTypes.func,
@@ -26,7 +24,7 @@ const Header = (props) => {
             <img
               className="nav-logo"
               alt=""
-              src={logo}
+              src="/hungry.jpg"
               width="30"
               height="30"
               onClick={props.openHeader}
