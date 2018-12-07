@@ -27,6 +27,7 @@ export const dispatchLogin = ({ id, password }) => dispatch => {
         }
       })
     }
+
     return dispatch({
       type: types.LOGIN_FAIL,
       data: {
@@ -57,4 +58,26 @@ export const dispatchSignup = (user) => dispatch => {
     })
   })
   .catch( err => console.log(err) )
+}
+
+export const dispatchCheckSession = () => dispatch => {
+  fetch('/api/session')
+  .then( res => res.json() )
+  .then( data => {
+    if (!data.status) {
+      return dispatch({ type: types.NO_SESSION })
+    }
+
+    const socket = io('localhost:4000');
+    socket.emit('login', { id: data.id, name: data.name });
+    return dispatch({
+      type: types.LOGIN,
+      data: {
+        id    : data.user.id,
+        name  : data.user.name,
+        socket: socket,
+      }
+    })
+  })
+  .catch( err => console.error(err) );
 }

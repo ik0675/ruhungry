@@ -28,6 +28,11 @@ export default function loginReducers(state = initialState, action) {
         ...state,
         msg: action.data
       }
+    case types.NO_SESSION:
+      return {
+        ...state,
+        isLogin: 'false'
+      }
     default:
       return state;
   }

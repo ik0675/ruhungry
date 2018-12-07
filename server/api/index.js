@@ -32,7 +32,6 @@ module.exports = (app, connection, crypto) => {
     } else {
       res.json({
         status: true,
-        message: 'Sign in successful',
         user: {
           id: req.session.loginInfo.id,
           name: req.session.loginInfo.name
