@@ -8,10 +8,11 @@ import Header from './Header';
 import FriendList from './FriendList';
 import Posts from './post/Posts';
 import Chat from './chat/Chat';
-import logo from '../login/hungry.jpg';
-import 울프강 from './울프강.jpeg';
-import 쉑쉑 from './쉑쉑.jpeg';
-import 새마을식당 from './새마을식당.jpg';
+
+import logo from '../../public/hungry.jpg';
+import 울프강 from '../../public/울프강.jpeg';
+import 쉑쉑 from '../../public/쉑쉑.jpeg';
+import 새마을식당 from '../../public/새마을식당.jpg';
 
 const propTypes = {
   isLogin     : PropTypes.string,
