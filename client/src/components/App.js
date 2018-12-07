@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
 import { Route, withRouter, Switch } from 'react-router-dom';
-import io from 'socket.io-client';
+import { connect } from 'react-redux';
 
 import LoginPage from './login';
 import Main from './main';
 import Loading from './loading';
 
+const propTypes = {
+  isLogin : PropTypes.string.isRequired,
+  id      : PropTypes.string.isRequired,
+  name    : PropTypes.string.isRequired,
+}
+
+const defaultProps = {
+  isLogin : undefined,
+  id      : undefined,
+  name    : undefined,
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isLogin: 'pending',
-      id: '',
-      name: '',
-    }
-
-    this.socket = io('localhost:4000'); // connect to socket.io on server
     this.isLogingOut = false;
 
     fetch('/api/session')
@@ -38,20 +43,6 @@ class App extends Component {
     .catch(err => {
       console.error(err);
     });
-
-    this.handleLogout = this.handleLogout.bind(this);
-  }
-
-  handleLogin = async(user) => {
-    this.setState({
-      isLogin: 'true',
-      id: user.id,
-      name: user.name,
-    });
-    this.socket.emit('login', user);
-
-    let pathname = this.props.location.state ? this.props.location.state : '/main';
-    this.props.history.push(pathname + this.props.location.search);
   }
 
   handleLogout = async () => {
@@ -72,7 +63,7 @@ class App extends Component {
   }
 
   render() {
-    const { isLogin, id, name } = this.state;
+    const { isLogin, id, name } = this.props;
     if (isLogin === 'pending') {
       return(
         <Loading loadingFor="checking session to login..."/>
@@ -99,4 +90,14 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+const mapStateToProps = state => ({
+  isLogin : state.login.isLogin,
+  id      : state.login.id,
+  name    : state.login.name,
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
