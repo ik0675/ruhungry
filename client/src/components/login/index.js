@@ -14,11 +14,15 @@ import './css/index.css';
 const propTypes = {
   socket: PropTypes.object,
   msg   : PropTypes.object,
+  login : PropTypes.func.isRequired,
+  signup: PropTypes.func.isRequired,
 }
 
 const defaultProps = {
   socket: undefined,
   msg   : undefined,
+  login : undefined,
+  signup: undefined,
 }
 
 class LoginPage extends Component {
@@ -43,23 +47,24 @@ class LoginPage extends Component {
   }
 
   render() {
-    if (this.props.isLogin === 'true') {
+    if (this.props.socket !== null) {
       return (
         <Redirect to='/main' />
       );
     }
+
     let msg = undefined;
     if (this.props.msg !== null) {
-      if (!this.props.status) {
+      if (!this.props.msg.status) {
         msg = (
           <div className="alertMsg red italic">
-            {this.props.message}
+            { this.props.msg.msg }
           </div>
         );
       } else {
         msg = (
           <div className="alertMsg green italic">
-            {this.props.message}
+            { this.props.msg.msg }
           </div>
         );
       }
@@ -68,7 +73,7 @@ class LoginPage extends Component {
     return (
       <div className="loginForm">
         <img src={logo} alt="logo" className="brand-logo"/>
-        {typeof msg !== 'undefined' && msg}
+        { msg }
         <Login
           id={ this.state.id }
           password={ this.state.password }
