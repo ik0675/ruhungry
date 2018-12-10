@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { withRouter, Redirect } from 'react-router';
 import { connect } from 'react-redux';
 
+import { dispatchLogout } from '../../actions/login';
+
 import './css/index.css';
 
 import Header from './header/Header';
@@ -11,14 +13,13 @@ import Posts from './post/Posts';
 import Chat from './chat/Chat';
 
 const propTypes = {
-  id          : PropTypes.string.isRequired,
-  name        : PropTypes.string.isRequired,
-  socket      : PropTypes.object,
+  id      : PropTypes.string.isRequired,
+  name    : PropTypes.string.isRequired,
+  isLogin : PropTypes.string.isRequired,
 }
 
 const defaultProps = {
-  user        : null,
-  socket      : null,
+
 }
 
 class Main extends Component {
@@ -204,7 +205,7 @@ class Main extends Component {
   // }
 
   render() {
-    if (this.props.socket === null) {
+    if (this.props.isLogin !== 'true') {
       return (
         <Redirect to='/' />
       );
@@ -220,20 +221,10 @@ class Main extends Component {
       <div id="Main">
         <Header
           name={this.props.name}
+          handleLogout={this.props.logout}
         />
 
         <FriendList />
-          {/*socket={this.props.socket}
-          user={user}
-          friends={friends}
-          clickedFriend={clickedFriend}
-          toggleSetting={toggleSetting}
-          onFriendClick={this.onFriendClick}
-          getFriends={this.getFriends}
-          handleFriendConnect={this.handleFriendConnect}
-          handleFriendDisconnect={this.handleFriendDisconnect}
-          openChat={this.openChat}
-          createInvitation={this.createInvitation}*/}
 
         {/*<Posts
           user={user}
@@ -254,13 +245,13 @@ Main.propTypes = propTypes;
 Main.defaultProps = defaultProps;
 
 const mapStateToProps = state => ({
-  id    : state.login.id,
-  name  : state.login.name,
-  socket: state.login.socket,
+  id      : state.login.id,
+  name    : state.login.name,
+  isLogin : state.login.isLogin,
 })
 
 const mapDispatchToProps = {
-
+  logout: dispatchLogout
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

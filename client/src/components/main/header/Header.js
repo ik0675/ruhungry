@@ -5,12 +5,11 @@ import './css/Header.css';
 
 const propTypes = {
   name        : PropTypes.string.isRequired,
-  handleLogout: PropTypes.func,
+  handleLogout: PropTypes.func.isRequired,
 }
 
 const defaultProps = {
-  name        : undefined,
-  handleLogout: () => { alert('handleLogout is not defined') },
+
 }
 
 function Header(props) {

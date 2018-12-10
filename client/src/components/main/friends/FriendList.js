@@ -14,6 +14,7 @@ const propTypes = {
   name            : PropTypes.string.isRequired,
   onlineFriends   : PropTypes.array.isRequired,
   offlineFriends  : PropTypes.array.isRequired,
+  isLoading       : PropTypes.bool.isRequired,
   getFriendList   : PropTypes.func.isRequired,
   friendConnect   : PropTypes.func.isRequired,
   friendDisconnect: PropTypes.func.isRequired,
@@ -44,7 +45,20 @@ class FriendList extends Component {
     });
   }
 
+  onFriendClick = (clickedFriend) => {
+    this.setState({
+      clickedFriend
+    })
+  }
+
   render() {
+    if (this.props.isLoading) {
+      return (
+        <div className="friendList" >
+          loading...
+        </div>
+      )
+    }
     // const { clickedFriend } = this.state;
     // const friendAction = () => (
     //   <FriendAction
@@ -53,20 +67,22 @@ class FriendList extends Component {
     //   />
     // );
     const onlineFriendList = this.props.onlineFriends.map((friend, i) => {
-      return <li
-                className="friend online"
-                key={friend.id}
-                onClick={() => {
-                  const clickedFriend = {
-                    status: true,
-                    index : i,
-                    friend
-                  }
-                  this.onFriendClick(clickedFriend)
-                }}
-             >
-              {friend.name}
-             </li>;
+      return (
+        <li
+          className="friend online"
+          key={friend.id}
+          onClick={() => {
+            const clickedFriend = {
+              status: true,
+              index : i,
+              friend
+            }
+            this.onFriendClick(clickedFriend)
+          }}
+        >
+          {friend.name}
+        </li>
+      );
     })
     const offlineFriendList = this.props.offlineFriends.map((friend, i) => {
       let logout = friend.logout;
@@ -81,21 +97,23 @@ class FriendList extends Component {
        } else {
          logout += ' m';
        }
-       return <li
-                className="friend offline"
-                key={friend.id}
-                onClick={() => {
-                  const clickedFriend = {
-                    status: true,
-                    index : i + this.props.onlineFriends.length,
-                    friend
-                  }
-                  this.onFriendClick(clickedFriend)
-                }}
-              >
-                {friend.name}
-                <span>{logout}</span>
-              </li>;
+       return (
+         <li
+           className="friend offline"
+           key={friend.id}
+           onClick={() => {
+             const clickedFriend = {
+               status: true,
+               index : i + this.props.onlineFriends.length,
+               friend
+             }
+             this.onFriendClick(clickedFriend)
+           }}
+         >
+           {friend.name}
+           <span>{logout}</span>
+         </li>
+       );
     })
     return (
       <div className="friendList" >
@@ -116,6 +134,7 @@ const mapStateToProps = state => ({
   name          : state.login.name,
   onlineFriends : state.friends.onlineFriends,
   offlineFriends: state.friends.offlineFriends,
+  isLoading     : state.friends.isLoading,
 })
 
 const mapDispatchToProps = {

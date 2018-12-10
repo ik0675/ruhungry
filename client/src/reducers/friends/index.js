@@ -3,6 +3,7 @@ import * as types from '../../actions/types';
 const initialState = {
   onlineFriends : [],
   offlineFriends: [],
+  isLoading     : true,
 }
 
 export default function friendReducers(state = initialState, action) {
@@ -11,7 +12,8 @@ export default function friendReducers(state = initialState, action) {
     case types.FRIEND_CONNECT:
     case types.FRIEND_DISCONNECT:
       return {
-        ...action.data
+        ...action.data,
+        isLoading: false
       }
     default:
       return state;

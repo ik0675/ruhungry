@@ -33,6 +33,11 @@ export default function loginReducers(state = initialState, action) {
         ...state,
         isLogin: 'false'
       }
+    case types.LOGOUT:
+      return {
+        ...initialState,
+        isLogin: 'false'
+      };
     default:
       return state;
   }

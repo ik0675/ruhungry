@@ -82,3 +82,10 @@ export const dispatchCheckSession = () => dispatch => {
   })
   .catch( err => console.error(err) );
 }
+
+export const dispatchLogout = () => dispatch => {
+  fetch('/api/logout')
+  .then(() => {
+    dispatch({ type: types.LOGOUT });
+  })
+}
