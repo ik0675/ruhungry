@@ -3,15 +3,9 @@ import PropTypes from 'prop-types';
 
 import './css/FriendAction.css';
 
-const undefinedFunc = (name) => {
-  return () => {
-    alert(`${name} is not defined!`);
-  }
-}
-
 const propTypes = {
-  onFriendClick   : PropTypes.func.isRequired,
-  openChat        : PropTypes.func.isRequired,
+  clickedFriend   : PropTypes.object.isRequired,
+  createChat      : PropTypes.func.isRequired,
   createInvitation: PropTypes.func.isRequired,
 }
 
@@ -31,18 +25,12 @@ function FriendAction(props) {
     <div id="FriendAction" style={style}>
       <ul>
         <li
-            onClick={() => {
-              props.onFriendClick({ ...props.clickedFriend, status: false });
-              // props.openChat();
-            }}
+            onClick={props.createChat}
         >
           open chat
         </li>
         <li
-            onClick={() => {
-              props.onFriendClick({ ...props.clickedFriend, status: false });
-              // props.createInvitation();
-            }}
+            onClick={props.createInvitation}
         >
           send invitation
         </li>

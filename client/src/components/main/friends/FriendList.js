@@ -28,6 +28,10 @@ class FriendList extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      clickedFriend: null
+    }
+
     this.props.getFriendList(this.props.id);
   }
 
@@ -49,9 +53,21 @@ class FriendList extends Component {
   }
 
   onFriendClick = (clickedFriend) => {
-    this.setState({
-      clickedFriend
-    })
+    const prevClickedFriend = this.state.clickedFriend;
+    if (prevClickedFriend != null
+          && prevClickedFriend.friend.id === clickedFriend.friend.id) {
+        this.setState({ clickedFriend: null })
+    } else {
+      this.setState({ clickedFriend })
+    }
+  }
+
+  createChat = () => {
+    this.onFriendClick(this.state.clickedFriend);
+  }
+
+  createInvitation = () => {
+    this.onFriendClick(this.state.clickedFriend);
   }
 
   render() {
@@ -62,26 +78,30 @@ class FriendList extends Component {
         </div>
       )
     }
-    // const { clickedFriend } = this.state;
-    // const friendAction = () => (
-    //   <FriendAction
-    //     clickedFriend={this.state.clickedFriend}
-    //     onFriendClick={this.onFriendClick}
-    //   />
-    // );
+    const { clickedFriend } = this.state;
+    const friendAction = () => {
+      if (this.state.clickedFriend != null) {
+        return (
+          <FriendAction
+            clickedFriend={this.state.clickedFriend}
+            createChat={this.createChat}
+            createInvitation={this.createInvitation}
+          />
+        );
+      }
+      return undefined;
+    }
     const onlineFriendList = this.props.onlineFriends.map((friend, i) => {
+      const clickedFriend = {
+        index : i,
+        friend
+      }
+
       return (
         <li
           className="friend online"
           key={friend.id}
-          onClick={() => {
-            const clickedFriend = {
-              status: true,
-              index : i,
-              friend
-            }
-            this.onFriendClick(clickedFriend)
-          }}
+          onClick={() => { this.onFriendClick(clickedFriend) }}
         >
           {friend.name}
         </li>
@@ -100,18 +120,17 @@ class FriendList extends Component {
        } else {
          logout += ' m';
        }
+
+       const clickedFriend = {
+         index : i + this.props.onlineFriends.length,
+         friend
+       }
+
        return (
          <li
            className="friend offline"
            key={friend.id}
-           onClick={() => {
-             const clickedFriend = {
-               status: true,
-               index : i + this.props.onlineFriends.length,
-               friend
-             }
-             this.onFriendClick(clickedFriend)
-           }}
+           onClick={() => { this.onFriendClick(clickedFriend) }}
          >
            {friend.name}
            <span>{logout}</span>
@@ -122,7 +141,7 @@ class FriendList extends Component {
       <div className="friendList" >
         {onlineFriendList}
         {offlineFriendList}
-        {/*clickedFriend !== null && clickedFriend.status && friendAction()*/}
+        {clickedFriend !== null && friendAction()}
       </div>
     );
   }
