@@ -16,10 +16,11 @@ const propTypes = {
   id      : PropTypes.string.isRequired,
   name    : PropTypes.string.isRequired,
   isLogin : PropTypes.string.isRequired,
+  socket  : PropTypes.object,
 }
 
 const defaultProps = {
-
+  socket  : null,
 }
 
 class Main extends Component {
@@ -204,6 +205,10 @@ class Main extends Component {
   //   });
   // }
 
+  handleLogout = () => {
+    this.props.logout(this.props.socket);
+  }
+
   render() {
     if (this.props.isLogin !== 'true') {
       return (
@@ -221,7 +226,7 @@ class Main extends Component {
       <div id="Main">
         <Header
           name={this.props.name}
-          handleLogout={this.props.logout}
+          handleLogout={this.handleLogout}
         />
 
         <FriendList />
@@ -248,6 +253,7 @@ const mapStateToProps = state => ({
   id      : state.login.id,
   name    : state.login.name,
   isLogin : state.login.isLogin,
+  socket  : state.login.socket,
 })
 
 const mapDispatchToProps = {

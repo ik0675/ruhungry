@@ -32,15 +32,18 @@ class FriendList extends Component {
   }
 
   componentDidMount() {
-    const friends = {
-      onlineFriends : this.props.onlineFriends,
-      offlineFriends: this.props.offlineFriends,
-    }
-
     this.props.socket.on('friendConnected', (friend) => {
+      const friends = {
+        onlineFriends : this.props.onlineFriends,
+        offlineFriends: this.props.offlineFriends
+      }
       this.props.friendConnect(friend, friends);
     });
     this.props.socket.on('friendDisconnected', (friend) => {
+      const friends = {
+        onlineFriends : this.props.onlineFriends,
+        offlineFriends: this.props.offlineFriends
+      }
       this.props.friendDisconnect(friend, friends);
     });
   }
