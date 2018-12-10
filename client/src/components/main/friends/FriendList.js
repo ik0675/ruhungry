@@ -1,63 +1,64 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import FriendAction from './FriendAction';
 
 import './css/FriendList.css';
 
-const undefinedFunc = (name) => {
-  return () => {
-    alert(`${name} is not defined!`);
-  }
-}
+const undefinedFunc = (name) => alert(`${name} is not defined!`);
 
 const propTypes = {
-  socket                : PropTypes.object,
-  user                  : PropTypes.object,
-  friends               : PropTypes.object,
-  clickedFriend         : PropTypes.object,
-  toggleSetting         : PropTypes.bool,
-  onFriendClick         : PropTypes.func,
-  getFriends            : PropTypes.func,
-  handleFriendConnect   : PropTypes.func,
-  handleFriendDisconnect: PropTypes.func,
-  openChat              : PropTypes.func,
-  createInvitation      : PropTypes.func,
+  socket  : PropTypes.object.isRequired,
+  id      : PropTypes.string.isRequired,
+  name    : PropTypes.string.isRequired,
+
+  // socket                : PropTypes.object,
+  // user                  : PropTypes.object,
+  // friends               : PropTypes.object,
+  // clickedFriend         : PropTypes.object,
+  // toggleSetting         : PropTypes.bool,
+  // onFriendClick         : PropTypes.func,
+  // getFriends            : PropTypes.func,
+  // handleFriendConnect   : PropTypes.func,
+  // handleFriendDisconnect: PropTypes.func,
+  // openChat              : PropTypes.func,
+  // createInvitation      : PropTypes.func,
 }
 
 const defaultProps = {
-  socket                : null,
-  user                  : null,
-  friends               : null,
-  clickedFriend         : null,
-  toggleSetting         : false,
-  onFriendClick         : undefinedFunc('onFriendClick'),
-  getFriends            : undefinedFunc('getFriends'),
-  handleFriendConnect   : undefinedFunc('handleFriendConnect'),
-  handleFriendDisconnect: undefinedFunc('handleFriendDisconnect'),
-  openChat              : undefinedFunc('openChat'),
-  createInvitation      : undefinedFunc('createInvitation'),
+  // socket                : null,
+  // user                  : null,
+  // friends               : null,
+  // clickedFriend         : null,
+  // toggleSetting         : false,
+  // onFriendClick         : undefinedFunc('onFriendClick'),
+  // getFriends            : undefinedFunc('getFriends'),
+  // handleFriendConnect   : undefinedFunc('handleFriendConnect'),
+  // handleFriendDisconnect: undefinedFunc('handleFriendDisconnect'),
+  // openChat              : undefinedFunc('openChat'),
+  // createInvitation      : undefinedFunc('createInvitation'),
 }
 
 class FriendList extends Component {
   constructor(props) {
     super(props);
 
-    this.socket = this.props.socket;
-    this.getFriendList();
+    // this.socket = this.props.socket;
+    // this.getFriendList();
   }
 
   componentDidMount() {
-    this.socket.on('friendConnected', (user) => {
+    this.props.socket.on('friendConnected', (user) => {
       this.props.handleFriendConnect(user);
     });
-    this.socket.on('friendDisconnected', (user) => {
+    this.props.socket.on('friendDisconnected', (user) => {
       this.props.handleFriendDisconnect(user);
     });
   }
 
   getFriendList = () => {
-    if (this.props.user.id !== '') {
+    if (this.props.id !== '') {
       fetch('/api/getFriendList', {
           method : 'POST',
           headers: {
@@ -66,7 +67,7 @@ class FriendList extends Component {
           body   : JSON.stringify({id: this.props.user.id})
       })
       .then(res => res.json())
-      .then(friendUsers => { this.props.getFriends(friendUsers); })
+      .then(/* call dispatch to update friend list */ )
     }
   }
 
@@ -105,7 +106,7 @@ class FriendList extends Component {
        return <li
                 className="friend offline"
                 key={i}
-                onClick={ () => {
+                onClick={() => {
                   this.props.onFriendClick(i, false)}
                 }
               >
@@ -126,4 +127,14 @@ class FriendList extends Component {
 FriendList.propTypes = propTypes;
 FriendList.defaultProps = defaultProps;
 
-export default FriendList;
+const mapStateToProps = state => ({
+  socket: state.login.socket,
+  id    : state.login.id,
+  name  : state.login.name,
+})
+
+const mapDispatchToProps = {
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FriendList);
