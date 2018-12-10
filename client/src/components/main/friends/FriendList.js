@@ -2,16 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import * as friendActions from '../../../actions/friends';
+
 import FriendAction from './FriendAction';
 
 import './css/FriendList.css';
 
-const undefinedFunc = (name) => alert(`${name} is not defined!`);
-
 const propTypes = {
-  socket  : PropTypes.object.isRequired,
-  id      : PropTypes.string.isRequired,
-  name    : PropTypes.string.isRequired,
+  socket          : PropTypes.object.isRequired,
+  id              : PropTypes.string.isRequired,
+  name            : PropTypes.string.isRequired,
+  onlineFriends   : PropTypes.array.isRequired,
+  offlineFriends  : PropTypes.array.isRequired,
+  getFriendList   : PropTypes.func.isRequired,
+  friendConnect   : PropTypes.func.isRequired,
+  friendDisconnect: PropTypes.func.isRequired,
 
   // socket                : PropTypes.object,
   // user                  : PropTypes.object,
@@ -44,53 +49,43 @@ class FriendList extends Component {
   constructor(props) {
     super(props);
 
-    // this.socket = this.props.socket;
-    // this.getFriendList();
+    this.props.getFriendList(this.props.id);
   }
 
   componentDidMount() {
+    const friends = {
+      onlineFriends : this.props.onlineFriends,
+      offlineFriends: this.props.offlineFriends,
+    }
+
     this.props.socket.on('friendConnected', (user) => {
-      this.props.handleFriendConnect(user);
+      this.props.friendConnect(user, friends);
     });
     this.props.socket.on('friendDisconnected', (user) => {
-      this.props.handleFriendDisconnect(user);
+      this.props.friendDisconnect(user, friends);
     });
-  }
-
-  getFriendList = () => {
-    if (this.props.id !== '') {
-      fetch('/api/getFriendList', {
-          method : 'POST',
-          headers: {
-                      'Content-Type': 'application/json'
-                   },
-          body   : JSON.stringify({id: this.props.user.id})
-      })
-      .then(res => res.json())
-      .then(/* call dispatch to update friend list */ )
-    }
   }
 
   render() {
-    const { clickedFriend, toggleSetting } = this.props;
-    const friendAction = () => <FriendAction
-                                  yOff={clickedFriend.index}
-                                  onFriendClick={this.props.onFriendClick}
-                                  openChat={this.props.openChat}
-                                  createInvitation={this.props.createInvitation}
-                               />;
-    const onlineFriendList = this.props.friends.onlineFriends.map((user, i) => {
+    // const { clickedFriend, toggleSetting } = this.props;
+    // const friendAction = (
+    //   <FriendAction
+    //     yOff={clickedFriend.index}
+    //     onFriendClick={this.props.onFriendClick}
+    //     openChat={this.props.openChat}
+    //     createInvitation={this.props.createInvitation}
+    //   />
+    // );
+    const onlineFriendList = this.props.onlineFriends.map((user) => {
+      // onClick={() => { this.props.onFriendClick(i, true) }}
       return <li
                 className="friend online"
-                key={i}
-                onClick={ () => {
-                  this.props.onFriendClick(i, true)}
-                }
+                key={user.id}
              >
               {user.name}
              </li>;
     })
-    const offlineFriendList = this.props.friends.offlineFriends.map((user, i) => {
+    const offlineFriendList = this.props.offlineFriends.map((user) => {
       let logout = user.logout;
        if (logout > 60) {
          logout = parseInt(logout / 60, 10);
@@ -103,12 +98,10 @@ class FriendList extends Component {
        } else {
          logout += ' m';
        }
+       // onClick={() => { this.props.onFriendClick(i, false) }}
        return <li
                 className="friend offline"
-                key={i}
-                onClick={() => {
-                  this.props.onFriendClick(i, false)}
-                }
+                key={user.id}
               >
                 {user.name}
                 <span>{logout}</span>
@@ -118,7 +111,7 @@ class FriendList extends Component {
       <div className="friendList">
         {onlineFriendList}
         {offlineFriendList}
-        {toggleSetting && clickedFriend !== null && friendAction()}
+        {/*toggleSetting && clickedFriend !== null && friendAction() */}
       </div>
     );
   }
@@ -128,13 +121,17 @@ FriendList.propTypes = propTypes;
 FriendList.defaultProps = defaultProps;
 
 const mapStateToProps = state => ({
-  socket: state.login.socket,
-  id    : state.login.id,
-  name  : state.login.name,
+  socket        : state.login.socket,
+  id            : state.login.id,
+  name          : state.login.name,
+  onlineFriends : state.friends.onlineFriends,
+  offlineFriends: state.friends.offlineFriends,
 })
 
 const mapDispatchToProps = {
-
+  getFriendList   : friendActions.dispatchGetFriendList,
+  friendConnect   : friendActions.dispatchFriendConnect,
+  friendDisconnect: friendActions.dispatchFriendDisconnect,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FriendList);

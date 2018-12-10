@@ -222,8 +222,8 @@ class Main extends Component {
           name={this.props.name}
         />
 
-        {/*<FriendList
-          socket={this.props.socket}
+        <FriendList />
+          {/*socket={this.props.socket}
           user={user}
           friends={friends}
           clickedFriend={clickedFriend}
@@ -233,10 +233,9 @@ class Main extends Component {
           handleFriendConnect={this.handleFriendConnect}
           handleFriendDisconnect={this.handleFriendDisconnect}
           openChat={this.openChat}
-          createInvitation={this.createInvitation}
-        />
+          createInvitation={this.createInvitation}*/}
 
-        <Posts
+        {/*<Posts
           user={user}
           posts={posts}
           acceptDenyInvitation={this.acceptDenyInvitation}
