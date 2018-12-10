@@ -10,21 +10,17 @@ const undefinedFunc = (name) => {
 }
 
 const propTypes = {
-  yOff            : PropTypes.number,
-  onFriendClick   : PropTypes.func,
-  openChat        : PropTypes.func,
-  createInvitation: PropTypes.func,
+  onFriendClick   : PropTypes.func.isRequired,
+  openChat        : PropTypes.func.isRequired,
+  createInvitation: PropTypes.func.isRequired,
 }
 
 const defaultProps = {
-  yOff            : -1,
-  onFriendClick   : undefinedFunc('onFriendClick'),
-  openChat        : undefinedFunc('openChat'),
-  createInvitation: undefinedFunc('createInvitation'),
+
 }
 
-const FriendAction = (props) => {
-  const yOff = props.yOff;
+function FriendAction(props) {
+  const yOff = props.clickedFriend.index;
   const style = {
     position: 'absolute',
     left: 'calc(100% - 100px)',
@@ -35,17 +31,17 @@ const FriendAction = (props) => {
     <div id="FriendAction" style={style}>
       <ul>
         <li
-            onClick={ () => {
-              props.onFriendClick(-1, true);
-              props.openChat();
+            onClick={() => {
+              props.onFriendClick({ ...props.clickedFriend, status: false });
+              // props.openChat();
             }}
         >
           open chat
         </li>
         <li
-            onClick={ () => {
-              props.onFriendClick(-1, true);
-              props.createInvitation();
+            onClick={() => {
+              props.onFriendClick({ ...props.clickedFriend, status: false });
+              // props.createInvitation();
             }}
         >
           send invitation
