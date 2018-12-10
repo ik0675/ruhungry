@@ -3,6 +3,7 @@ import * as types from '../types';
 import io from 'socket.io-client';
 
 export const dispatchLogin = ({ id, password }) => dispatch => {
+  console.log('running login dispatch');
   fetch('/api/login', {
     method  : 'POST',
     headers : {
@@ -17,7 +18,7 @@ export const dispatchLogin = ({ id, password }) => dispatch => {
   .then( data => {
     if (data.status) {
       const socket = io('localhost:4000');
-      socket.emit('login', { id: data.id, name: data.name });
+      socket.emit('login', { id: data.user.id, name: data.user.name });
       return dispatch({
         type: types.LOGIN,
         data: {
@@ -69,7 +70,7 @@ export const dispatchCheckSession = () => dispatch => {
     }
 
     const socket = io('localhost:4000');
-    socket.emit('login', { id: data.id, name: data.name });
+    socket.emit('login', { id: data.user.id, name: data.user.name });
     return dispatch({
       type: types.LOGIN,
       data: {

@@ -18,7 +18,10 @@ function Header(props) {
     <div className="header">
       <nav className="navbar navbar-default">
         <div className="container-fluid">
-          <a className="navbar-brand navbar-left">
+          <a
+            className="navbar-brand navbar-left"
+            href="localhost:3000"
+          >
             <img
               className="nav-logo"
               alt="logo"

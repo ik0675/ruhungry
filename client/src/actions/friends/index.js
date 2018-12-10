@@ -29,8 +29,8 @@ function checkFriendIndex(friendConnected, friends) {
 export const dispatchFriendConnect = (friend, friends) => dispatch => {
   const index = checkFriendIndex(friend, friends.offlineFriends);
   if (index === -1) {
-    const onlineFriends = [ friends, ...friends.onlineFriends ];
-    const offlineFriends = [ ...offlineFriends.splice(index, 1) ];
+    const onlineFriends = [ friend, ...friends.onlineFriends ];
+    const offlineFriends = [ ...friends.offlineFriends.splice(index, 1) ];
     return dispatch({
       type: types.FRIEND_CONNECT,
       data: { onlineFriends, offlineFriends }
@@ -41,8 +41,8 @@ export const dispatchFriendConnect = (friend, friends) => dispatch => {
 export const dispatchFriendDisconnect = (friend, friends) => dispatch => {
   const index = checkFriendIndex(friend, friends.onlineFriends);
   if (index === -1) {
-    const onlineFriends = [ ...onlineFriends.splice(index, 1) ];
-    const offlineFriends = [ friends, ...friends.offlineFriends ];
+    const onlineFriends = [ ...friends.onlineFriends.splice(index, 1) ];
+    const offlineFriends = [ friend, ...friends.offlineFriends ];
     return dispatch({
       type: types.FRIEND_DISCONNECT,
       data: { onlineFriends, offlineFriends }
