@@ -14,13 +14,11 @@ const propTypes = {
   id          : PropTypes.string.isRequired,
   name        : PropTypes.string.isRequired,
   socket      : PropTypes.object,
-  handleLogout: PropTypes.func,
 }
 
 const defaultProps = {
   user        : null,
   socket      : null,
-  handleLogout: () => { alert('handleLogout is not defined!'); }
 }
 
 class Main extends Component {
@@ -28,12 +26,12 @@ class Main extends Component {
     super(props);
 
     this.state = {
-      onlineFriends: [],
-      offlineFriends: [],
-      clickedFriend: null,
-      toggleSetting: false,
-      chat: false,
-      invitation: false,
+      // onlineFriends: [],
+      // offlineFriends: [],
+      // clickedFriend: null,
+      // toggleSetting: false,
+      // chat: false,
+      // invitation: false,
       // posts: [
       //   {
       //     kind: 'post',
@@ -64,146 +62,146 @@ class Main extends Component {
     };
   }
 
-  componentWillMount() {
-    this._mounted = true;
-  }
-
-  componentWillUnmount() {
-    this._mounted = false;
-  }
-
-  getFriends = (users) => {
-    if (this._mounted) {
-      this.setState({
-        onlineFriends: users.onlineFriends,
-        offlineFriends: users.offlineFriends,
-      });
-    }
-  }
-
-  handleLogout = () => {
-    this.props.handleLogout();
-    this.setState({
-      isLogin: 'false',
-      onlineFriends: [],
-      offlineFriends: [],
-    });
-  }
-
-  checkUserInList = (list, user) => {
-    for (let i = 0; i < list.length; ++i) {
-      if (list[i].id === user.id)
-        return i;
-    }
-    return -1;
-  }
-
-  handleFriendConnect = (user) => {
-    if (this.checkUserInList(this.state.onlineFriends, user) === -1) {
-      let onlineFriends = [...this.state.onlineFriends, user];
-      let offlineFriends = [...this.state.offlineFriends];
-      let index = this.checkUserInList(offlineFriends, user);
-      offlineFriends.splice(index, 1);
-      this.setState({
-        onlineFriends: onlineFriends,
-        offlineFriends: offlineFriends,
-      });
-    }
-  }
-
-  handleFriendDisconnect = (user) => {
-    if (this.checkUserInList(this.state.offlineFriends, user) === -1) {
-      let offlineFriends = [...this.state.offlineFriends, user];
-      let onlineFriends = [...this.state.onlineFriends];
-      let index = this.checkUserInList(onlineFriends, user);
-      onlineFriends.splice(index, 1);
-      this.setState({
-        onlineFriends: onlineFriends,
-        offlineFriends: offlineFriends,
-      });
-    }
-  }
-
-  onFriendClick = (i, status) => {
-    if (i === -1) {
-      this.setState({
-        toggleSetting: false
-      })
-      return;
-    }
-    let friend;
-    if (status) {
-      friend = this.state.onlineFriends[i];
-    } else {
-      friend = this.state.offlineFriends[i];
-      i += this.state.onlineFriends.length;
-    }
-    const prevClicked = this.state.clickedFriend;
-    if (prevClicked !== null
-        && friend.id === prevClicked.id) {
-      this.setState({
-        clickedFriend: null,
-        toggleSetting: false
-      })
-    } else {
-      this.setState({
-        clickedFriend: { ...friend, index: i },
-        toggleSetting: true
-      })
-    }
-  }
-
-  openChat = () => {
-    const friend = this.state.clickedFriend;
-    if (friend !== null) {
-      this.setState({
-        chat: true
-      }); // open chat UI
-      // get chat_id. Create one if not exist
-      fetch('/api/getChatNumber')
-      .then(data => data.json())
-
-    } else {
-      alert('browser err');
-    }
-  }
-
-  createInvitation = () => {
-    const friend = this.state.clickedFriend;
-    if (friend !== null) {
-      this.setState({
-        invitation: true
-      })
-    } else {
-      alert('browser err');
-    }
-  }
-
-  acceptDenyInvitation = (status, index) => {
-    let invitation = { ...this.state.posts[index] };
-    invitation.status = status;
-    let posts = [ ...this.state.posts ];
-    posts[index] = invitation;
-    this.setState({
-      posts: posts
-    })
-  }
-
-  getPosts = () => {
-    fetch('/api/getPosts')
-    .then(data => data.json())
-    .then(posts => {
-      this.setState({
-        posts: [ ...posts, ...this.state.posts ]
-      })
-    })
-  }
-
-  addPost = (post) => {
-    this.setState({
-      posts: [ post, ...this.state.posts ]
-    });
-  }
+  // componentWillMount() {
+  //   this._mounted = true;
+  // }
+  //
+  // componentWillUnmount() {
+  //   this._mounted = false;
+  // }
+  //
+  // getFriends = (users) => {
+  //   if (this._mounted) {
+  //     this.setState({
+  //       onlineFriends: users.onlineFriends,
+  //       offlineFriends: users.offlineFriends,
+  //     });
+  //   }
+  // }
+  //
+  // handleLogout = () => {
+  //   this.props.handleLogout();
+  //   this.setState({
+  //     isLogin: 'false',
+  //     onlineFriends: [],
+  //     offlineFriends: [],
+  //   });
+  // }
+  //
+  // checkUserInList = (list, user) => {
+  //   for (let i = 0; i < list.length; ++i) {
+  //     if (list[i].id === user.id)
+  //       return i;
+  //   }
+  //   return -1;
+  // }
+  //
+  // handleFriendConnect = (user) => {
+  //   if (this.checkUserInList(this.state.onlineFriends, user) === -1) {
+  //     let onlineFriends = [...this.state.onlineFriends, user];
+  //     let offlineFriends = [...this.state.offlineFriends];
+  //     let index = this.checkUserInList(offlineFriends, user);
+  //     offlineFriends.splice(index, 1);
+  //     this.setState({
+  //       onlineFriends: onlineFriends,
+  //       offlineFriends: offlineFriends,
+  //     });
+  //   }
+  // }
+  //
+  // handleFriendDisconnect = (user) => {
+  //   if (this.checkUserInList(this.state.offlineFriends, user) === -1) {
+  //     let offlineFriends = [...this.state.offlineFriends, user];
+  //     let onlineFriends = [...this.state.onlineFriends];
+  //     let index = this.checkUserInList(onlineFriends, user);
+  //     onlineFriends.splice(index, 1);
+  //     this.setState({
+  //       onlineFriends: onlineFriends,
+  //       offlineFriends: offlineFriends,
+  //     });
+  //   }
+  // }
+  //
+  // onFriendClick = (i, status) => {
+  //   if (i === -1) {
+  //     this.setState({
+  //       toggleSetting: false
+  //     })
+  //     return;
+  //   }
+  //   let friend;
+  //   if (status) {
+  //     friend = this.state.onlineFriends[i];
+  //   } else {
+  //     friend = this.state.offlineFriends[i];
+  //     i += this.state.onlineFriends.length;
+  //   }
+  //   const prevClicked = this.state.clickedFriend;
+  //   if (prevClicked !== null
+  //       && friend.id === prevClicked.id) {
+  //     this.setState({
+  //       clickedFriend: null,
+  //       toggleSetting: false
+  //     })
+  //   } else {
+  //     this.setState({
+  //       clickedFriend: { ...friend, index: i },
+  //       toggleSetting: true
+  //     })
+  //   }
+  // }
+  //
+  // openChat = () => {
+  //   const friend = this.state.clickedFriend;
+  //   if (friend !== null) {
+  //     this.setState({
+  //       chat: true
+  //     }); // open chat UI
+  //     // get chat_id. Create one if not exist
+  //     fetch('/api/getChatNumber')
+  //     .then(data => data.json())
+  //
+  //   } else {
+  //     alert('browser err');
+  //   }
+  // }
+  //
+  // createInvitation = () => {
+  //   const friend = this.state.clickedFriend;
+  //   if (friend !== null) {
+  //     this.setState({
+  //       invitation: true
+  //     })
+  //   } else {
+  //     alert('browser err');
+  //   }
+  // }
+  //
+  // acceptDenyInvitation = (status, index) => {
+  //   let invitation = { ...this.state.posts[index] };
+  //   invitation.status = status;
+  //   let posts = [ ...this.state.posts ];
+  //   posts[index] = invitation;
+  //   this.setState({
+  //     posts: posts
+  //   })
+  // }
+  //
+  // getPosts = () => {
+  //   fetch('/api/getPosts')
+  //   .then(data => data.json())
+  //   .then(posts => {
+  //     this.setState({
+  //       posts: [ ...posts, ...this.state.posts ]
+  //     })
+  //   })
+  // }
+  //
+  // addPost = (post) => {
+  //   this.setState({
+  //     posts: [ post, ...this.state.posts ]
+  //   });
+  // }
 
   render() {
     if (this.props.socket === null) {
@@ -211,18 +209,17 @@ class Main extends Component {
         <Redirect to='/' />
       );
     }
-    let {
-      onlineFriends, offlineFriends,
-      clickedFriend, chat, invitation,
-      toggleSetting, posts
-    } = this.state;
-    let user = { id: this.props.id, name: this.props.name };
-    let friends = {onlineFriends, offlineFriends};
+    // let {
+    //   onlineFriends, offlineFriends,
+    //   clickedFriend, chat, invitation,
+    //   toggleSetting, posts
+    // } = this.state;
+    // let user = { id: this.props.id, name: this.props.name };
+    // let friends = {onlineFriends, offlineFriends};
     return (
       <div id="Main">
         <Header
-          user={user}
-          handleLogout={this.handleLogout}
+          name={this.props.name}
         />
 
         {/*<FriendList
@@ -247,7 +244,7 @@ class Main extends Component {
           getPosts={this.getPosts}
         /> */}
 
-        {chat && <Chat friend={clickedFriend}/> }
+         {/*chat && <Chat friend={clickedFriend}/>*/}
 
       </div>
     )

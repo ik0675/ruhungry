@@ -4,18 +4,16 @@ import PropTypes from 'prop-types';
 import './css/Header.css';
 
 const propTypes = {
-  user        : PropTypes.object,
+  name        : PropTypes.string.isRequired,
   handleLogout: PropTypes.func,
-  openHeader  : PropTypes.func,
 }
 
 const defaultProps = {
-  user        : null,
-  handleLogout: () => { alert('handleLogout is not defined!'); },
-  openHeader  : () => { alert('openHeader is not defined!'); },
+  name        : undefined,
+  handleLogout: () => { alert('handleLogout is not defined') },
 }
 
-const Header = (props) => {
+function Header(props) {
   return (
     <div className="header">
       <nav className="navbar navbar-default">
@@ -23,17 +21,17 @@ const Header = (props) => {
           <a className="navbar-brand navbar-left">
             <img
               className="nav-logo"
-              alt=""
+              alt="logo"
               src="/hungry.jpg"
               width="30"
               height="30"
-              onClick={props.openHeader}
             /> RUHungry
           </a>
 
           <div className="navbar-text navbar-right">
-            Hello, {props.user.name}
-            <button className="logoutButton" onClick={props.handleLogout}>로그아웃</button>
+            Hello, {props.name}
+            <button className="logout
+            Button" onClick={props.handleLogout}>로그아웃</button>
           </div>
         </div>
       </nav>
