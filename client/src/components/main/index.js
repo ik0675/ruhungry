@@ -62,16 +62,6 @@ class Main extends Component {
   //     ]
   //   };
   // }
-  // createInvitation = () => {
-  //   const friend = this.state.clickedFriend;
-  //   if (friend !== null) {
-  //     this.setState({
-  //       invitation: true
-  //     })
-  //   } else {
-  //     alert('browser err');
-  //   }
-  // }
   //
   // acceptDenyInvitation = (status, index) => {
   //   let invitation = { ...this.state.posts[index] };
@@ -127,7 +117,7 @@ class Main extends Component {
           getPosts={this.getPosts}
         /> */}
 
-         {this.props.onChat && <Chat />}
+         {this.props.onChat != null && <Chat />}
       </div>
     )
   }

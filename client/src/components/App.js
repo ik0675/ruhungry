@@ -15,14 +15,13 @@ const propTypes = {
 }
 
 const defaultProps = {
-  
+
 }
 
 class App extends Component {
   constructor(props) {
     super(props);
 
-    this.isLogingOut = false;
     this.props.checkSession();
   }
 
@@ -32,10 +31,6 @@ class App extends Component {
       return(
         <Loading loadingFor="checking session to login..."/>
       );
-    } else if (this.isLogingOut) {
-      return (
-        <Loading loadingFor='logging out...' />
-      )
     }
     return (
         <div>
