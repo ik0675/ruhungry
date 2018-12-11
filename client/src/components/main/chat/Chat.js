@@ -8,7 +8,7 @@ import Messages from './Messages';
 import TypeMessage from './TypeMessage';
 
 const propTypes = {
-  friend    : PropTypes.object.isRequired,
+  chatInfo  : PropTypes.object.isRequired,
   messages  : PropTypes.array.isRequired,
   newMessage: PropTypes.object
 }
@@ -37,14 +37,33 @@ class Chat extends Component {
     })
   }
 
+  getNames = () => {
+    const ids = this.props.chatInfo.ids;
+    let names = [];
+    for (let i = 0; i < ids.length; ++i) {
+      names.push(ids[i].name);
+    }
+    return names;
+  }
+
   render() {
+    const names = this.getNames();
+    const printNames = names.map(name => {
+      return ( name );
+    })
     return (
       <div id="Chat">
         <div id="ChatInfo">
-          {this.props.friend.name}
+          {printNames}
+          <span
+            role="img"
+            aria-label="small roman numeral ten"
+          >
+            ⅹ
+          </span>
         </div>
 
-        <Messages messages={this.state.messages}/>
+        <Messages messages={this.state.messages} />
 
         <TypeMessage
           message={this.state.message}
@@ -60,7 +79,7 @@ Chat.propTypes = propTypes;
 Chat.defaultProps = defaultProps;
 
 const mapStateToProps = state => ({
-  friend    : state.friends.chatReceiver,
+  chatInfo  : state.chat.chatInfo,
   messages  : state.chat.messages,
   newMessage: state.chat.newMessage,
 })

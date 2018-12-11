@@ -63,7 +63,7 @@ module.exports = (app, connection, crypto) => {
     }
   })
 
-  app.post('/api/getChatNumber', (req, res) => {
+  app.get('/api/getChatNumber', (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       res.json({ status: false });
@@ -71,9 +71,16 @@ module.exports = (app, connection, crypto) => {
       res.json({ status: false });
     } else {
       const ids = JSON.parse(req.query.ids);
+      let included = false;
+      for (let i = 0; i < ids.length; ++i) {
+        if (ids[i].id === loginInfo.id) {
+          included = true;
+          break;
+        }
+      }
       if (ids.length < 2) {
         res.json({ status: false });
-      } else if (ids.includes(loginInfo.id)) {
+      } else if (included) {
         db.getChatNumber(res, connection, ids);
       } else {
         res.json({ status: false });

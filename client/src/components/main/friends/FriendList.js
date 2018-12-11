@@ -68,7 +68,7 @@ class FriendList extends Component {
   }
 
   createChat = () => {
-    const friend = { ...this.state.clickedFriend }
+    const friend = { ...this.state.clickedFriend.friend }
     const ids = [
       { id: this.props.id, name: this.props.name },
       { id: friend.id, name: friend.name }

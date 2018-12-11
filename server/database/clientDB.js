@@ -231,7 +231,7 @@ const getChatNumber = (res, connection, ids) => {
   let condition = '';
   let chat_id;
   for (let i = 0; i < ids.length; ++i) {
-    condition += `id='${ids[i]}'`;
+    condition += `id='${ids[i].id}'`;
     if (i < ids.length - 1)
       condition += ' OR ';
   }
@@ -253,7 +253,7 @@ const getChatNumber = (res, connection, ids) => {
       chat_id = uuid4();
       let values = '';
       for (let i = 0; i < ids.length; ++i) {
-        values += `('${chat_id}', '${ids[i]}', NOW())`;
+        values += `('${chat_id}', '${ids[i].id}', NOW())`;
         if (i < ids.length - 1)
           values += ',';
       }
@@ -265,7 +265,7 @@ const getChatNumber = (res, connection, ids) => {
                    modified_at
                  )
                VALUES
-                 ${values}`
+                 ${values}`;
       return connection.insert(query);
     } else if (chat_ids.length > 1) {
       // database error.
