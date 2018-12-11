@@ -14,6 +14,7 @@ export const CREATE_INVITATION  = 'CREATE_INVITATION';
 // action types for chat
 export const GET_MESSAGES     = 'GET_MESSAGES';
 export const NEW_MESSAGE      = 'NEW_MESSAGE';
+export const RECEIVE_MESSAGE  = 'RECEIVE_MESSAGE';
 export const CREATE_CHAT      = 'CREATE_CHAT';
 export const CREATE_CHAT_ERR  = 'CREATE_CHAT_ERR';
 export const EXIT_CHAT        = 'EXIT_CHAT';

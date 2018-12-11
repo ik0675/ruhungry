@@ -38,7 +38,7 @@ const updateSocketIdThenEmit = (io, connection, socket, user) => {
   })
 }
 
-const userLogout = (io, connection, socket, user) => {
+const userLogout = (io, connection, user) => {
   let query = `UPDATE
                  account
                SET
@@ -79,7 +79,34 @@ const userLogout = (io, connection, socket, user) => {
   })
 }
 
+const sendMessage = (io, connection, data) => {
+  let query = `SELECT
+                 c.id,
+                 a.socket_id
+               FROM
+                 chat_meta c
+                   JOIN account a
+                   ON c.id=a.id
+               WHERE
+                 c.chat_id = '${data.chat_id}'
+                   AND
+                 c.id != '${data.id}'`;
+  connection.select(query)
+  .then(socketIds => {
+    for (let i = 0; i < socketIds.length; ++i) {
+      const socketId = socketIds.socket_id;
+      if (socketId !== null) {
+        io.to(socketId).emit('newMessage', data);
+      }
+    }
+  })
+  .catch(err => {
+    console.log('IO error in sendMessage', err)
+  })
+}
+
 module.exports = {
   updateSocketIdThenEmit: updateSocketIdThenEmit,
-  userLogout: userLogout,
+  userLogout            : userLogout,
+  sendMessage           : sendMessage,
 }

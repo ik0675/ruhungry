@@ -30,7 +30,7 @@ export const dispatchExitChat = _ => dispatch => {
   })
 }
 
-export const dispatchSendMessage = (data) => dispatch => {
+export const dispatchSendMessage = (data, socket) => dispatch => {
   fetch('/api/sendMessage', {
     method  : 'POST',
     headers : { 'content-type' : 'application/json' },
@@ -38,15 +38,25 @@ export const dispatchSendMessage = (data) => dispatch => {
   })
   .then(res => {
     if (res.status) {
+      const messageData = {
+        chatId  : data.chat_id,
+        id      : data.id,
+        message : data.message,
+        sentAt  : res.sentAt,
+      }
       // send socket emit
+      socket.emit('sendMessage', messageData);
       dispatch({
         type: types.NEW_MESSAGE,
-        data: {
-          id      : data.id,
-          message : data.message,
-          sentAt  : res.sentAt
-        }
+        data: messageData
       })
     }
+  })
+}
+
+export const dispatchReceiveMessage = (data) => dispatch => {
+  dispatch({
+    type: types.RECEIVE_MESSAGE,
+    data
   })
 }

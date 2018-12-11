@@ -10,20 +10,28 @@ import Messages from './Messages';
 import TypeMessage from './TypeMessage';
 
 const propTypes = {
-  id          : PropTypes.string.isRequired,
-  chatInfo    : PropTypes.object.isRequired,
-  messages    : PropTypes.array.isRequired,
-  exitChat    : PropTypes.func.isRequired,
-  sendMessage : PropTypes.func.isRequired,
+  id            : PropTypes.string.isRequired,
+  socket        : PropTypes.object.isRequired,
+  chatInfo      : PropTypes.object.isRequired,
+  messages      : PropTypes.array.isRequired,
+  exitChat      : PropTypes.func.isRequired,
+  sendMessage   : PropTypes.func.isRequired,
+  receiveMessage: PropTypes.func.isRequired,
 }
 
 const defaultProps = {
-  
+
 }
 
 class Chat extends Component {
   state = {
     message: '',
+  }
+
+  componentDidMount() {
+    this.props.socket.on('newMessage', (data) => {
+      this.props.receiveMessage(data);
+    })
   }
 
   handleMessage = (e) => {
@@ -36,10 +44,12 @@ class Chat extends Component {
     e.preventDefault();
     // send message to chatting friend only if anything is typed
     if (this.state.message !== '') {
-      this.props.sendMessage({
+      const data = {
         chat_id : this.props.chatInfo.chatId,
         id      : this.props.id,
-        message : this.state.message })
+        message : this.state.message
+      }
+      this.props.sendMessage(data, this.props.socket);
       this.setState({
         message: ''
       })
@@ -90,13 +100,15 @@ Chat.defaultProps = defaultProps;
 
 const mapStateToProps = state => ({
   id      : state.login.id,
+  socket  : state.login.socket,
   chatInfo: state.chat.chatInfo,
   messages: state.chat.messages,
 })
 
 const mapDispatchToProps = {
-  exitChat    : chatActions.dispatchExitChat,
-  sendMessage : chatActions.dispatchSendMessage,
+  exitChat      : chatActions.dispatchExitChat,
+  sendMessage   : chatActions.dispatchSendMessage,
+  receiveMessage: chatActions.dispatchReceiveMessage,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

@@ -9,12 +9,17 @@ module.exports = (io, connection) => {
       db.updateSocketIdThenEmit(io, connection, socket, user);
     });
 
+    socket.on('sendMessage', (data) => {
+      console.log(`Received message from ${data.id} to ${data.chat_id}, ${data.message}`)
+      db.sendMessage(io, connection, data);
+    })
+
     // user logged out
     socket.on('logout', () => {
       let user = { ...socketToId[socket.id] };
       delete socketToId[socket.id];
       console.log('Logout: a user with id=%s and socketId=%s logged out', user.id, socket.id);
-      db.userLogout(io, connection, socket, user);
+      db.userLogout(io, connection, user);
     })
     // user closed out the browser
     socket.on('disconnect', () => {
@@ -22,7 +27,7 @@ module.exports = (io, connection) => {
       if (user !== undefined) {
         delete socketToId[socket.id];
         console.log('Disconnect: a user with id=%s and socketId=%s disconnected', user.id, socket.id);
-        db.userLogout(io, connection, socket, user);
+        db.userLogout(io, connection, user);
       }
     });
   });
