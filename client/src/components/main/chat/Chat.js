@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { dispatchExitChat } from '../../../actions/chat';
+import * as chatActions from '../../../actions/chat';
 
 import './css/Chat.css';
 
@@ -10,14 +10,15 @@ import Messages from './Messages';
 import TypeMessage from './TypeMessage';
 
 const propTypes = {
-  chatInfo  : PropTypes.object.isRequired,
-  newMessage: PropTypes.object,
-  messages  : PropTypes.array.isRequired,
-  exitChat  : PropTypes.func.isRequired,
+  id          : PropTypes.string.isRequired,
+  chatInfo    : PropTypes.object.isRequired,
+  messages    : PropTypes.array.isRequired,
+  exitChat    : PropTypes.func.isRequired,
+  sendMessage : PropTypes.func.isRequired,
 }
 
 const defaultProps = {
-  newMessage: null
+  
 }
 
 class Chat extends Component {
@@ -33,11 +34,16 @@ class Chat extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    // send message to chatting friend
-
-    this.setState({
-      message: ''
-    })
+    // send message to chatting friend only if anything is typed
+    if (this.state.message !== '') {
+      this.props.sendMessage({
+        chat_id : this.props.chatInfo.chatId,
+        id      : this.props.id,
+        message : this.state.message })
+      this.setState({
+        message: ''
+      })
+    }
   }
 
   getNames = () => {
@@ -83,13 +89,14 @@ Chat.propTypes = propTypes;
 Chat.defaultProps = defaultProps;
 
 const mapStateToProps = state => ({
-  chatInfo  : state.chat.chatInfo,
-  messages  : state.chat.messages,
-  newMessage: state.chat.newMessage,
+  id      : state.login.id,
+  chatInfo: state.chat.chatInfo,
+  messages: state.chat.messages,
 })
 
 const mapDispatchToProps = {
-  exitChat  : dispatchExitChat
+  exitChat    : chatActions.dispatchExitChat,
+  sendMessage : chatActions.dispatchSendMessage,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

@@ -87,4 +87,13 @@ module.exports = (app, connection, crypto) => {
       }
     }
   })
+
+  app.post('/api/sendMessage', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const data = req.body;
+    db.sendMessage(res, connection, data);
+  })
 }

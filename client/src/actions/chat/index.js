@@ -29,3 +29,24 @@ export const dispatchExitChat = _ => dispatch => {
     type: types.EXIT_CHAT
   })
 }
+
+export const dispatchSendMessage = (data) => dispatch => {
+  fetch('/api/sendMessage', {
+    method  : 'POST',
+    headers : { 'content-type' : 'application/json' },
+    body    : JSON.stringify(data)
+  })
+  .then(res => {
+    if (res.status) {
+      // send socket emit
+      dispatch({
+        type: types.NEW_MESSAGE,
+        data: {
+          id      : data.id,
+          message : data.message,
+          sentAt  : res.sentAt
+        }
+      })
+    }
+  })
+}

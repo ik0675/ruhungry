@@ -2,7 +2,6 @@ import * as types from '../../actions/types';
 
 const initialState = {
   messages  : [],
-  newMessage: null,
   chatInfo  : null,
 }
 
@@ -17,7 +16,10 @@ export default function chatReducers(state = initialState, action) {
       return initialState;
     case types.GET_MESSAGES:
     case types.NEW_MESSAGE:
-    case types.SEND_MESSAGE:
+      return {
+        ...state,
+        messages: [ ...state.messages, action.data ]
+      }
     default:
       return state;
   }

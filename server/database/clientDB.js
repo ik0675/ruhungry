@@ -288,11 +288,43 @@ const getChatNumber = (res, connection, ids) => {
   })
 }
 
+const sendMessage = (res, connection, { chat_id, id, message }) => {
+  let query = `INSERT INTO
+                 chat_messages
+                 (
+                   chat_id,
+                   id,
+                   message
+                 )
+               VALUES
+               (
+                 '${chat_id}',
+                 '${id}',
+                 '${message}'
+               );
+              SELECT
+                DATE_FORMAT(sent_at, '%b %d %Y at %h:%i%p') sent_at
+              FROM
+                chat_messages
+              WHERE
+                num=LAST_INSERT_ID();`;
+  connection.select(query)
+  .then(rows => {
+    const sentAt = rows[1][0].sent_at;
+    res.json({ status: true, sentAt })
+  })
+  .catch(err => {
+    console.log(err);
+    res.json({ status: false })
+  })
+}
+
 module.exports = {
-  loginWithIdPw: loginWithIdPw,
-  signUp: signUp,
-  getFriendList: getFriendList,
-  createPost: createPost,
-  getPosts: getPosts,
-  getChatNumber: getChatNumber,
+  loginWithIdPw : loginWithIdPw,
+  signUp        : signUp,
+  getFriendList : getFriendList,
+  createPost    : createPost,
+  getPosts      : getPosts,
+  getChatNumber : getChatNumber,
+  sendMessage   : sendMessage,
 }
