@@ -10,3 +10,15 @@
   border-top-right-radius: 5px;
   border-bottom: 1px solid black;
 }
+
+#ChatInfo > span {
+  float: right;
+  cursor: pointer;
+  display: inline-block;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+#ChatInfo > span:focus,
+#ChatInfo > span:active {
+  background-color: white;
+}

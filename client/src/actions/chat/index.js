@@ -23,3 +23,9 @@ export const dispatchCreateChat = ids => dispatch => {
     }
   })
 }
+
+export const dispatchExitChat = _ => dispatch => {
+  return dispatch({
+    type: types.EXIT_CHAT
+  })
+}

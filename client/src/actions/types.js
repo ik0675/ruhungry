@@ -17,3 +17,4 @@ export const NEW_MESSAGE      = 'NEW_MESSAGE';
 export const SEND_MESSAGE     = 'SEND_MESSAGE';
 export const CREATE_CHAT      = 'CREATE_CHAT';
 export const CREATE_CHAT_ERR  = 'CREATE_CHAT_ERR';
+export const EXIT_CHAT        = 'EXIT_CHAT';

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { dispatchExitChat } from '../../../actions/chat';
+
 import './css/Chat.css';
 
 import Messages from './Messages';
@@ -9,8 +11,9 @@ import TypeMessage from './TypeMessage';
 
 const propTypes = {
   chatInfo  : PropTypes.object.isRequired,
+  newMessage: PropTypes.object,
   messages  : PropTypes.array.isRequired,
-  newMessage: PropTypes.object
+  exitChat  : PropTypes.func.isRequired,
 }
 
 const defaultProps = {
@@ -56,8 +59,9 @@ class Chat extends Component {
         <div id="ChatInfo">
           {printNames}
           <span
-            role="img"
+            role="button"
             aria-label="small roman numeral ten"
+            onClick={this.props.exitChat}
           >
             ⅹ
           </span>
@@ -85,7 +89,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-
+  exitChat  : dispatchExitChat
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
