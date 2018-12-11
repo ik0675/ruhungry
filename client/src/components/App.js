@@ -15,8 +15,7 @@ const propTypes = {
 }
 
 const defaultProps = {
-  isLogin     : undefined,
-  checkSession: undefined,
+  
 }
 
 class App extends Component {
@@ -26,23 +25,6 @@ class App extends Component {
     this.isLogingOut = false;
     this.props.checkSession();
   }
-
-  // handleLogout = async () => {
-  //   await this.setState({
-  //     isLogin: 'false',
-  //     id: '',
-  //     name: '',
-  //   });
-  //   this.socket.emit('logout');
-  //   this.isLogingOut = true;
-  //   fetch('/api/logout') // remove session loginInfo
-  //   .then(res => {
-  //     this.setState({
-  //       isLogin: 'false',
-  //     }, () => { this.isLogingOut = false; })
-  //     this.props.history.push('/');
-  //   });
-  // }
 
   render() {
     const { isLogin } = this.props;
@@ -65,6 +47,9 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = propTypes;
+App.defaultProps = defaultProps;
 
 const mapStateToProps = state => ({
   isLogin : state.login.isLogin,

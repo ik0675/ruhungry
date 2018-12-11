@@ -9,7 +9,6 @@ const initialState = {
 }
 
 export default function friendReducers(state = initialState, action) {
-  let onlineFriends, offlineFriends;
   switch(action.type) {
     case types.GET_FRIENDLIST:
     case types.FRIEND_CONNECT:

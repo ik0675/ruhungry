@@ -30,8 +30,6 @@ class Chat extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const message = this.state.message;
-
     // send message to chatting friend
 
     this.setState({

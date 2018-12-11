@@ -9,7 +9,7 @@ import './css/index.css';
 
 import Header from './header/Header';
 import FriendList from './friends/FriendList';
-import Posts from './post/Posts';
+// import Posts from './post/Posts';
 import Chat from './chat/Chat';
 
 const propTypes = {
@@ -17,8 +17,8 @@ const propTypes = {
   name    : PropTypes.string.isRequired,
   isLogin : PropTypes.string.isRequired,
   socket  : PropTypes.object,
-  onChat  : PropTypes.bool,
-  onInvite: PropTypes.bool,
+  onChat  : PropTypes.object,
+  onInvite: PropTypes.object,
   logout  : PropTypes.func.isRequired,
 }
 
@@ -127,7 +127,7 @@ class Main extends Component {
           getPosts={this.getPosts}
         /> */}
 
-         {/*chat && <Chat friend={clickedFriend}/>*/}
+         {this.props.onChat && <Chat />}
       </div>
     )
   }
