@@ -18,6 +18,8 @@ const propTypes = {
   getFriendList   : PropTypes.func.isRequired,
   friendConnect   : PropTypes.func.isRequired,
   friendDisconnect: PropTypes.func.isRequired,
+  createChat      : PropTypes.func.isRequired,
+  createInvitation: PropTypes.func.isRequired,
 }
 
 const defaultProps = {
@@ -29,7 +31,9 @@ class FriendList extends Component {
     super(props);
 
     this.state = {
-      clickedFriend: null
+      clickedFriend   : null,
+      toggleChat      : false,
+      toggleInvitation: false,
     }
 
     this.props.getFriendList(this.props.id);
@@ -63,11 +67,15 @@ class FriendList extends Component {
   }
 
   createChat = () => {
+    const friend = { ...this.state.clickedFriend }
     this.onFriendClick(this.state.clickedFriend);
+    this.props.createChat(friend);
   }
 
   createInvitation = () => {
+    const friend = { ...this.state.clickedFriend }
     this.onFriendClick(this.state.clickedFriend);
+    this.props.createInvitation(friend);
   }
 
   render() {
@@ -163,6 +171,8 @@ const mapDispatchToProps = {
   getFriendList   : friendActions.dispatchGetFriendList,
   friendConnect   : friendActions.dispatchFriendConnect,
   friendDisconnect: friendActions.dispatchFriendDisconnect,
+  createChat      : friendActions.dispatchCreateChat,
+  createInvitation: friendActions.dispatchCreateInvitation,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FriendList);

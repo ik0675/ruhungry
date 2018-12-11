@@ -9,3 +9,5 @@ export const LOGOUT     = 'LOGOUT';
 export const GET_FRIENDLIST     = 'GET_FRIENDLIST';
 export const FRIEND_CONNECT     = 'FRIEND_CONNECT';
 export const FRIEND_DISCONNECT  = 'FRIEND_DISCONNECT';
+export const CREATE_CHAT        = 'CREATE_CHAT';
+export const CREATE_INVITATION  = 'CREATE_INVITATION';

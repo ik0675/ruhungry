@@ -1,6 +1,6 @@
 import * as types from '../types';
 
-export const dispatchGetFriendList = (id) => dispatch => {
+export const dispatchGetFriendList = id => dispatch => {
   fetch('/api/getFriendList', {
       method : 'POST',
       headers: {
@@ -53,4 +53,18 @@ export const dispatchFriendDisconnect = (friend, friends) => dispatch => {
       data: { onlineFriends, offlineFriends }
     })
   }
+}
+
+export const dispatchCreateChat = friend => dispatch => {
+  dispatch({
+    type: types.CREATE_CHAT,
+    data: friend,
+  })
+}
+
+export const dispatchCreateInvitation = friend => dispatch => {
+  dispatch({
+    type: types.CREATE_INVITATION,
+    data: friend,
+  })
 }
