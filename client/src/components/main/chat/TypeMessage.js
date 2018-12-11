@@ -5,14 +5,12 @@ import './css/TypeMessage.css';
 
 const propTypes = {
   message       : PropTypes.string,
-  handleMessage : PropTypes.func,
-  onSubmit      : PropTypes.func
+  handleMessage : PropTypes.func.isRequired,
+  onSubmit      : PropTypes.func.isRequired,
 }
 
 const defaultProps = {
   message       : '',
-  handleMessage : () => { alert('handleMessage is not defined!'); },
-  onSubmit      : () => { alert('onSubmit is not defined!'); }
 }
 
 const TypeMessage = (props) => {
@@ -28,15 +26,12 @@ const TypeMessage = (props) => {
         placeholder="type messages here..."
         value={props.message}
         onChange={props.handleMessage}
-      >
-
-      </input>
+      />
       <input
         type="submit"
         id="sendMessage"
         value="Send"
-      >
-      </input>
+      />
     </form>
   )
 }
