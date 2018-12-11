@@ -248,7 +248,7 @@ const getChatNumber = (res, connection, ids) => {
   connection.select(query)
   .then( (chat_ids) => {
     if (chat_ids.length === 0) {
-      // no exisitng chat between(among) users  18446744073709551615
+      // no exisitng chat
       // create one
       chat_id = uuid4();
       let values = '';

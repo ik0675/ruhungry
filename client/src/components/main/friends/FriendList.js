@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import * as friendActions from '../../../actions/friends';
+import { dispatchCreateChat } from '../../../actions/chat';
 
 import FriendAction from './FriendAction';
 
@@ -68,8 +69,12 @@ class FriendList extends Component {
 
   createChat = () => {
     const friend = { ...this.state.clickedFriend }
+    const ids = [
+      { id: this.props.id, name: this.props.name },
+      { id: friend.id, name: friend.name }
+    ];
     this.onFriendClick(this.state.clickedFriend);
-    this.props.createChat(friend);
+    this.props.createChat(ids);
   }
 
   createInvitation = () => {
@@ -171,7 +176,7 @@ const mapDispatchToProps = {
   getFriendList   : friendActions.dispatchGetFriendList,
   friendConnect   : friendActions.dispatchFriendConnect,
   friendDisconnect: friendActions.dispatchFriendDisconnect,
-  createChat      : friendActions.dispatchCreateChat,
+  createChat      : dispatchCreateChat,
   createInvitation: friendActions.dispatchCreateInvitation,
 }
 

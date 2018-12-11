@@ -17,7 +17,7 @@ const propTypes = {
   name    : PropTypes.string.isRequired,
   isLogin : PropTypes.string.isRequired,
   socket  : PropTypes.object,
-  onChat  : PropTypes.object,
+  chatInfo: PropTypes.object,
   onInvite: PropTypes.object,
   logout  : PropTypes.func.isRequired,
 }
@@ -117,7 +117,7 @@ class Main extends Component {
           getPosts={this.getPosts}
         /> */}
 
-         {this.props.onChat != null && <Chat />}
+         {this.props.chatInfo != null && <Chat />}
       </div>
     )
   }
@@ -131,7 +131,7 @@ const mapStateToProps = state => ({
   name    : state.login.name,
   isLogin : state.login.isLogin,
   socket  : state.login.socket,
-  onChat  : state.friends.chatReceiver,
+  chatInfo: state.chat.chatInfo,
   onInvite: state.friends.invitationReceiver,
 })
 

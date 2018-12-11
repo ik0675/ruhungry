@@ -55,13 +55,6 @@ export const dispatchFriendDisconnect = (friend, friends) => dispatch => {
   }
 }
 
-export const dispatchCreateChat = friend => dispatch => {
-  dispatch({
-    type: types.CREATE_CHAT,
-    data: friend.friend,
-  })
-}
-
 export const dispatchCreateInvitation = friend => dispatch => {
   dispatch({
     type: types.CREATE_INVITATION,

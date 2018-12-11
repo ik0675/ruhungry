@@ -63,7 +63,7 @@ module.exports = (app, connection, crypto) => {
     }
   })
 
-  app.get('/api/getChatNumber', (req, res) => {
+  app.post('/api/getChatNumber', (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       res.json({ status: false });
