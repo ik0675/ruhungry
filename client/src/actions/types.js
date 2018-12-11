@@ -11,3 +11,8 @@ export const FRIEND_CONNECT     = 'FRIEND_CONNECT';
 export const FRIEND_DISCONNECT  = 'FRIEND_DISCONNECT';
 export const CREATE_CHAT        = 'CREATE_CHAT';
 export const CREATE_INVITATION  = 'CREATE_INVITATION';
+
+// action types for chat
+export const GET_MESSAGES = 'GET_MESSAGES';
+export const NEW_MESSAGE  = 'NEW_MESSAGE';
+export const SEND_MESSAGE = 'SEND_MESSAGE';

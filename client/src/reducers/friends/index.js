@@ -1,11 +1,11 @@
 import * as types from '../../actions/types';
 
 const initialState = {
-  onlineFriends   : [],
-  offlineFriends  : [],
-  isLoading       : true,
-  toggleChat      : false,
-  toggleInvitation: false,
+  onlineFriends     : [],
+  offlineFriends    : [],
+  isLoading         : true,
+  chatReceiver      : null,
+  invitationReceiver: null,
 }
 
 export default function friendReducers(state = initialState, action) {
@@ -21,12 +21,12 @@ export default function friendReducers(state = initialState, action) {
     case types.CREATE_CHAT:
       return {
         ...state,
-        toggleChat: true
+        chatReceiver: action.data,
       }
     case types.CREATE_INVITATION:
       return {
         ...state,
-        toggleInvitation: true,
+        invitationReceiver: action.data,
       }
     default:
       return state;

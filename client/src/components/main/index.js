@@ -17,157 +17,51 @@ const propTypes = {
   name    : PropTypes.string.isRequired,
   isLogin : PropTypes.string.isRequired,
   socket  : PropTypes.object,
+  onChat  : PropTypes.bool,
+  onInvite: PropTypes.bool,
+  logout  : PropTypes.func.isRequired,
 }
 
 const defaultProps = {
   socket  : null,
+  onChat  : null,
+  onInvite: null,
 }
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      // onlineFriends: [],
-      // offlineFriends: [],
-      // clickedFriend: null,
-      // toggleSetting: false,
-      // chat: false,
-      // invitation: false,
-      // posts: [
-      //   {
-      //     kind: 'post',
-      //     post: 'testestst',
-      //     imgs: [],
-      //     author: { id: 'ik0675@gmail.com', name: '남궁익' },
-      //     createdAt: 300
-      //   },
-      //   {
-      //     restaurant: 쉑쉑,
-      //     userImg: logo,
-      //     kind: 'invitation',
-      //     status: null
-      //   },
-      //   {
-      //     restaurant: 새마을식당,
-      //     userImg: logo,
-      //     kind: 'invitation',
-      //     status: null
-      //   },
-      //   {
-      //     restaurant: 울프강,
-      //     userImg: logo,
-      //     kind: 'invitation',
-      //     status: null
-      //   },
-      // ]
-    };
-  }
-
-  // componentWillMount() {
-  //   this._mounted = true;
+  // constructor(props) {
+  //   super(props);
+  //
+  //   this.state = {
+  //     posts: [
+  //       {
+  //         kind: 'post',
+  //         post: 'testestst',
+  //         imgs: [],
+  //         author: { id: 'ik0675@gmail.com', name: '남궁익' },
+  //         createdAt: 300
+  //       },
+  //       {
+  //         restaurant: 쉑쉑,
+  //         userImg: logo,
+  //         kind: 'invitation',
+  //         status: null
+  //       },
+  //       {
+  //         restaurant: 새마을식당,
+  //         userImg: logo,
+  //         kind: 'invitation',
+  //         status: null
+  //       },
+  //       {
+  //         restaurant: 울프강,
+  //         userImg: logo,
+  //         kind: 'invitation',
+  //         status: null
+  //       },
+  //     ]
+  //   };
   // }
-  //
-  // componentWillUnmount() {
-  //   this._mounted = false;
-  // }
-  //
-  // getFriends = (users) => {
-  //   if (this._mounted) {
-  //     this.setState({
-  //       onlineFriends: users.onlineFriends,
-  //       offlineFriends: users.offlineFriends,
-  //     });
-  //   }
-  // }
-  //
-  // handleLogout = () => {
-  //   this.props.handleLogout();
-  //   this.setState({
-  //     isLogin: 'false',
-  //     onlineFriends: [],
-  //     offlineFriends: [],
-  //   });
-  // }
-  //
-  // checkUserInList = (list, user) => {
-  //   for (let i = 0; i < list.length; ++i) {
-  //     if (list[i].id === user.id)
-  //       return i;
-  //   }
-  //   return -1;
-  // }
-  //
-  // handleFriendConnect = (user) => {
-  //   if (this.checkUserInList(this.state.onlineFriends, user) === -1) {
-  //     let onlineFriends = [...this.state.onlineFriends, user];
-  //     let offlineFriends = [...this.state.offlineFriends];
-  //     let index = this.checkUserInList(offlineFriends, user);
-  //     offlineFriends.splice(index, 1);
-  //     this.setState({
-  //       onlineFriends: onlineFriends,
-  //       offlineFriends: offlineFriends,
-  //     });
-  //   }
-  // }
-  //
-  // handleFriendDisconnect = (user) => {
-  //   if (this.checkUserInList(this.state.offlineFriends, user) === -1) {
-  //     let offlineFriends = [...this.state.offlineFriends, user];
-  //     let onlineFriends = [...this.state.onlineFriends];
-  //     let index = this.checkUserInList(onlineFriends, user);
-  //     onlineFriends.splice(index, 1);
-  //     this.setState({
-  //       onlineFriends: onlineFriends,
-  //       offlineFriends: offlineFriends,
-  //     });
-  //   }
-  // }
-  //
-  // onFriendClick = (i, status) => {
-  //   if (i === -1) {
-  //     this.setState({
-  //       toggleSetting: false
-  //     })
-  //     return;
-  //   }
-  //   let friend;
-  //   if (status) {
-  //     friend = this.state.onlineFriends[i];
-  //   } else {
-  //     friend = this.state.offlineFriends[i];
-  //     i += this.state.onlineFriends.length;
-  //   }
-  //   const prevClicked = this.state.clickedFriend;
-  //   if (prevClicked !== null
-  //       && friend.id === prevClicked.id) {
-  //     this.setState({
-  //       clickedFriend: null,
-  //       toggleSetting: false
-  //     })
-  //   } else {
-  //     this.setState({
-  //       clickedFriend: { ...friend, index: i },
-  //       toggleSetting: true
-  //     })
-  //   }
-  // }
-  //
-  // openChat = () => {
-  //   const friend = this.state.clickedFriend;
-  //   if (friend !== null) {
-  //     this.setState({
-  //       chat: true
-  //     }); // open chat UI
-  //     // get chat_id. Create one if not exist
-  //     fetch('/api/getChatNumber')
-  //     .then(data => data.json())
-  //
-  //   } else {
-  //     alert('browser err');
-  //   }
-  // }
-  //
   // createInvitation = () => {
   //   const friend = this.state.clickedFriend;
   //   if (friend !== null) {
@@ -215,13 +109,7 @@ class Main extends Component {
         <Redirect to='/' />
       );
     }
-    // let {
-    //   onlineFriends, offlineFriends,
-    //   clickedFriend, chat, invitation,
-    //   toggleSetting, posts
-    // } = this.state;
-    // let user = { id: this.props.id, name: this.props.name };
-    // let friends = {onlineFriends, offlineFriends};
+
     return (
       <div id="Main">
         <Header
@@ -240,7 +128,6 @@ class Main extends Component {
         /> */}
 
          {/*chat && <Chat friend={clickedFriend}/>*/}
-
       </div>
     )
   }
@@ -254,6 +141,8 @@ const mapStateToProps = state => ({
   name    : state.login.name,
   isLogin : state.login.isLogin,
   socket  : state.login.socket,
+  onChat  : state.friends.chatReceiver,
+  onInvite: state.friends.invitationReceiver,
 })
 
 const mapDispatchToProps = {
