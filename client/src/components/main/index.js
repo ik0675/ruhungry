@@ -9,7 +9,7 @@ import './css/index.css';
 
 import Header from './header/Header';
 import FriendList from './friends/FriendList';
-// import Posts from './post/Posts';
+import Posts from './post/Posts';
 import Chat from './chat/Chat';
 
 const propTypes = {
@@ -109,13 +109,7 @@ class Main extends Component {
 
         <FriendList />
 
-        {/*<Posts
-          user={user}
-          posts={posts}
-          acceptDenyInvitation={this.acceptDenyInvitation}
-          addPost={this.addPost}
-          getPosts={this.getPosts}
-        /> */}
+        <Posts />
 
          {this.props.chatInfo != null && <Chat />}
       </div>

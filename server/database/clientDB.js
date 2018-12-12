@@ -312,7 +312,6 @@ const sendMessage = (res, connection, { chat_id, id, message }) => {
                   ON a.id=c.id
               WHERE
                 c.num=LAST_INSERT_ID();`;
-  console.log(query)
   connection.select(query)
   .then(rows => {
     const sentAt = rows[1][0].sent_at;
