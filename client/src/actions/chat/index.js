@@ -9,6 +9,9 @@ export const dispatchCreateChat = ids => dispatch => {
       // create or resume chat
       ids.splice(0, 1);
       dispatch({
+        type: types.EXIT_CHAT,
+      })
+      return dispatch({
         type: types.CREATE_CHAT,
         data: {
           chatId: data.chat_id,
