@@ -4,7 +4,9 @@ const escaper = require('../api/escape');
 // database queries related to client
 const loginWithIdPw = (req, res, connection, id, password) => {
   let query = `SELECT
-                 id, name
+                 id,
+                 name,
+                 img
                FROM
                  account
                WHERE
@@ -20,12 +22,17 @@ const loginWithIdPw = (req, res, connection, id, password) => {
       });
     } else {
       // login successful
-      req.session.loginInfo = {id: rows[0].id, name: rows[0].name};
+      req.session.loginInfo = {
+        id      : rows[0].id,
+        name    : rows[0].name,
+        userImg : rows[0].img,
+      };
       res.json({
         status: true,
         user: {
-          id: rows[0].id,
-          name: rows[0].name,
+          id      : rows[0].id,
+          name    : rows[0].name,
+          userImg : rows[0].img
         }
       });
     }
@@ -132,98 +139,6 @@ const getFriendList = (res, connection, id) => {
       onlineFriends: [],
       offlineFriends: []
     });
-  })
-}
-
-const createPost = (res, connection, id, name, post) => {
-  let query = `INSERT INTO
-                post
-                (
-                  id,
-                  name,
-                  post
-                )
-                VALUES
-                (
-                  '${id}',
-                  '${name}',
-                  '${post}'
-                )`;
-    connection.insert(query)
-    .then( () => {
-      query = `SELECT
-                 num,
-                 MINUTE(TIMEDIFF(NOW(), created_at)) AS created_at
-               FROM
-                 post
-               WHERE
-                 id='${id}' AND post='${post}'
-               ORDER BY num DESC
-               LIMIT 1`;
-      return connection.select(query)
-    })
-    .then( (rows) => {
-      let result = {
-        status: true,
-        kind: 'post',
-        post: post,
-        author: { id, name },
-        createdAt: rows[0].created_at,
-        num: rows[0].num
-      }
-      res.json(result)
-    })
-    .catch( (err) => {
-      console.log(err);
-      res.json({ status: false })
-    })
-}
-
-const getPosts = (res, connection, id) => {
-  let query = `SELECT
-                 friend_id AS id
-               FROM
-                 friend_list
-               WHERE
-                 id='${id}'`;
-  connection.select(query)
-  .then( (ids) => {
-    let idArray = `('${id}'`;
-    for (let i = 0; i < ids.length; ++i) {
-      idArray += ", '" + ids[i].id + "'";
-    }
-    idArray += ')';
-    query = `SELECT
-               num,
-               id,
-               name,
-               post,
-               TIMESTAMPDIFF(MINUTE, created_at, NOW()) AS created_at
-             FROM
-               post
-             WHERE
-               id in ${idArray}
-             ORDER BY num DESC
-             LIMIT 15`;
-    return connection.select(query)
-  })
-  .then( (posts) => {
-    let result = [];
-    for (let i = 0; i < posts.length; ++i) {
-      let post = {
-        kind: 'post',
-        post: escaper.unescape(posts[i].post),
-        author: { id: posts[i].id, name: posts[i].name },
-        createdAt: posts[i].created_at,
-        num: posts[i].num
-      }
-      result.push(post);
-    }
-    res.json(result);
-  })
-  .catch( err => {
-    console.log(err)
-    res.json({ status: false })
   })
 }
 
@@ -353,6 +268,68 @@ const getMessages = (res, connection, chat_id, offset) => {
     }
     res.json({ status: true, messages })
   })
+}
+
+const getPosts = (res, connection, id, offset) => {
+  const query = `SELECT
+                   GROUP_CONCAT(DISTINCT p.id SEPARATOR ',') inviter_id,
+                   GROUP_CONCAT(DISTINCT a.name SEPARATOR ',') inviter_name,
+                   GROUP_CONCAT(DISTINCT a.img SEPARATOR ',') inviter_img,
+                   GROUP_CONCAT(p.sent_to SEPARATOR ',') receiver_ids,
+                   GROUP_CONCAT(a_.name SEPARATOR ',') receiver_names,
+                   GROUP_CONCAT(a_.img SEPARATOR ',') receiver_imgs,
+                   GROUP_CONCAT(DISTINCT p.created_at SEPARATOR ',') created_at,
+                   GROUP_CONCAT(DISTINCT p.restaurant SEPARATOR ',') restaurant,
+                   GROUP_CONCAT(DISTINCT p.restaurant_img_path SEPARATOR ',') restaurant_img_path,
+                   GROUP_CONCAT(p.status SEPARATOR ',') status,
+                   p.invitation_num
+                 FROM
+                   post_invitation p
+                     JOIN account a
+                       ON p.id=a.id
+                     JOIN account a_
+                       ON p.sent_to=a_.id
+                 GROUP BY
+                   p.invitation_num
+                 HAVING
+                   FIND_IN_SET('${id}', inviter_id)
+                     OR
+                   FIND_IN_SET('${id}', receiver_ids)
+                 LIMIT 15
+                 OFFSET ${offset}`;
+  connection.select(query)
+  .then(rows => {
+    let posts = [];
+    for (let i = 0; i < rows.length; ++i) {
+      const row = rows[i];
+      const receiverIds = row.receiver_ids.split(',');
+      const receiverNames = row.receiver_names.split(',');
+      const status = row.status.split(',');
+      const post = {
+        id                : row.inviter_id,
+        name              : row.inviter_name,
+        img               : row.inviter_img,
+        receiverIds       : receiverIds,
+        receiverNames     : receiverNames,
+        receiverImgs      : row.receiver_imgs,
+        createdAt         : row.created_at,
+        restaurant        : row.restaurant,
+        restaurantImgPath : row.restaurant_img_path,
+        status            : status,
+        invitationNum     : row.invitation_num
+      }
+      posts.push(post);
+    }
+    res.json({ status: true, posts })
+  })
+  .catch(err => {
+    console.log(err);
+    res.json({ status: false })
+  })
+}
+
+const createPost = (res, connection) => {
+
 }
 
 module.exports = {

@@ -1,5 +1,4 @@
 let db = require('../database/clientDB');
-const escaper = require('./escape.js');
 
 module.exports = (app, connection, crypto) => {
   app.post('/api/login', (req, res) => {
@@ -33,8 +32,9 @@ module.exports = (app, connection, crypto) => {
       res.json({
         status: true,
         user: {
-          id: req.session.loginInfo.id,
-          name: req.session.loginInfo.name
+          id      : req.session.loginInfo.id,
+          name    : req.session.loginInfo.name,
+          userImg : req.session.loginInfo.userImg,
         }
       });
     }
@@ -49,7 +49,7 @@ module.exports = (app, connection, crypto) => {
     const loginInfo = req.session.loginInfo;
     const id = loginInfo.id;
     const name = loginInfo.name;
-    const post = escaper.escape(req.body.post);
+    const post = req.body.post;
     db.createPost(res, connection, id, name, post);
   })
 
@@ -59,7 +59,8 @@ module.exports = (app, connection, crypto) => {
       res.json({ status: false })
     } else {
       const id = loginInfo.id;
-      db.getPosts(res, connection, id);
+      const offset = req.query.offset;
+      db.getPosts(res, connection, id, offset);
     }
   })
 
