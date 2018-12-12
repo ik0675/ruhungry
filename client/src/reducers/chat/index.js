@@ -15,6 +15,10 @@ export default function chatReducers(state = initialState, action) {
     case types.EXIT_CHAT:
       return initialState;
     case types.GET_MESSAGES:
+      return {
+        ...state,
+        messages: [ ...action.data, ...state.messages ]
+      }
     case types.NEW_MESSAGE:
       return {
         ...state,

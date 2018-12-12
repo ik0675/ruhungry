@@ -13,6 +13,7 @@ export const CREATE_INVITATION  = 'CREATE_INVITATION';
 
 // action types for chat
 export const GET_MESSAGES     = 'GET_MESSAGES';
+export const GET_MESSAGES_ERR = 'GET_MESSAGES_ERR';
 export const NEW_MESSAGE      = 'NEW_MESSAGE';
 export const RECEIVE_MESSAGE  = 'RECEIVE_MESSAGE';
 export const CREATE_CHAT      = 'CREATE_CHAT';

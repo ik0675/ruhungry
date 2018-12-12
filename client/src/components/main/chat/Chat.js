@@ -17,6 +17,7 @@ const propTypes = {
   exitChat      : PropTypes.func.isRequired,
   sendMessage   : PropTypes.func.isRequired,
   receiveMessage: PropTypes.func.isRequired,
+  getMessages   : PropTypes.func.isRequired,
 }
 
 const defaultProps = {
@@ -24,8 +25,14 @@ const defaultProps = {
 }
 
 class Chat extends Component {
-  state = {
-    message: '',
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      message: ''
+    }
+
+    this.props.getMessages(this.props.chatInfo.chatId, 0);
   }
 
   componentDidMount() {
@@ -83,7 +90,10 @@ class Chat extends Component {
           </span>
         </div>
 
-        <Messages messages={this.state.messages} />
+        <Messages
+          id={this.props.id}
+          messages={this.props.messages}
+        />
 
         <TypeMessage
           message={this.state.message}
@@ -109,6 +119,7 @@ const mapDispatchToProps = {
   exitChat      : chatActions.dispatchExitChat,
   sendMessage   : chatActions.dispatchSendMessage,
   receiveMessage: chatActions.dispatchReceiveMessage,
+  getMessages   : chatActions.dispatchGetMessages,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);

@@ -12,12 +12,20 @@ const defaultProps = {
 
 }
 
-const Messages = (props) => {
-  const printMessages = props.messages.map((message, i) => {
-    const className = message.id === props.id ? 'sentMessage' : 'receivedMessage';
+function Messages(props) {
+  const printMessages = props.messages.map((data, i) => {
+    const className = data.id === props.id ?
+                      'sentMessage' : 'receivedMessages';
     return (
-      <li className={`${className}`}>
-        message.message
+      <li
+        className={`${className}`}
+        key={`${data.id}:${i}`}
+      >
+        <div className="MessageInfo">
+          {data.name}
+          <span className="SentAt">{data.sentAt}</span>
+        </div>
+        <div className="Messages">{data.message}</div>
       </li>
     )
   })

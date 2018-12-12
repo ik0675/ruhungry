@@ -60,3 +60,20 @@ export const dispatchReceiveMessage = (data) => dispatch => {
     data
   })
 }
+
+export const dispatchGetMessages = (chat_id, offset) => dispatch => {
+  fetch(`/api/getMessages?chat_id=${chat_id}&offset=${offset}`)
+  .then(res => res.json())
+  .then(data => {
+    if (data.status) {
+      dispatch({
+        type: types.GET_MESSAGES,
+        data: data.messages
+      })
+    } else {
+      dispatch({
+        type: types.GET_MESSAGES_ERR,
+      })
+    }
+  })
+}

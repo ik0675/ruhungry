@@ -319,6 +319,37 @@ const sendMessage = (res, connection, { chat_id, id, message }) => {
   })
 }
 
+const getMessages = (res, connection, chat_id, offset) => {
+  let query = `SELECT
+                 c.id,
+                 a.name,
+                 c.message,
+                 DATE_FORMAT(c.sent_at, '%b %d %Y at %h:%i%p') sent_at
+               FROM
+                 chat_messages c
+                   JOIN account a
+                   ON c.id=a.id
+               WHERE
+                 c.chat_id = '${chat_id}'
+               ORDER BY sent_at
+               LIMIT 50
+               OFFSET ${offset}`;
+  connection.select(query)
+  .then(rows => {
+    let messages = [];
+    for (let i = 0; i < rows.length; ++i) {
+      const message = {
+        id      : rows[i].id,
+        name    : rows[i].name,
+        message : rows[i].message,
+        sentAt  : rows[i].sent_at
+      }
+      messages.push(message);
+    }
+    res.json({ status: true, messages })
+  })
+}
+
 module.exports = {
   loginWithIdPw : loginWithIdPw,
   signUp        : signUp,
@@ -327,4 +358,5 @@ module.exports = {
   getPosts      : getPosts,
   getChatNumber : getChatNumber,
   sendMessage   : sendMessage,
+  getMessages   : getMessages,
 }

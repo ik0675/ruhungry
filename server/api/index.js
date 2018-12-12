@@ -96,4 +96,14 @@ module.exports = (app, connection, crypto) => {
     const data = req.body;
     db.sendMessage(res, connection, data);
   })
+
+  app.get('/api/getMessages', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const chat_id = req.query.chat_id;
+    const offset = req.query.offset;
+    db.getMessages(res, connection, chat_id, offset);
+  })
 }
