@@ -88,14 +88,17 @@ const sendMessage = (io, connection, data) => {
                    JOIN account a
                    ON c.id=a.id
                WHERE
-                 c.chat_id = '${data.chat_id}'
+                 c.chat_id = '${data.chatId}'
                    AND
                  c.id != '${data.id}'`;
+  console.log(query)
   connection.select(query)
   .then(socketIds => {
+    console.log('found sockets', socketIds)
     for (let i = 0; i < socketIds.length; ++i) {
-      const socketId = socketIds.socket_id;
+      const socketId = socketIds[i].socket_id;
       if (socketId !== null) {
+        console.log('sending new message to', socketId);
         io.to(socketId).emit('newMessage', data);
       }
     }

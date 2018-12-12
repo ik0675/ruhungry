@@ -39,7 +39,6 @@ export const dispatchSendMessage = (data, socket) => dispatch => {
   .then(res => res.json())
   .then(res => {
     if (res.status) {
-      console.log(res);
       const messageData = {
         chatId  : data.chat_id,
         id      : data.id,
@@ -47,6 +46,7 @@ export const dispatchSendMessage = (data, socket) => dispatch => {
         message : data.message,
         sentAt  : res.sentAt,
       }
+      console.log(messageData);
       // send socket emit
       socket.emit('sendMessage', messageData);
       dispatch({

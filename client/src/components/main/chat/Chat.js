@@ -37,6 +37,7 @@ class Chat extends Component {
 
   componentDidMount() {
     this.props.socket.on('newMessage', (data) => {
+      console.log('got message', data);
       this.props.receiveMessage(data);
     })
   }

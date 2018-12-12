@@ -10,7 +10,7 @@ module.exports = (io, connection) => {
     });
 
     socket.on('sendMessage', (data) => {
-      console.log(`Received message from ${data.id} to ${data.chat_id}, ${data.message}`)
+      console.log(`Received message from ${data.id} to ${data.chatId}, ${data.message}`)
       db.sendMessage(io, connection, data);
     })
 

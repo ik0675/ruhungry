@@ -24,6 +24,11 @@ export default function chatReducers(state = initialState, action) {
         ...state,
         messages: [ ...state.messages, action.data ]
       }
+    case types.RECEIVE_MESSAGE:
+      return {
+        ...state,
+        messages: [ ...state.messages, action.data ]
+      }
     default:
       return state;
   }
