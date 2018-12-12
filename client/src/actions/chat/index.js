@@ -46,7 +46,6 @@ export const dispatchSendMessage = (data, socket) => dispatch => {
         message : data.message,
         sentAt  : res.sentAt,
       }
-      console.log(messageData);
       // send socket emit
       socket.emit('sendMessage', messageData);
       dispatch({

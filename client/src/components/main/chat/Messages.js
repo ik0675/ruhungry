@@ -21,9 +21,7 @@ class Messages extends Component {
 
   componentDidUpdate() {
     let messageDiv = this.messageRef.current;
-    console.log(messageDiv.scrollTop, messageDiv.scrollHeight)
     messageDiv.scrollTop = messageDiv.scrollHeight;
-    console.log(messageDiv.scrollTop, messageDiv.scrollHeight)
   }
 
   render() {

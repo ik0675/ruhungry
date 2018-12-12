@@ -3,7 +3,6 @@ import * as types from '../types';
 import io from 'socket.io-client';
 
 export const dispatchLogin = ({ id, password }) => dispatch => {
-  console.log('running login dispatch');
   fetch('/api/login', {
     method  : 'POST',
     headers : {

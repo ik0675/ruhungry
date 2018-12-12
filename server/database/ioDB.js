@@ -94,7 +94,6 @@ const sendMessage = (io, connection, data) => {
   console.log(query)
   connection.select(query)
   .then(socketIds => {
-    console.log('found sockets', socketIds)
     for (let i = 0; i < socketIds.length; ++i) {
       const socketId = socketIds[i].socket_id;
       if (socketId !== null) {
