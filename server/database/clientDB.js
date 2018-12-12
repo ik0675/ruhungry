@@ -289,6 +289,7 @@ const getChatNumber = (res, connection, ids) => {
 }
 
 const sendMessage = (res, connection, { chat_id, id, message }) => {
+  message = connection.escape(message);
   let query = `INSERT INTO
                  chat_messages
                  (
@@ -300,7 +301,7 @@ const sendMessage = (res, connection, { chat_id, id, message }) => {
                (
                  '${chat_id}',
                  '${id}',
-                 '${message}'
+                 ${message}
                );
               SELECT
                 DATE_FORMAT(c.sent_at, '%b %d %Y at %h:%i%p') sent_at,
@@ -311,6 +312,7 @@ const sendMessage = (res, connection, { chat_id, id, message }) => {
                   ON a.id=c.id
               WHERE
                 c.num=LAST_INSERT_ID();`;
+  console.log(query)
   connection.select(query)
   .then(rows => {
     const sentAt = rows[1][0].sent_at;

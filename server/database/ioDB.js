@@ -91,7 +91,6 @@ const sendMessage = (io, connection, data) => {
                  c.chat_id = '${data.chatId}'
                    AND
                  c.id != '${data.id}'`;
-  console.log(query)
   connection.select(query)
   .then(socketIds => {
     for (let i = 0; i < socketIds.length; ++i) {
