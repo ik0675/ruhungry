@@ -303,15 +303,19 @@ const sendMessage = (res, connection, { chat_id, id, message }) => {
                  '${message}'
                );
               SELECT
-                DATE_FORMAT(sent_at, '%b %d %Y at %h:%i%p') sent_at
+                DATE_FORMAT(c.sent_at, '%b %d %Y at %h:%i%p') sent_at,
+                a.name
               FROM
-                chat_messages
+                chat_messages c
+                  JOIN account a
+                  ON a.id=c.id
               WHERE
-                num=LAST_INSERT_ID();`;
+                c.num=LAST_INSERT_ID();`;
   connection.select(query)
   .then(rows => {
     const sentAt = rows[1][0].sent_at;
-    res.json({ status: true, sentAt })
+    const name = rows[1][0].name;
+    res.json({ status: true, sentAt, name })
   })
   .catch(err => {
     console.log(err);

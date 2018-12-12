@@ -36,11 +36,14 @@ export const dispatchSendMessage = (data, socket) => dispatch => {
     headers : { 'content-type' : 'application/json' },
     body    : JSON.stringify(data)
   })
+  .then(res => res.json())
   .then(res => {
     if (res.status) {
+      console.log(res);
       const messageData = {
         chatId  : data.chat_id,
         id      : data.id,
+        name    : res.name,
         message : data.message,
         sentAt  : res.sentAt,
       }
