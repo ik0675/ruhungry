@@ -1,5 +1,4 @@
 const uuid4 = require('uuid/v4');
-const escaper = require('../api/escape');
 
 // database queries related to client
 const loginWithIdPw = (req, res, connection, id, password) => {

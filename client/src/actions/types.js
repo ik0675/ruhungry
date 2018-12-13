@@ -1,3 +1,5 @@
+export const ERROR = 'ERROR';
+
 // action types for login
 export const LOGIN      = 'LOGIN';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
@@ -19,3 +21,6 @@ export const RECEIVE_MESSAGE  = 'RECEIVE_MESSAGE';
 export const CREATE_CHAT      = 'CREATE_CHAT';
 export const CREATE_CHAT_ERR  = 'CREATE_CHAT_ERR';
 export const EXIT_CHAT        = 'EXIT_CHAT';
+
+// action types for posts
+export const GET_POSTS = 'GET_POSTS';

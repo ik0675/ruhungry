@@ -2,27 +2,27 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { dispatchGetPosts } from '../../../actions/posts';
+
 import PostInvitation from './PostInvitation';
 
 import './css/Posts.css';
 
 const propTypes = {
-  user                : PropTypes.object,
-  posts               : PropTypes.array,
-  acceptDenyInvitation: PropTypes.func,
-  addPost             : PropTypes.func,
+  id      : PropTypes.string.isRequired,
+  posts   : PropTypes.array.isRequired,
+  getPosts: PropTypes.func.isRequired,
 }
 
 const defaultProps = {
-  user                : null,
-  posts               : [],
-  acceptDenyInvitation: () => { alert('acceptDenyInvitation is not defined!'); },
-  addPost             : () => { alert('addPost is not defined!'); },
+
 }
 
 class Posts extends Component {
   constructor(props) {
     super(props);
+
+    this.props.getPosts();
   }
 
   handlePostChange = (e) => {
@@ -57,14 +57,19 @@ class Posts extends Component {
   render() {
     const posts = this.props.posts;
     const renderPosts = posts.map( (post, i) => {
-      return <PostInvitation
-               key={i}
-               restaurant={post.restaurant}
-               userImg={post.userImg}
-               status={post.status}
-               index={i}
-               acceptDenyInvitation={this.props.acceptDenyInvitation}
-            />
+      if (post.id === this.props.id) {
+        return <div key={i}>Sent Invitation. To be implemented</div>;
+      } else {
+        const index = post.receiverIds.indexOf(this.props.id);
+        const status = post.status[index];
+        return <PostInvitation
+                 key={post.invitationNum}
+                 restaurant={post.restaurant}
+                 restaurantImgPath={post.restaurantImgPath}
+                 userImg={post.img}
+                 status={status}
+               />
+      }
     });
 
     return (
@@ -81,11 +86,12 @@ Posts.propTypes = propTypes;
 Posts.defaultProps = defaultProps;
 
 const mapStateToProps = state => ({
-  id: state.login.id,
+  id      : state.login.id,
+  posts   : state.posts.posts,
 })
 
 const mapDispatchToProps = {
-
+  getPosts: dispatchGetPosts
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);

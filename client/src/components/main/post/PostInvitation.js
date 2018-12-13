@@ -4,25 +4,21 @@ import PropTypes from 'prop-types';
 import './css/PostInvitation.css';
 
 const propTypes = {
-  index               : PropTypes.number,
-  restaurant          : PropTypes.string,
-  userImg             : PropTypes.string,
-  status              : PropTypes.bool,
+  restaurant          : PropTypes.string.isRequired,
+  restaurantImgPath   : PropTypes.string.isRequired,
+  userImg             : PropTypes.string.isRequired,
+  status              : PropTypes.string.isRequired,
   acceptDenyInvitation: PropTypes.func,
 }
 
 const defaultProps = {
-  index               : -1,
-  restaurant          : null,
-  userImg             : null,
-  status              : null,
   acceptDenyInvitation: () => { alert('acceptDenyInvitation is not defined!'); }
 }
 
 const PostInvitation = (props) => {
-  const { restaurant, userImg, status } = props;
+  const { restaurant, restaurantImgPath, userImg, status } = props;
   let invitationStatus;
-  if (status === null) {
+  if (status === 'pending') {
     invitationStatus = () => {
       return (
         <div className="invitation bottom">
@@ -47,7 +43,7 @@ const PostInvitation = (props) => {
     }
   } else {
     invitationStatus = () => {
-      if (status) {
+      if (status === 'true') {
         return (
           <div className="invitation bottom">
             <p className="invitation-accept">수락하셨습니다</p>
@@ -61,11 +57,13 @@ const PostInvitation = (props) => {
       )
     }
   }
+  console.log(`/${restaurantImgPath}`, `/${userImg}`)
   return (
     <div className="Post-invitation">
       <div className="invitation top">
-        <img src={restaurant} alt="restaurant"/>
-        <img src={userImg} alt="user"/>
+        <img src={`/${restaurantImgPath}`} alt="restaurant"/>
+        <img src={`/${userImg}`} alt="user" />
+        <img src="/울프강.jpeg" />
       </div>
       { invitationStatus() }
     </div>
