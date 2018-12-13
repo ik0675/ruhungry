@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import InvitationInfo from './InvitationInfo';
 
-import './css/PostInvitation.css';
+import './css/Invitation.css';
 
 const propTypes = {
   restaurant          : PropTypes.string.isRequired,
@@ -17,8 +17,11 @@ const defaultProps = {
   acceptDenyInvitation: () => { alert('acceptDenyInvitation is not defined!'); }
 }
 
-const PostInvitationReceived = (props) => {
-  const { restaurant, restaurantImgPath, userImg, status } = props;
+const InvitationReceived = (props) => {
+  const {
+    inviter, receivers, restaurant,
+    restaurantImgPath, userImg, status
+  } = props;
   let invitationStatus;
   if (status === 'pending') {
     invitationStatus = () => {
@@ -62,9 +65,9 @@ const PostInvitationReceived = (props) => {
   return (
     <div className="Post-invitation">
       <InvitationInfo
-        inviter={props.inviter}
-        receivers={props.receivers}
-        restaurant={props.restaurant}
+        inviter={inviter}
+        receivers={receivers}
+        restaurant={restaurant}
       />
       <div className="invitation top">
         <img src={`/${restaurantImgPath}`} alt="restaurant"/>
@@ -75,7 +78,7 @@ const PostInvitationReceived = (props) => {
   )
 }
 
-PostInvitationReceived.propTypes = propTypes;
-PostInvitationReceived.defaultProps = defaultProps;
+InvitationReceived.propTypes = propTypes;
+InvitationReceived.defaultProps = defaultProps;
 
-export default PostInvitationReceived;
+export default InvitationReceived;

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { dispatchGetPosts } from '../../../actions/posts';
 
-import PostInvitationReceived from './PostInvitationReceived';
+import InvitationReceived from './InvitationReceived';
 
 import './css/Posts.css';
 
@@ -62,7 +62,7 @@ class Posts extends Component {
       } else {
         const index = post.receiverIds.indexOf(this.props.id);
         const status = post.status[index];
-        return <PostInvitationReceived
+        return <InvitationReceived
                  key={post.invitationNum}
                  inviter={post.name}
                  receivers={post.receiverNames}
