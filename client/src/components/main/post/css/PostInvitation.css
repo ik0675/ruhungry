@@ -1,34 +1,7 @@
-/* .btn-md {
-  width: 25%;
-}
-
-.btn-outline-success {
-  margin-right: 100px;
-  margin-left: 50px;
-}
-
-.column {
-  margin-top: 100px;
-  margin-bottom: 10px;
-}
-
-.image {
-  flex-shrink: 0;
-}
-
-.temp {
-  padding: 10px;
-  max-width: 240px;
-  max-height: 150px;
-  height: auto;
-  width: 70%;
-} */
-
-
 .Post-invitation {
   width: 95%;
   max-width: 500px;
-  height: 220px;
+  min-height: 220px;
   margin-left: 2.5%;
   margin-top: 10px;
   margin-bottom: 20px;
@@ -39,6 +12,18 @@
 }
 .invitation {
   width: 100%;
+}
+.invitation.info {
+  padding-top: 1%;
+  padding-left: 2%;
+  padding-right: 2%;
+  color: dimGray;
+}
+.invitation.info .inviter,
+.invitation.info .receivers,
+.invitation.info .restaurant {
+  color: black;
+  font-weight: bold;
 }
 .invitation.top {
   height: 154px; /* 70% */

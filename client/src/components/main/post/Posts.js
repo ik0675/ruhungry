@@ -64,6 +64,8 @@ class Posts extends Component {
         const status = post.status[index];
         return <PostInvitationReceived
                  key={post.invitationNum}
+                 inviter={post.name}
+                 receivers={post.receiverNames}
                  restaurant={post.restaurant}
                  restaurantImgPath={post.restaurantImgPath}
                  userImg={post.img}

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import InvitationInfo from './InvitationInfo';
+
 import './css/PostInvitation.css';
 
 const propTypes = {
@@ -59,6 +61,11 @@ const PostInvitationReceived = (props) => {
   }
   return (
     <div className="Post-invitation">
+      <InvitationInfo
+        inviter={props.inviter}
+        receivers={props.receivers}
+        restaurant={props.restaurant}
+      />
       <div className="invitation top">
         <img src={`/${restaurantImgPath}`} alt="restaurant"/>
         <img src={`/${userImg}`} alt="user" />
