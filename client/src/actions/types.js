@@ -24,3 +24,5 @@ export const EXIT_CHAT        = 'EXIT_CHAT';
 
 // action types for posts
 export const GET_POSTS = 'GET_POSTS';
+export const RSVP_WAIT = 'RSVP_WAIT';
+export const RSVP_DONE = 'RSVP_DONE';

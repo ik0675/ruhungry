@@ -12,6 +12,9 @@ const propTypes = {
   restaurantImgPath   : PropTypes.string.isRequired,
   userImg             : PropTypes.string.isRequired,
   status              : PropTypes.string.isRequired,
+  invitationNum       : PropTypes.string.isRequired,
+  id                  : PropTypes.string.isRequired,
+  isWaiting           : PropTypes.bool.isRequired,
   acceptDenyInvitation: PropTypes.func,
 }
 
@@ -22,35 +25,42 @@ const defaultProps = {
 const InvitationReceived = (props) => {
   const {
     inviter, receivers, restaurant,
-    restaurantImgPath, userImg, status
+    restaurantImgPath, userImg, status,
+    isWaiting, invitationNum
   } = props;
+  
   let invitationStatus;
-  if (status === 'pending') {
-    invitationStatus = () => {
-      return (
-        <div className="invitation bottom">
-          <button
-            className="btn accept"
-            onClick={ () => {
-              props.acceptDenyInvitation(true, props.index)
-            }}
-          >
-            수락
-          </button>
-          <button
-            className="btn deny"
-            onClick={ () => {
-              props.acceptDenyInvitation(false, props.index)
-            }}
-          >
-            거절
-          </button>
-        </div>
-      )
-    }
+  if (isWaiting) {
+    invitationStatus = () => (
+      <div className="invitation bottom">
+        <img src="/loading.gif" alt="loading" />
+      </div>
+    )
+  }
+  else if (status === 'pending') {
+    invitationStatus = () => (
+      <div className="invitation bottom">
+        <button
+          className="btn accept"
+          onClick={ () => {
+            props.rsvp(invitationNum, 'accepted')
+          }}
+        >
+          수락
+        </button>
+        <button
+          className="btn deny"
+          onClick={ () => {
+            props.rsvp(invitationNum, 'rejected')
+          }}
+        >
+          거절
+        </button>
+      </div>
+    )
   } else {
     invitationStatus = () => {
-      if (status === 'true') {
+      if (status === 'accepted') {
         return (
           <div className="invitation bottom">
             <p className="invitation-accept">수락하셨습니다</p>

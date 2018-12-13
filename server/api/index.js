@@ -107,4 +107,13 @@ module.exports = (app, connection, crypto) => {
     const offset = req.query.offset;
     db.getMessages(res, connection, chat_id, offset);
   })
+
+  app.post('/api/rsvp', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const { invitation_num, sent_to, status } = req.body;
+    db.rsvp(res, connection, invitation_num, sent_to, status);
+  })
 }

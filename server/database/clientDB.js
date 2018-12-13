@@ -315,11 +315,31 @@ const getPosts = (res, connection, id, offset) => {
         restaurant        : row.restaurant,
         restaurantImgPath : row.restaurant_img_path,
         status            : status,
-        invitationNum     : row.invitation_num
+        invitationNum     : row.invitation_num,
+        isWaiting         : false,
       }
       posts.push(post);
     }
     res.json({ status: true, posts })
+  })
+  .catch(err => {
+    console.log(err);
+    res.json({ status: false })
+  })
+}
+
+const rsvp = (res, connection, invitation_num, sent_to, status) => {
+  const query = `UPDATE
+                   post_invitation
+                 SET
+                   status = '${status}'
+                 WHERE
+                   invitation_num = '${invitation_num}'
+                     AND
+                   sent_to = '${sent_to}'`;
+  connection.update(query)
+  .then(() => {
+    res.json({ status: true })
   })
   .catch(err => {
     console.log(err);
@@ -340,4 +360,5 @@ module.exports = {
   getChatNumber : getChatNumber,
   sendMessage   : sendMessage,
   getMessages   : getMessages,
+  rsvp          : rsvp,
 }

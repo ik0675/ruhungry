@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { dispatchGetPosts } from '../../../actions/posts';
+import { dispatchGetPosts, dispatchRSVP } from '../../../actions/posts';
 
 import InvitationSent from './InvitationSent';
 import InvitationReceived from './InvitationReceived';
@@ -30,6 +30,10 @@ class Posts extends Component {
     this.setState({
       [e.target.name] : e.target.value
     })
+  }
+
+  handleRSVP = (invitationNum, status) => {
+    this.props.rsvp(invitationNum, this.props.id, status);
   }
 
   onSubmit = (e) => {
@@ -71,8 +75,11 @@ class Posts extends Component {
           />
         );
       } else {
-        const index = post.receiverIds.indexOf(this.props.id);
-        const status = post.status[index];
+        let status = post.status;
+        if (status.constructor === Array) {
+          const index = post.receiverIds.indexOf(this.props.id);
+          status = status[index];
+        }
         return <InvitationReceived
                  key={post.invitationNum}
                  inviter={post.name}
@@ -81,6 +88,10 @@ class Posts extends Component {
                  restaurantImgPath={post.restaurantImgPath}
                  userImg={post.img}
                  status={status}
+                 id={this.props.id}
+                 isWaiting={post.isWaiting}
+                 rsvp={this.handleRSVP}
+                 invitationNum={post.invitationNum}
                />
       }
     });
@@ -104,7 +115,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  getPosts: dispatchGetPosts
+  getPosts: dispatchGetPosts,
+  rsvp    : dispatchRSVP,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
