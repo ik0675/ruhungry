@@ -15,7 +15,7 @@ const defaultProps = {
   acceptDenyInvitation: () => { alert('acceptDenyInvitation is not defined!'); }
 }
 
-const PostInvitation = (props) => {
+const PostInvitationReceived = (props) => {
   const { restaurant, restaurantImgPath, userImg, status } = props;
   let invitationStatus;
   if (status === 'pending') {
@@ -68,7 +68,7 @@ const PostInvitation = (props) => {
   )
 }
 
-PostInvitation.propTypes = propTypes;
-PostInvitation.defaultProps = defaultProps;
+PostInvitationReceived.propTypes = propTypes;
+PostInvitationReceived.defaultProps = defaultProps;
 
-export default PostInvitation;
+export default PostInvitationReceived;
