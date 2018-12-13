@@ -57,13 +57,11 @@ const PostInvitation = (props) => {
       )
     }
   }
-  console.log(`/${restaurantImgPath}`, `/${userImg}`)
   return (
     <div className="Post-invitation">
       <div className="invitation top">
         <img src={`/${restaurantImgPath}`} alt="restaurant"/>
         <img src={`/${userImg}`} alt="user" />
-        <img src="/울프강.jpeg" />
       </div>
       { invitationStatus() }
     </div>

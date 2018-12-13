@@ -4,7 +4,6 @@ export const dispatchGetPosts = () => dispatch => {
   fetch(`/api/getPosts?offset=0`)
   .then(res => res.json())
   .then(data => {
-    console.log(data)
     if (data.status) {
       return dispatch({
         type: types.GET_POSTS,
