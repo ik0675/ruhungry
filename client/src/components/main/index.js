@@ -11,6 +11,7 @@ import Header from './header/Header';
 import FriendList from './friends/FriendList';
 import Posts from './post/Posts';
 import Chat from './chat/Chat';
+import MakeInvitation from './invitation/MakeInvitation';
 
 const propTypes = {
   id      : PropTypes.string.isRequired,
@@ -29,66 +30,6 @@ const defaultProps = {
 }
 
 class Main extends Component {
-  // constructor(props) {
-  //   super(props);
-  //
-  //   this.state = {
-  //     posts: [
-  //       {
-  //         kind: 'post',
-  //         post: 'testestst',
-  //         imgs: [],
-  //         author: { id: 'ik0675@gmail.com', name: '남궁익' },
-  //         createdAt: 300
-  //       },
-  //       {
-  //         restaurant: 쉑쉑,
-  //         userImg: logo,
-  //         kind: 'invitation',
-  //         status: null
-  //       },
-  //       {
-  //         restaurant: 새마을식당,
-  //         userImg: logo,
-  //         kind: 'invitation',
-  //         status: null
-  //       },
-  //       {
-  //         restaurant: 울프강,
-  //         userImg: logo,
-  //         kind: 'invitation',
-  //         status: null
-  //       },
-  //     ]
-  //   };
-  // }
-  //
-  // acceptDenyInvitation = (status, index) => {
-  //   let invitation = { ...this.state.posts[index] };
-  //   invitation.status = status;
-  //   let posts = [ ...this.state.posts ];
-  //   posts[index] = invitation;
-  //   this.setState({
-  //     posts: posts
-  //   })
-  // }
-  //
-  // getPosts = () => {
-  //   fetch('/api/getPosts')
-  //   .then(data => data.json())
-  //   .then(posts => {
-  //     this.setState({
-  //       posts: [ ...posts, ...this.state.posts ]
-  //     })
-  //   })
-  // }
-  //
-  // addPost = (post) => {
-  //   this.setState({
-  //     posts: [ post, ...this.state.posts ]
-  //   });
-  // }
-
   handleLogout = () => {
     this.props.logout(this.props.socket);
   }
@@ -112,6 +53,7 @@ class Main extends Component {
         <Posts />
 
          {this.props.chatInfo != null && <Chat />}
+         <MakeInvitation />
       </div>
     )
   }

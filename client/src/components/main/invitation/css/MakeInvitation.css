@@ -1,0 +1,60 @@
+.MakeInvitation {
+  width: calc(50% - 20px);
+  height: 50%;
+  max-width: 480px;
+  min-height: 300px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid dimGray;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 15px;
+}
+
+.MakeInvitation > h1 {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid dimGray;
+  font-size: 25px;
+}
+.MakeInvitation p {
+  margin: 0;
+}
+.MakeInvitation select {
+  width: 80%;
+  background: white;
+}
+.MakeInvitation input {
+  margin-left: 10px;
+  margin-top: 2px;
+  height: 20px;
+  padding: 0;
+  padding-left: 2px;
+  font-size: 14px;
+  line-height: 14px;
+  max-width: calc(100% - 10px);
+}
+
+.MakeInvitation .select.friends,
+.MakeInvitation .select.img {
+  display: inline-block;
+  width: 50%;
+}
+
+.MakeInvitation .type.restaurant {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.MakeInvitation .selected.friends,
+.MakeInvitation .selected.img {
+  display: inline-block;
+  width: 50%;
+  height: 20px;
+  float: right;
+}
