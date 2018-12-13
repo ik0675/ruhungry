@@ -1,7 +1,7 @@
 .Post-invitation {
   width: 95%;
   max-width: 500px;
-  min-height: 220px;
+  min-height: 190px;
   margin-left: 2.5%;
   margin-top: 10px;
   margin-bottom: 20px;
@@ -13,17 +13,26 @@
 .invitation {
   width: 100%;
 }
-.invitation.info {
-  padding-top: 1%;
+
+.invitation.status {
+  border-top: 1px dotted dimGray;
+  border-bottom: 1px dotted dimGray;
   padding-left: 2%;
   padding-right: 2%;
+  font-weight: bold;
+}
+.invitation.status .receiver.status {
+  margin: 0;
+  font-weight: normal;
+}
+.invitation.status .receiver.status span:last-child[status="pending"] {
   color: dimGray;
 }
-.invitation.info .inviter,
-.invitation.info .receivers,
-.invitation.info .restaurant {
-  color: black;
-  font-weight: bold;
+.invitation.status .receiver.status span:last-child[status="accepted"] {
+  color: MediumSeaGreen;
+}
+.invitation.status .receiver.status span:last-child[status="rejected"] {
+  color: crimson;
 }
 .invitation.top {
   height: 154px; /* 70% */

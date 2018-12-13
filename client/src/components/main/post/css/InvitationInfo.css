@@ -1,0 +1,23 @@
+.invitation.info {
+  padding-top: 1%;
+  padding-left: 2%;
+  color: dimGray;
+}
+
+.invitation.info div {
+  display:inline-block;
+  width: 95%;
+}
+.invitation.info > span[role="img"] {
+  display:inline-block;
+  width: 5%;
+  vertical-align: top;
+  cursor: pointer;
+}
+
+.invitation.info .inviter,
+.invitation.info .receivers,
+.invitation.info .restaurant {
+  color: black;
+  font-weight: bold;
+}

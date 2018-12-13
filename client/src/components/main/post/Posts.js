@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { dispatchGetPosts } from '../../../actions/posts';
 
+import InvitationSent from './InvitationSent';
 import InvitationReceived from './InvitationReceived';
 
 import './css/Posts.css';
@@ -58,7 +59,17 @@ class Posts extends Component {
     const posts = this.props.posts;
     const renderPosts = posts.map( (post, i) => {
       if (post.id === this.props.id) {
-        return <div key={i}>Sent Invitation. To be implemented</div>;
+        return (
+          <InvitationSent
+            key={post.invitationNum}
+            inviter={post.name}
+            receivers={post.receiverNames}
+            restaurant={post.restaurant}
+            restaurantImgPath={post.restaurantImgPath}
+            userImg={post.img}
+            status={post.status}
+          />
+        );
       } else {
         const index = post.receiverIds.indexOf(this.props.id);
         const status = post.status[index];

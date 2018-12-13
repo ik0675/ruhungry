@@ -6,6 +6,8 @@ import InvitationInfo from './InvitationInfo';
 import './css/Invitation.css';
 
 const propTypes = {
+  inviter             : PropTypes.string.isRequired,
+  receivers           : PropTypes.arrayOf(PropTypes.string).isRequired,
   restaurant          : PropTypes.string.isRequired,
   restaurantImgPath   : PropTypes.string.isRequired,
   userImg             : PropTypes.string.isRequired,
