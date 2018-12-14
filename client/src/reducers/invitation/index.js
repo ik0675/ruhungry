@@ -25,6 +25,7 @@ export default function invitationReducers(state = initialState, action) {
       }
     case types.LOAD_IMAGES:
       return {
+        ...state,
         imgs    : action.data,
         loading : false
       }

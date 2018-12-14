@@ -26,7 +26,8 @@
 }
 .MakeInvitation select {
   width: 80%;
-  background: white;
+  background-color: white;
+  outline: none;
 }
 .MakeInvitation input {
   margin-left: 10px;
@@ -88,6 +89,6 @@
 }
 
 .MakeInvitation .send {
-  margin-top: 20px;
+  margin-top: 30px;
   float: right;
 }
