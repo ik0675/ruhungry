@@ -2,22 +2,29 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { dispatchGetImages } from '../../../actions/invitation';
+
 import './css/MakeInvitation.css';
 
 const propTypes = {
   onlineFriends : PropTypes.array.isRequired,
   offlineFriends: PropTypes.array.isRequired,
+  imgs          : PropTypes.array.isRequired,
+  getImages     : PropTypes.func.isRequired,
+  onExit        : PropTypes.func,
+  style         : PropTypes.object,
 }
 
 const defaultProps = {
-
+  onExit: () => alert('onExit is not defined!'),
+  style : {}
 }
 
 class MakeInvitation extends Component {
   state = {
-    friends: [],
-    restaurant: '',
-    restaurantImg: '',
+    friends       : [],
+    restaurant    : '',
+    restaurantImg : '',
   }
 
   checkIfSelected = (friend) => {
@@ -38,13 +45,43 @@ class MakeInvitation extends Component {
     }
   }
 
-  handleChange = (e) => this.setState({ restaurant: e.target.value })
+  handleChange = (e) => {
+    this.setState({ restaurant: e.target.value })
+  }
+
+  selectRestaurantImg = (img) => {
+    this.setState({ restaurantImg: img });
+  }
+
+  getImages = () => {
+    if (this.props.loading) {
+      return <img src="loading.gif" alt="loading" />;
+    }
+
+    return this.props.imgs.map((img, i) => (
+      <img
+        src={`/${img}`}
+        alt="restaurant"
+        key={i}
+        onClick={() => this.selectRestaurantImg(img)}
+      />
+    ));
+  }
 
   render() {
     const friends = [
       ...this.props.onlineFriends,
       ...this.props.offlineFriends,
-    ]
+    ];
+    const printExit = (
+      <span
+        role="img"
+        aria-label="small roman numeral ten"
+        onClick={this.props.onExit}
+      >
+        ⅹ
+      </span>
+    );
     const printFriendOptions = friends.map(friend => (
       <option
         value={JSON.stringify(friend)}
@@ -56,9 +93,19 @@ class MakeInvitation extends Component {
     const printFriendSelected = this.state.friends.map(friend => (
       <span key={friend.id}>{friend.name} </span>
     ))
+    const imgs = this.getImages();
+    const selectedImg = this.state.restaurantImg === ''
+      ? undefined
+      : <img src={`/${this.state.restaurantImg}`} alt="restaurant selected" />;
     return (
-      <div className="MakeInvitation">
-        <h1>Send Invitation to Friends!</h1>
+      <div
+        className="MakeInvitation"
+        style={this.props.style}
+      >
+        <h1>
+          Send Invitation to Friends!
+          {this.props.displayExit && printExit}
+        </h1>
         <div className="select friends">
           <p>Select friends to invite</p>
           <select onChange={this.handleFriendSelect}>
@@ -81,11 +128,19 @@ class MakeInvitation extends Component {
         <div className="select img">
           <p>Select a restaurant image</p>
           <div>
-            
+            <button onClick={() =>
+                this.props.getImages(this.state.restaurant)
+              }
+            >
+              browse images
+            </button>
+            {imgs}
           </div>
         </div>
         <div className="selected img">
           <p>Selected restaurant image</p>
+          {selectedImg}
+          <button className="send">Send Invitation!</button>
         </div>
       </div>
     )
@@ -98,10 +153,12 @@ MakeInvitation.defaultProps = defaultProps;
 const mapStateToProps = state => ({
   onlineFriends : state.friends.onlineFriends,
   offlineFriends: state.friends.offlineFriends,
+  imgs          : state.invitation.imgs,
+  loading       : state.invitation.loading,
 })
 
 const mapDispatchToProps = {
-
+  getImages : dispatchGetImages
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MakeInvitation);

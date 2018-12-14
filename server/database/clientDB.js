@@ -347,6 +347,27 @@ const rsvp = (res, connection, invitation_num, sent_to, status) => {
   })
 }
 
+const getImages = (res, connection, restaurant) => {
+  const query = `SELECT DISTINCT
+                   restaurant_img_path
+                 FROM
+                   post_invitation
+                 WHERE
+                   restaurant = '${restaurant}'`;
+  connection.select(query)
+  .then(img_path => {
+    let imgs = [];
+    for (let i = 0; i < img_path.length; ++i) {
+      imgs.push(img_path[i].restaurant_img_path);
+    }
+    res.json({ status: true, imgs })
+  })
+  .catch(err => {
+    console.log(err);
+    res.json({ status: false })
+  })
+}
+
 const createPost = (res, connection) => {
 
 }
@@ -361,4 +382,5 @@ module.exports = {
   sendMessage   : sendMessage,
   getMessages   : getMessages,
   rsvp          : rsvp,
+  getImages     : getImages,
 }

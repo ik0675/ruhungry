@@ -4,6 +4,7 @@ import { withRouter, Redirect } from 'react-router';
 import { connect } from 'react-redux';
 
 import { dispatchLogout } from '../../actions/login';
+import { dispatchExitInvitation } from '../../actions/invitation';
 
 import './css/index.css';
 
@@ -41,6 +42,19 @@ class Main extends Component {
       );
     }
 
+    const makeInvitation = (
+      <MakeInvitation
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+        displayExit
+        onExit={this.props.exitInvite}
+      />
+    )
+
     return (
       <div id="Main">
         <Header
@@ -53,7 +67,7 @@ class Main extends Component {
         <Posts />
 
          {this.props.chatInfo != null && <Chat />}
-         <MakeInvitation />
+         {this.props.onInvite != null && makeInvitation}
       </div>
     )
   }
@@ -68,11 +82,12 @@ const mapStateToProps = state => ({
   isLogin : state.login.isLogin,
   socket  : state.login.socket,
   chatInfo: state.chat.chatInfo,
-  onInvite: state.friends.invitationReceiver,
+  onInvite: state.invitation.invitationReceiver,
 })
 
 const mapDispatchToProps = {
-  logout: dispatchLogout
+  logout    : dispatchLogout,
+  exitInvite: dispatchExitInvitation,
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

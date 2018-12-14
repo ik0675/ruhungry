@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import * as friendActions from '../../../actions/friends';
 import { dispatchCreateChat } from '../../../actions/chat';
+import { dispatchCreateInvitation } from '../../../actions/invitation';
 
 import FriendAction from './FriendAction';
 
@@ -177,7 +178,7 @@ const mapDispatchToProps = {
   friendConnect   : friendActions.dispatchFriendConnect,
   friendDisconnect: friendActions.dispatchFriendDisconnect,
   createChat      : dispatchCreateChat,
-  createInvitation: friendActions.dispatchCreateInvitation,
+  createInvitation: dispatchCreateInvitation,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FriendList);

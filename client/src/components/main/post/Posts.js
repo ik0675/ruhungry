@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import { dispatchGetPosts, dispatchRSVP } from '../../../actions/posts';
 
+import MakeInvitation from '../invitation/MakeInvitation';
 import InvitationSent from './InvitationSent';
 import InvitationReceived from './InvitationReceived';
 
@@ -99,6 +100,13 @@ class Posts extends Component {
     return (
           <div id="Posts">
             <div id="PostContainer">
+              <MakeInvitation
+                style={{
+                  marginTop : '10px',
+                  marginLeft: '2.5%'
+                }}
+                displayExit={false}
+              />
               { renderPosts }
             </div>
           </div>

@@ -11,7 +11,6 @@ export const LOGOUT     = 'LOGOUT';
 export const GET_FRIENDLIST     = 'GET_FRIENDLIST';
 export const FRIEND_CONNECT     = 'FRIEND_CONNECT';
 export const FRIEND_DISCONNECT  = 'FRIEND_DISCONNECT';
-export const CREATE_INVITATION  = 'CREATE_INVITATION';
 
 // action types for chat
 export const GET_MESSAGES     = 'GET_MESSAGES';
@@ -26,3 +25,9 @@ export const EXIT_CHAT        = 'EXIT_CHAT';
 export const GET_POSTS = 'GET_POSTS';
 export const RSVP_WAIT = 'RSVP_WAIT';
 export const RSVP_DONE = 'RSVP_DONE';
+
+// action types for invitation
+export const CREATE_INVITATION  = 'CREATE_INVITATION';
+export const EXIT_INVITATION    = 'EXIT_INVITATION';
+export const GETTING_IMAGES     = 'GETTING_IMAGES';
+export const LOAD_IMAGES        = 'LOAD_IMAGES';

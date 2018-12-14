@@ -1,17 +1,13 @@
 .MakeInvitation {
-  width: calc(50% - 20px);
-  height: 50%;
-  max-width: 480px;
-  min-height: 300px;
+  width: 95%;
+  max-width: 500px;
+  min-height: 100px;
   padding-left: 10px;
   padding-right: 10px;
+  padding-bottom: 10px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
   background-color: white;
-  border-radius: 10px;
-  border: 1px solid dimGray;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   font-size: 15px;
 }
 
@@ -20,6 +16,10 @@
   padding: 0;
   border-bottom: 1px solid dimGray;
   font-size: 25px;
+}
+.MakeInvitation > h1 > span {
+  float: right;
+  cursor: pointer;
 }
 .MakeInvitation p {
   margin: 0;
@@ -38,11 +38,28 @@
   line-height: 14px;
   max-width: calc(100% - 10px);
 }
+.MakeInvitation button {
+  display: block;
+  background-color: #e3f2fd;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+.MakeInvitation button:active {
+  outline: none;
+  background-color: orange;
+}
+.MakeInvitation button:focus {
+  outline: none;
+}
 
 .MakeInvitation .select.friends,
 .MakeInvitation .select.img {
   display: inline-block;
   width: 50%;
+  vertical-align: top;
 }
 
 .MakeInvitation .type.restaurant {
@@ -55,6 +72,22 @@
 .MakeInvitation .selected.img {
   display: inline-block;
   width: 50%;
-  height: 20px;
+}
+
+.MakeInvitation .select.img p {
+  margin-bottom: 5px;
+}
+.MakeInvitation .select.img img {
+  width: 25%;
+  max-height: 50px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+.MakeInvitation .selected.img img {
+  width: 50%;
+}
+
+.MakeInvitation .send {
+  margin-top: 20px;
   float: right;
 }

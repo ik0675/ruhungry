@@ -4,7 +4,6 @@ const initialState = {
   onlineFriends     : [],
   offlineFriends    : [],
   isLoading         : true,
-  invitationReceiver: null,
 }
 
 export default function friendReducers(state = initialState, action) {
@@ -15,11 +14,6 @@ export default function friendReducers(state = initialState, action) {
       return {
         ...action.data,
         isLoading: false
-      }
-    case types.CREATE_INVITATION:
-      return {
-        ...state,
-        invitationReceiver: action.data,
       }
     default:
       return state;

@@ -116,4 +116,13 @@ module.exports = (app, connection, crypto) => {
     const { invitation_num, sent_to, status } = req.body;
     db.rsvp(res, connection, invitation_num, sent_to, status);
   })
+
+  app.get('/api/getImages', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const restaurant = req.query.restaurant;
+    db.getImages(res, connection, restaurant);
+  })
 }
