@@ -368,19 +368,88 @@ const getImages = (res, connection, restaurant) => {
   })
 }
 
-const createPost = (res, connection) => {
-
+const createInvitation = (res, connection, id, friends, restaurant, restaurant_img_path) => {
+  let values = '';
+  const invitation_num = uuid4();
+  for(let i = 0; i < friends.length; ++i) {
+    friend = friends[i];
+    values += `('${id}', '${friend.id}', NOW(),
+      '${restaurant}', '${restaurant_img_path}', '${invitation_num}')`;
+    if (i < friends.length - 1) {
+      values += ',';
+    }
+  }
+  const query = `INSERT INTO
+                   post_invitation
+                   (
+                     id,
+                     sent_to,
+                     created_at,
+                     restaurant,
+                     restaurant_img_path,
+                     invitation_num
+                   )
+                 VALUES
+                   ${values};
+                 SELECT
+                   GROUP_CONCAT(DISTINCT p.id SEPARATOR ',') inviter_id,
+                   GROUP_CONCAT(DISTINCT a.name SEPARATOR ',') inviter_name,
+                   GROUP_CONCAT(DISTINCT a.img SEPARATOR ',') inviter_img,
+                   GROUP_CONCAT(p.sent_to SEPARATOR ',') receiver_ids,
+                   GROUP_CONCAT(a_.name SEPARATOR ',') receiver_names,
+                   GROUP_CONCAT(a_.img SEPARATOR ',') receiver_imgs,
+                   GROUP_CONCAT(DISTINCT p.created_at SEPARATOR ',') created_at,
+                   GROUP_CONCAT(DISTINCT p.restaurant SEPARATOR ',') restaurant,
+                   GROUP_CONCAT(DISTINCT p.restaurant_img_path SEPARATOR ',') restaurant_img_path,
+                   GROUP_CONCAT(p.status SEPARATOR ',') status,
+                   p.invitation_num
+                 FROM
+                   post_invitation p
+                     JOIN account a
+                       ON p.id=a.id
+                     JOIN account a_
+                       ON p.sent_to=a_.id
+                 WHERE
+                   p.invitation_num = '${invitation_num}'
+                 GROUP BY
+                   p.invitation_num;`;
+  connection.select(query)
+  .then((rows) => {
+    const row = rows[1][0];
+    const receiverIds = row.receiver_ids.split(',');
+    const receiverNames = row.receiver_names.split(',');
+    const status = row.status.split(',');
+    const post = {
+      id                : row.inviter_id,
+      name              : row.inviter_name,
+      img               : row.inviter_img,
+      receiverIds       : receiverIds,
+      receiverNames     : receiverNames,
+      receiverImgs      : row.receiver_imgs,
+      createdAt         : row.created_at,
+      restaurant        : row.restaurant,
+      restaurantImgPath : row.restaurant_img_path,
+      status            : status,
+      invitationNum     : row.invitation_num,
+      isWaiting         : false,
+    }
+    res.json({ status: true, post });
+  })
+  .catch(err => {
+    console.log(err);
+    res.json({ status: false });
+  })
 }
 
 module.exports = {
-  loginWithIdPw : loginWithIdPw,
-  signUp        : signUp,
-  getFriendList : getFriendList,
-  createPost    : createPost,
-  getPosts      : getPosts,
-  getChatNumber : getChatNumber,
-  sendMessage   : sendMessage,
-  getMessages   : getMessages,
-  rsvp          : rsvp,
-  getImages     : getImages,
+  loginWithIdPw   : loginWithIdPw,
+  signUp          : signUp,
+  getFriendList   : getFriendList,
+  getPosts        : getPosts,
+  getChatNumber   : getChatNumber,
+  sendMessage     : sendMessage,
+  getMessages     : getMessages,
+  rsvp            : rsvp,
+  getImages       : getImages,
+  createInvitation: createInvitation,
 }

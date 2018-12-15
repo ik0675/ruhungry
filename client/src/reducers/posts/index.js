@@ -53,6 +53,11 @@ export default function postReducers(state = initialState, action) {
           ...state.posts.slice(index + 1)
         ]
       }
+    case types.NEW_POST:
+      return {
+        ...state,
+        posts: [ action.data, ...state.posts ]
+      }
     default:
       return state;
   }

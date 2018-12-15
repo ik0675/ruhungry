@@ -24,3 +24,24 @@ export const dispatchGetImages = (restaurant) => dispatch => {
 export const dispatchExitInvitation = () => dispatch => {
   dispatch({ type: types.EXIT_INVITATION });
 }
+
+export const dispatchSendInvitation = (friends, restaurant, restaurantImgPath) => dispatch => {
+  fetch('/api/createInvitation', {
+    method  : 'POST',
+    headers : { 'content-type': 'application/json' },
+    body    : JSON.stringify({
+      friends,
+      restaurant,
+      restaurantImgPath
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status) {
+      dispatch({ type: types.EXIT_INVITATION });
+      dispatch({ type: types.NEW_POST, data: data.post });
+    } else {
+      dispatch({ type: types.ERROR });
+    }
+  })
+}

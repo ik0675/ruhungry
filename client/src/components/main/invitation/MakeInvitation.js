@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { dispatchGetImages } from '../../../actions/invitation';
+import { dispatchGetImages, dispatchSendInvitation } from '../../../actions/invitation';
 
 import './css/MakeInvitation.css';
 
@@ -11,6 +11,7 @@ const propTypes = {
   offlineFriends: PropTypes.array.isRequired,
   imgs          : PropTypes.array.isRequired,
   getImages     : PropTypes.func.isRequired,
+  sendInvitation: PropTypes.func.isRequired,
   onExit        : PropTypes.func,
   style         : PropTypes.object,
 }
@@ -25,6 +26,16 @@ class MakeInvitation extends Component {
     friends       : [],
     restaurant    : '',
     restaurantImg : '',
+  }
+
+  sendInvitation = () => {
+    const { friends, restaurant, restaurantImg } = this.state;
+    this.props.sendInvitation(friends, restaurant, restaurantImg);
+    this.setState({
+      friends       : [],
+      restaurant    : '',
+      restaurantImg : '',
+    });
   }
 
   checkIfSelected = (friend) => {
@@ -140,7 +151,12 @@ class MakeInvitation extends Component {
         <div className="selected img">
           <p>Selected restaurant image</p>
           {selectedImg}
-          <button className="send">Send Invitation!</button>
+          <button
+            className="send"
+            onClick={this.sendInvitation}
+          >
+            Send Invitation!
+          </button>
         </div>
       </div>
     )
@@ -158,7 +174,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  getImages : dispatchGetImages
+  getImages     : dispatchGetImages,
+  sendInvitation: dispatchSendInvitation,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MakeInvitation);

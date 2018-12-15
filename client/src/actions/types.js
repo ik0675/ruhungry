@@ -25,6 +25,7 @@ export const EXIT_CHAT        = 'EXIT_CHAT';
 export const GET_POSTS = 'GET_POSTS';
 export const RSVP_WAIT = 'RSVP_WAIT';
 export const RSVP_DONE = 'RSVP_DONE';
+export const NEW_POST  = 'NEW_POST';
 
 // action types for invitation
 export const CREATE_INVITATION  = 'CREATE_INVITATION';

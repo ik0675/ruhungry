@@ -45,14 +45,6 @@ module.exports = (app, connection, crypto) => {
     res.send('loggout');
   });
 
-  app.post('/api/createPost', (req, res) => {
-    const loginInfo = req.session.loginInfo;
-    const id = loginInfo.id;
-    const name = loginInfo.name;
-    const post = req.body.post;
-    db.createPost(res, connection, id, name, post);
-  })
-
   app.get('/api/getPosts', (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
@@ -124,5 +116,12 @@ module.exports = (app, connection, crypto) => {
     }
     const restaurant = req.query.restaurant;
     db.getImages(res, connection, restaurant);
+  })
+
+  app.post('/api/createInvitation', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    const id = loginInfo.id;
+    const { friends, restaurant, restaurantImgPath } = req.body;
+    db.createInvitation(res, connection, id, friends, restaurant, restaurantImgPath);
   })
 }

@@ -14,10 +14,7 @@ export default function invitationReducers(state = initialState, action) {
         invitationReceiver: action.data,
       }
     case types.EXIT_INVITATION:
-      return {
-        ...state,
-        invitationReceiver: null,
-      }
+      return initialState;
     case types.GETTING_IMAGES:
       return {
         ...state,
