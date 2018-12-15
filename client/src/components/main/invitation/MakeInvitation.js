@@ -70,7 +70,8 @@ class MakeInvitation extends Component {
     if (this.props.loading) {
       return <img src="loading.gif" alt="loading" />;
     }
-
+    if (this.props.imgs.length === 0)
+      return undefined;
     return this.props.imgs.map((img, i) => (
       <img
         src={`/${img}`}
