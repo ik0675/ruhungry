@@ -36,3 +36,7 @@ export const dispatchRSVP = (invitation_num, sent_to, status) => dispatch => {
     }
   })
 }
+
+export const dispatchNewPost = (post) => dispatch => {
+  dispatch({ type: types.NEW_POST, data: post });
+}

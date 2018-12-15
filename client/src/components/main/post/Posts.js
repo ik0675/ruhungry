@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { dispatchGetPosts, dispatchRSVP } from '../../../actions/posts';
+import { dispatchGetPosts, dispatchRSVP, dispatchNewPost } from '../../../actions/posts';
 
 import MakeInvitation from '../invitation/MakeInvitation';
 import InvitationSent from './InvitationSent';
@@ -12,6 +12,7 @@ import './css/Posts.css';
 
 const propTypes = {
   id      : PropTypes.string.isRequired,
+  socket  : PropTypes.object.isRequired,
   posts   : PropTypes.array.isRequired,
   getPosts: PropTypes.func.isRequired,
 }
@@ -25,6 +26,12 @@ class Posts extends Component {
     super(props);
 
     this.props.getPosts();
+  }
+
+  componentDidMount() {
+    this.props.socket.on('newInvitation', (invitation) => {
+      this.props.newPost(invitation);
+    });
   }
 
   handlePostChange = (e) => {
@@ -119,12 +126,14 @@ Posts.defaultProps = defaultProps;
 
 const mapStateToProps = state => ({
   id      : state.login.id,
+  socket  : state.login.socket,
   posts   : state.posts.posts,
 })
 
 const mapDispatchToProps = {
   getPosts: dispatchGetPosts,
   rsvp    : dispatchRSVP,
+  newPost : dispatchNewPost,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);

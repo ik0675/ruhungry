@@ -106,8 +106,33 @@ const sendMessage = (io, connection, data) => {
   })
 }
 
+const newInvitation = (io, connection, invitation) => {
+  const receiveIds = '(\'' + invitation.receiverIds.join('\', \'') + '\')';
+  const query = `SELECT
+                   socket_id
+                 FROM
+                   account
+                 WHERE
+                   id IN ${receiveIds}`;
+  console.log(query);
+  connection.select(query)
+  .then(socketIds => {
+    for (let i = 0; i < socketIds.length; ++i) {
+      const socketId = socketIds[i].socket_id;
+      if (socketId !== null) {
+        console.log('sending new invitation to', socketId);
+        io.to(socketId).emit('newInvitation', invitation);
+      }
+    }
+  })
+  .catch(err => {
+    console.log('IO error in newInvitation', err);
+  })
+}
+
 module.exports = {
   updateSocketIdThenEmit: updateSocketIdThenEmit,
   userLogout            : userLogout,
   sendMessage           : sendMessage,
+  newInvitation         : newInvitation,
 }

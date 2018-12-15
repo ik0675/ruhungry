@@ -14,6 +14,7 @@ const propTypes = {
   sendInvitation: PropTypes.func.isRequired,
   onExit        : PropTypes.func,
   style         : PropTypes.object,
+  socket        : PropTypes.object.isRequired,
 }
 
 const defaultProps = {
@@ -29,8 +30,9 @@ class MakeInvitation extends Component {
   }
 
   sendInvitation = () => {
-    const { friends, restaurant, restaurantImg } = this.state;
-    this.props.sendInvitation(friends, restaurant, restaurantImg);
+    const { friends, restaurant, restaurantImg } = { ...this.state };
+    const { socket } = this.props;
+    this.props.sendInvitation(friends, restaurant, restaurantImg, socket);
     this.setState({
       friends       : [],
       restaurant    : '',
@@ -171,6 +173,7 @@ const mapStateToProps = state => ({
   offlineFriends: state.friends.offlineFriends,
   imgs          : state.invitation.imgs,
   loading       : state.invitation.loading,
+  socket        : state.login.socket,
 })
 
 const mapDispatchToProps = {

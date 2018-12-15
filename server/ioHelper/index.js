@@ -14,6 +14,11 @@ module.exports = (io, connection) => {
       db.sendMessage(io, connection, data);
     })
 
+    socket.on('newInvitation', (invitation) => {
+      console.log(`Received new invitation`);
+      db.newInvitation(io, connection, invitation);
+    })
+
     // user logged out
     socket.on('logout', () => {
       let user = { ...socketToId[socket.id] };

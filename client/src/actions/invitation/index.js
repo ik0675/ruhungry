@@ -25,7 +25,7 @@ export const dispatchExitInvitation = () => dispatch => {
   dispatch({ type: types.EXIT_INVITATION });
 }
 
-export const dispatchSendInvitation = (friends, restaurant, restaurantImgPath) => dispatch => {
+export const dispatchSendInvitation = (friends, restaurant, restaurantImgPath, socket) => dispatch => {
   fetch('/api/createInvitation', {
     method  : 'POST',
     headers : { 'content-type': 'application/json' },
@@ -39,6 +39,7 @@ export const dispatchSendInvitation = (friends, restaurant, restaurantImgPath) =
   .then(data => {
     if (data.status) {
       dispatch({ type: types.EXIT_INVITATION });
+      socket.emit('newInvitation', data.post);
       dispatch({ type: types.NEW_POST, data: data.post });
     } else {
       dispatch({ type: types.ERROR });

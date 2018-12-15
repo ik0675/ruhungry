@@ -294,6 +294,7 @@ const getPosts = (res, connection, id, offset) => {
                    FIND_IN_SET('${id}', inviter_id)
                      OR
                    FIND_IN_SET('${id}', receiver_ids)
+                 ORDER BY created_at DESC
                  LIMIT 15
                  OFFSET ${offset}`;
   connection.select(query)
