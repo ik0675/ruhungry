@@ -14,6 +14,7 @@ const propTypes = {
   socket        : PropTypes.object.isRequired,
   chatInfo      : PropTypes.object.isRequired,
   messages      : PropTypes.array.isRequired,
+  loaded        : PropTypes.bool.isRequired,
   exitChat      : PropTypes.func.isRequired,
   sendMessage   : PropTypes.func.isRequired,
   receiveMessage: PropTypes.func.isRequired,
@@ -25,17 +26,15 @@ const defaultProps = {
 }
 
 class Chat extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      message: ''
-    }
-
-    this.props.getMessages(this.props.chatInfo.chatId, 0);
+  state = {
+    message: ''
   }
 
   componentDidMount() {
+    if (!this.props.loaded) {
+      this.props.getMessages(this.props.chatInfo.chatId, 0);
+    }
+
     this.props.socket.on('newMessage', (data) => {
       this.props.receiveMessage(data);
     })
@@ -90,6 +89,7 @@ class Chat extends Component {
           </span>
         </div>
 
+        { !this.props.loaded && <img id="LoadingGif" src="/loading.gif" alt="loading" />}
         <Messages
           id={this.props.id}
           messages={this.props.messages}
@@ -113,6 +113,7 @@ const mapStateToProps = state => ({
   socket  : state.login.socket,
   chatInfo: state.chat.chatInfo,
   messages: state.chat.messages,
+  loaded  : state.chat.loaded,
 })
 
 const mapDispatchToProps = {

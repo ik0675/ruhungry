@@ -14,6 +14,7 @@ const propTypes = {
   id      : PropTypes.string.isRequired,
   socket  : PropTypes.object.isRequired,
   posts   : PropTypes.array.isRequired,
+  loaded  : PropTypes.bool.isRequired,
   getPosts: PropTypes.func.isRequired,
 }
 
@@ -22,13 +23,13 @@ const defaultProps = {
 }
 
 class Posts extends Component {
-  constructor(props) {
-    super(props);
-
-    this.props.getPosts();
-  }
+  makeInvitation = React.createRef();
 
   componentDidMount() {
+    if (!this.props.loaded) {
+      this.props.getPosts();
+    }
+
     this.props.socket.on('newInvitation', (invitation) => {
       this.props.newPost(invitation);
     });
@@ -68,6 +69,26 @@ class Posts extends Component {
   }
 
   render() {
+    if (!this.props.loaded) {
+      return (
+        <div id="Posts">
+          <div id="PostContainer">
+            <MakeInvitation
+              style={{
+                marginTop : '10px',
+                marginLeft: '2.5%'
+              }}
+              ref={this.makeInvitation}
+              displayExit={false}
+            />
+            <div id="LoadingDiv">
+              <img src="/loading.gif" alt="loading" />
+            </div>
+          </div>
+        </div>
+      )
+    }
+
     const posts = this.props.posts;
     const renderPosts = posts.map( (post, i) => {
       if (post.id === this.props.id) {
@@ -128,6 +149,7 @@ const mapStateToProps = state => ({
   id      : state.login.id,
   socket  : state.login.socket,
   posts   : state.posts.posts,
+  loaded  : state.posts.loaded,
 })
 
 const mapDispatchToProps = {

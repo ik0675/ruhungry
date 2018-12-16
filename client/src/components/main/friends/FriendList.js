@@ -29,19 +29,17 @@ const defaultProps = {
 }
 
 class FriendList extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      clickedFriend   : null,
-      toggleChat      : false,
-      toggleInvitation: false,
-    }
-
-    this.props.getFriendList(this.props.id);
+  state = {
+    clickedFriend   : null,
+    toggleChat      : false,
+    toggleInvitation: false,
   }
 
   componentDidMount() {
+    if (this.props.isLoading) {
+      this.props.getFriendList(this.props.id);
+    }
+
     this.props.socket.on('friendConnected', (friend) => {
       const friends = {
         onlineFriends : this.props.onlineFriends,
@@ -88,7 +86,7 @@ class FriendList extends Component {
     if (this.props.isLoading) {
       return (
         <div className="friendList" >
-          loading...
+          <img src="/loading.gif" alt="loading" />
         </div>
       )
     }

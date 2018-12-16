@@ -1,3 +1,10 @@
+.friendList > img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .friend {
   height: 25px;
   list-style: none;

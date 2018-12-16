@@ -5,5 +5,10 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgb(245, 245, 245);;
+  background-color: rgb(245, 245, 245);
+}
+
+#PostContainer #LoadingDiv {
+  width: 100%;
+  text-align: center;
 }

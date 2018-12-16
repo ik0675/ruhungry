@@ -13,11 +13,7 @@ const defaultProps = {
 }
 
 class Messages extends Component {
-  constructor(props) {
-    super(props);
-
-    this.messageRef = React.createRef();
-  }
+  messageRef = React.createRef();
 
   componentDidUpdate() {
     let messageDiv = this.messageRef.current;

@@ -3,6 +3,7 @@ import * as types from '../../actions/types';
 const initialState = {
   messages  : [],
   chatInfo  : null,
+  loaded    : false,
 }
 
 export default function chatReducers(state = initialState, action) {
@@ -17,7 +18,8 @@ export default function chatReducers(state = initialState, action) {
     case types.GET_MESSAGES:
       return {
         ...state,
-        messages: [ ...action.data, ...state.messages ]
+        messages: [ ...action.data, ...state.messages ],
+        loaded  : true,
       }
     case types.NEW_MESSAGE:
       return {
