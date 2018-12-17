@@ -6,7 +6,7 @@ const initialState = {
 }
 
 export default function postReducers(state = initialState, action) {
-  let index, newPost;
+  let index, newPost, posts, post;
   switch(action.type) {
     case types.GET_POSTS:
       return {
@@ -60,6 +60,20 @@ export default function postReducers(state = initialState, action) {
       return {
         ...state,
         posts: [ action.data, ...state.posts ]
+      }
+    case types.RSVP_UPDATE:
+      posts = [ ...state.posts ];
+      for (let i = 0; i < posts.length; ++i) {
+        post = posts[i];
+        if (post.invitationNum === action.data.invitation_num) {
+          index = post.receiverIds.indexOf(action.data.sent_to);
+          post.status[index] = action.data.status;
+          break;
+        }
+      }
+      return {
+        ...state,
+        posts: posts,
       }
     default:
       return state;

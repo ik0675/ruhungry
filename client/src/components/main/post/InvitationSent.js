@@ -24,7 +24,6 @@ class InvitationSent extends Component {
   }
 
   handleToggle = () => {
-    console.log(this.state.toggleStatus)
     this.setState(prevState => ({
       toggleStatus: !prevState.toggleStatus
     }))

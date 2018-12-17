@@ -19,6 +19,10 @@ module.exports = (io, connection) => {
       db.newInvitation(io, connection, invitation);
     })
 
+    socket.on('rsvp', (invitationInfo) => {
+      db.rsvp(io, connection, invitationInfo);
+    })
+
     // user logged out
     socket.on('logout', () => {
       let user = { ...socketToId[socket.id] };

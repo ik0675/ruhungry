@@ -17,7 +17,7 @@ export const dispatchGetPosts = () => dispatch => {
   })
 }
 
-export const dispatchRSVP = (invitation_num, sent_to, status) => dispatch => {
+export const dispatchRSVP = (invitation_num, sent_to, status, socket) => dispatch => {
   dispatch({ type: types.RSVP_WAIT, data: invitation_num });
   fetch('/api/rsvp', {
     method  : 'POST',
@@ -27,6 +27,7 @@ export const dispatchRSVP = (invitation_num, sent_to, status) => dispatch => {
   .then(res => res.json())
   .then(data => {
     if (data.status) {
+      socket.emit('rsvp', { invitation_num, sent_to, status });
       return dispatch({
         type: types.RSVP_DONE,
         data: { invitation_num, status }
@@ -39,4 +40,8 @@ export const dispatchRSVP = (invitation_num, sent_to, status) => dispatch => {
 
 export const dispatchNewPost = (post) => dispatch => {
   dispatch({ type: types.NEW_POST, data: post });
+}
+
+export const dispatchUpdateRSVP = (rsvp) => dispatch => {
+  dispatch({ type: types.RSVP_UPDATE, data: rsvp });
 }

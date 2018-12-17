@@ -130,9 +130,29 @@ const newInvitation = (io, connection, invitation) => {
   })
 }
 
+const rsvp = (io, connection, { invitation_num, sent_to, status }) => {
+  const query = `SELECT DISTINCT
+                   a.socket_id
+                 FROM
+                   post_invitation p
+                     JOIN account a
+                       ON p.id = a.id
+                 WHERE
+                   p.invitation_num = '${invitation_num}'`;
+  connection.select(query)
+  .then(socketIds => {
+    const socketId = socketIds[0].socket_id;
+    if (socketId !== null) {
+      console.log('sending rsvp to', socketId);
+      io.to(socketId).emit('rsvp', { invitation_num, sent_to, status });
+    }
+  })
+}
+
 module.exports = {
   updateSocketIdThenEmit: updateSocketIdThenEmit,
   userLogout            : userLogout,
   sendMessage           : sendMessage,
   newInvitation         : newInvitation,
+  rsvp                  : rsvp,
 }

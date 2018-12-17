@@ -15,11 +15,11 @@ const propTypes = {
   invitationNum       : PropTypes.string.isRequired,
   id                  : PropTypes.string.isRequired,
   isWaiting           : PropTypes.bool.isRequired,
-  acceptDenyInvitation: PropTypes.func,
+  rsvp                : PropTypes.func.isRequired,
 }
 
 const defaultProps = {
-  acceptDenyInvitation: () => { alert('acceptDenyInvitation is not defined!'); }
+
 }
 
 const InvitationReceived = (props) => {
@@ -28,7 +28,7 @@ const InvitationReceived = (props) => {
     restaurantImgPath, userImg, status,
     isWaiting, invitationNum
   } = props;
-  
+
   let invitationStatus;
   if (isWaiting) {
     invitationStatus = () => (

@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { dispatchGetPosts, dispatchRSVP, dispatchNewPost } from '../../../actions/posts';
+import {
+  dispatchGetPosts, dispatchRSVP, dispatchNewPost, dispatchUpdateRSVP
+} from '../../../actions/posts';
 
 import MakeInvitation from '../invitation/MakeInvitation';
 import InvitationSent from './InvitationSent';
@@ -16,6 +18,8 @@ const propTypes = {
   posts   : PropTypes.array.isRequired,
   loaded  : PropTypes.bool.isRequired,
   getPosts: PropTypes.func.isRequired,
+  rsvp    : PropTypes.func.isRequired,
+  newPost : PropTypes.func.isRequired,
 }
 
 const defaultProps = {
@@ -33,6 +37,10 @@ class Posts extends Component {
     this.props.socket.on('newInvitation', (invitation) => {
       this.props.newPost(invitation);
     });
+
+    this.props.socket.on('rsvp', (rsvp) => {
+      this.props.updateRSVP(rsvp);
+    })
   }
 
   handlePostChange = (e) => {
@@ -42,7 +50,7 @@ class Posts extends Component {
   }
 
   handleRSVP = (invitationNum, status) => {
-    this.props.rsvp(invitationNum, this.props.id, status);
+    this.props.rsvp(invitationNum, this.props.id, status, this.props.socket);
   }
 
   onSubmit = (e) => {
@@ -153,9 +161,10 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  getPosts: dispatchGetPosts,
-  rsvp    : dispatchRSVP,
-  newPost : dispatchNewPost,
+  getPosts  : dispatchGetPosts,
+  rsvp      : dispatchRSVP,
+  newPost   : dispatchNewPost,
+  updateRSVP: dispatchUpdateRSVP,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
