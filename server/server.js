@@ -1,23 +1,38 @@
-let express = require('express');
-let info = require('./mysql_info');
-let promiseifyDB = require('./database/promiseifyDB');
-let crypto = require('./cipher');
-let session = require('express-session');
-let mySQLSession = require('express-mysql-session');
+const express = require('express');
+const promiseifyDB = require('./database/promiseifyDB');
+const crypto = require('./cipher');
+const session = require('express-session');
+const mySQLSession = require('express-mysql-session');
 
-let app = express();
-let http = require('http').Server(app);
-let io = require('socket.io')(http);
-let api = require('./api');
-let ioHelper = require('./ioHelper');
-let sessionObj = require('./sessionSecret');
-let mySQLStore = mySQLSession(session);
+const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const api = require('./api');
+const ioHelper = require('./ioHelper');
+const mySQLStore = mySQLSession(session);
 
-let connection = new promiseifyDB(info);
-let sessionStore = new mySQLStore({...info,
-                                   clearExpired: true,
-                                   checkExpirationInterval: 900000,
-                                   connectionLimit: 1});
+const info = {
+  host              : process.env.mysql_ruhungry_host,
+  user              : process.env.mysql_user,
+  password          : process.env.mysql_password,
+  database          : process.env.mysql_ruhungry_database,
+  multipleStatements: true
+}
+
+const sessionObj = {
+  secret: process.env.ruhungry_session_secret,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}
+
+const connection = new promiseifyDB(info);
+const sessionStore = new mySQLStore({
+  ...info,
+  clearExpired: true,
+  checkExpirationInterval: 900000,
+  connectionLimit: 1
+});
 
 connection.connect();
 
@@ -30,5 +45,15 @@ app.use(session({...sessionObj, store: sessionStore}));  // to support session
 
 api(app, connection, crypto);
 ioHelper(io, connection);
+
+// static file declaration
+// app.use(express.static(path.join(__dirname, '../client/build')));
+//
+// // production mode
+// if (process.env.NODE_ENV === 'production') {
+//   app.get('/*', (req, res) => {
+//     res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
+//   });
+// }
 
 http.listen(port, () => console.log(`API server running at ${port}`));

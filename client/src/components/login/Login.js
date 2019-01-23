@@ -21,25 +21,25 @@ class Login extends Component {
     render() {
         return (
             <form onSubmit={ this.props.onSubmit }>
-                <div className="form-group form-group-sm">
-                    <input type="text"
-                           className="form-control"
-                           placeholder="Email"
-                           value={ this.props.id }
-                           onChange={ this.props.handleChange }
-                           name="id"
-                    />
-                </div>
-                <div className="form-group form-group-sm">
-                    <input type="password"
-                           className="form-control"
-                           placeholder="암호"
-                           value={ this.props.password }
-                           onChange={ this.props.handleChange }
-                           name="password"
-                    />
-                </div>
-                <input className="btn btn-mid btn-primary btn-block" type="submit" value="로그인" />
+              <div className="form-group form-group-sm">
+                <input type="text"
+                  className="form-control"
+                  placeholder="Email"
+                  value={ this.props.id }
+                  onChange={ this.props.handleChange }
+                  name="id"
+                />
+              </div>
+              <div className="form-group form-group-sm">
+                <input type="password"
+                  className="form-control"
+                  placeholder="암호"
+                  value={ this.props.password }
+                  onChange={ this.props.handleChange }
+                  name="password"
+                />
+              </div>
+              <input className="btn btn-mid btn-primary btn-block" type="submit" value="로그인" />
             </form>
         );
     }
