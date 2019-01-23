@@ -63,7 +63,8 @@ class MakeInvitation extends Component {
 
   handleChange = (e) => {
     this.setState({ restaurant: e.target.value }, () => {
-      this.props.getRestaurants(this.state.restaurant);
+      if (this.state.restaurant.length > 0)
+        this.props.getRestaurants(this.state.restaurant);
     });
   }
 
@@ -112,10 +113,14 @@ class MakeInvitation extends Component {
     const printFriendSelected = this.state.friends.map(friend => (
       <span key={friend.id}>{friend.name} </span>
     ))
-    const imgs = this.getImages();
-    const selectedImg = this.state.restaurantImg === ''
-      ? undefined
-      : <img src={`/${this.state.restaurantImg}`} alt="restaurant selected" />;
+    let selectedImg = undefined;
+    if (this.props.loading) {
+      selectedImg = <img className="restaurant-loading" src="/loading.gif" alt="loading" />
+    } else {
+      selectedImg = this.props.imgs.length === 0
+        ? undefined
+        : <img className="restaurant-selected" src={`/${this.props.imgs[0]}`} alt="restaurant selected" />;
+    }
     return (
       <div
         className="MakeInvitation"
@@ -140,21 +145,11 @@ class MakeInvitation extends Component {
           restaurant={this.state.restaurant}
           handleChange={this.handleChange}
         />
-      {/*<div className="select img">
-          <p>Select a restaurant image</p>
-          <div>
-            <button onClick={() =>
-                this.props.getImages(this.state.restaurant)
-              }
-            >
-              browse images
-            </button>
-            {imgs}
-          </div>
-        </div>*/}
         <div className="selected img">
           <p>Selected restaurant image</p>
-          {selectedImg}
+          <div className="img-panel">
+            {selectedImg}
+          </div>
           <button
             className="send"
             onClick={this.sendInvitation}

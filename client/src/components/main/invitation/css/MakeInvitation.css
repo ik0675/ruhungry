@@ -83,6 +83,7 @@
 .MakeInvitation .selected.img {
   display: inline-block;
   width: 100%;
+  position: relative;
 }
 
 .MakeInvitation .select.img p {
@@ -94,8 +95,18 @@
   margin-bottom: 5px;
   cursor: pointer;
 }
-.MakeInvitation .selected.img img {
+.MakeInvitation .selected.img .img-panel {
+  width: 100%;
+}
+.img-panel .restaurant-selected {
   width: 50%;
+}
+.img-panel .restaurant-loading {
+  position: absolute;
+  width: 20%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .MakeInvitation .send {

@@ -13,10 +13,14 @@
   width: 250px;
   min-height: 30px;
   background-color: white;
+  z-index: 2;
 }
 
 .RestaurantSearch-restaurants-panel > p {
   padding-bottom: 5px;
+}
+.RestaurantSearch-restaurants-panel > p[selected] {
+  background-color: blue;
 }
 .RestaurantSearch-restaurants-panel > .noRestaurant {
   color: lightgray;
