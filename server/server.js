@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const promiseifyDB = require('./database/promiseifyDB');
 const crypto = require('./cipher');
@@ -46,14 +47,14 @@ app.use(session({...sessionObj, store: sessionStore}));  // to support session
 api(app, connection, crypto);
 ioHelper(io, connection);
 
-// static file declaration
-// app.use(express.static(path.join(__dirname, '../client/build')));
-//
-// // production mode
-// if (process.env.NODE_ENV === 'production') {
-//   app.get('/*', (req, res) => {
-//     res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
-//   });
-// }
+//static file declaration
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+// production mode
+if (process.env.NODE_ENV === 'production') {
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
+  });
+}
 
 http.listen(port, () => console.log(`API server running at ${port}`));
