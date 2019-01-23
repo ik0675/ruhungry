@@ -12,15 +12,15 @@ const ioHelper = require('./ioHelper');
 const mySQLStore = mySQLSession(session);
 
 const info = {
-  host              : process.env.mysql_ruhungry_host,
-  user              : process.env.mysql_user,
-  password          : process.env.mysql_password,
-  database          : process.env.mysql_ruhungry_database,
+  host              : process.env.MYSQL_HOST,
+  user              : process.env.MYSQL_USER,
+  password          : process.env.MYSQL_PASSWORD,
+  database          : process.env.MYSQL_RUHUNGRY_DATABASE,
   multipleStatements: true
 }
 
 const sessionObj = {
-  secret: process.env.ruhungry_session_secret,
+  secret: process.env.RUHUNGRY_SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false }
