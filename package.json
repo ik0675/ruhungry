@@ -2,11 +2,12 @@
   "name": "ruhungry",
   "version": "1.0.0",
   "description": "ruhungry dev app",
-  "main": "server.js",
+  "main": "server/server.js",
   "scripts": {
-    "client": "cd client && yarn start",
+    "client": "cd client && npm install && npm run start",
     "server": "cd server && nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+		"start": "node server/server.js"
   },
   "repository": {
     "type": "git",
