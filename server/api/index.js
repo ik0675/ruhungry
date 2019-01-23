@@ -124,4 +124,13 @@ module.exports = (app, connection, crypto) => {
     const { friends, restaurant, restaurantImgPath } = req.body;
     db.createInvitation(res, connection, id, friends, restaurant, restaurantImgPath);
   })
+
+  app.get(`/api/restaurant/:restaurant`, (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const restaurant = req.params.restaurant;
+    db.restaurantSearch(res, connection, restaurant);
+  })
 }

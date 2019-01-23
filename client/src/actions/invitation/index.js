@@ -46,3 +46,17 @@ export const dispatchSendInvitation = (friends, restaurant, restaurantImgPath, s
     }
   })
 }
+
+export const dispatchGetRestaurants = (restaurant) => dispatch => {
+  fetch(`/api/restaurant/${restaurant}`)
+  .then(res => res.json())
+  .then(data => {
+    if (data.status) {
+      return dispatch({
+        type: types.RESTAURANT_NAMES,
+        data: data.restaurants
+      });
+    }
+    return dispatch({ type: types.ERROR });
+  })
+}

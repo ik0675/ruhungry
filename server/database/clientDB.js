@@ -442,6 +442,27 @@ const createInvitation = (res, connection, id, friends, restaurant, restaurant_i
   })
 }
 
+const restaurantSearch = (res, connection, restaurant) => {
+  const query = `SELECT DISTINCT
+                   restaurant
+                 FROM
+                   post_invitation
+                 WHERE
+                   restaurant LIKE '%${restaurant}%'`;
+  connection.select(query)
+  .then(rows => {
+    let restaurants = [];
+    for (let i = 0; i < rows.length; ++i) {
+      restaurants.push(rows[i].restaurant);
+    }
+    res.json({ status: true, restaurants });
+  })
+  .catch(err => {
+    console.log(err);
+    res.json({ status: false })
+  })
+}
+
 module.exports = {
   loginWithIdPw   : loginWithIdPw,
   signUp          : signUp,
@@ -453,4 +474,5 @@ module.exports = {
   rsvp            : rsvp,
   getImages       : getImages,
   createInvitation: createInvitation,
+  restaurantSearch: restaurantSearch,
 }

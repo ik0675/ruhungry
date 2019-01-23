@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { dispatchGetImages, dispatchSendInvitation } from '../../../actions/invitation';
+import { dispatchGetImages, dispatchSendInvitation, dispatchGetRestaurants } from '../../../actions/invitation';
+
+import RestaurantSearch from './RestaurantSearch';
 
 import './css/MakeInvitation.css';
 
@@ -12,6 +14,7 @@ const propTypes = {
   imgs          : PropTypes.array.isRequired,
   getImages     : PropTypes.func.isRequired,
   sendInvitation: PropTypes.func.isRequired,
+  getRestaurants: PropTypes.func.isRequired,
   onExit        : PropTypes.func,
   style         : PropTypes.object,
   socket        : PropTypes.object.isRequired,
@@ -59,7 +62,9 @@ class MakeInvitation extends Component {
   }
 
   handleChange = (e) => {
-    this.setState({ restaurant: e.target.value })
+    this.setState({ restaurant: e.target.value }, () => {
+      this.props.getRestaurants(this.state.restaurant);
+    });
   }
 
   selectRestaurantImg = (img) => {
@@ -131,15 +136,11 @@ class MakeInvitation extends Component {
           <p>Selected friends</p>
           {printFriendSelected}
         </div>
-        <div className="type restaurant">
-          Restaurant :
-          <input
-            placeholder="restaurant name"
-            value={this.state.restaurant}
-            onChange={this.handleChange}
-          />
-        </div>
-        <div className="select img">
+        <RestaurantSearch
+          restaurant={this.state.restaurant}
+          handleChange={this.handleChange}
+        />
+      {/*<div className="select img">
           <p>Select a restaurant image</p>
           <div>
             <button onClick={() =>
@@ -150,7 +151,7 @@ class MakeInvitation extends Component {
             </button>
             {imgs}
           </div>
-        </div>
+        </div>*/}
         <div className="selected img">
           <p>Selected restaurant image</p>
           {selectedImg}
@@ -180,6 +181,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   getImages     : dispatchGetImages,
   sendInvitation: dispatchSendInvitation,
+  getRestaurants: dispatchGetRestaurants,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MakeInvitation);
