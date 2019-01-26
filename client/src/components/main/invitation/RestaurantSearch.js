@@ -38,10 +38,12 @@ class RestaurantSearch extends Component {
     if (this.state.index === -1) {
       this.props.getImages(this.props.restaurant);
     } else {
-      this.props.getImages(this.props.restaurants[this.state.index]);
+      const restaurant = this.props.restaurants[this.state.index ];
+      this.props.handleChange({ target: { value: restaurant }}, () => {
+        this.props.getImages(this.props.restaurants[this.state.index]);
+      });
     }
     this.setState({ inFocus: false, index: -1 });
-    this.props.handleChange({ target: { value: "" } });
   }
 
   handleKeyDown = (e) => {

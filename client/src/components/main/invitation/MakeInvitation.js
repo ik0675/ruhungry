@@ -33,13 +33,16 @@ class MakeInvitation extends Component {
   }
 
   sendInvitation = () => {
-    const { friends, restaurant, restaurantImg } = { ...this.state };
-    const { socket } = this.props;
-    this.props.sendInvitation(friends, restaurant, restaurantImg, socket);
-    this.setState({
-      friends       : [],
-      restaurant    : '',
-      restaurantImg : '',
+    const img = this.props.imgs[0];
+    this.setState({ restaurantImg: img }, () => {
+      const { friends, restaurant, restaurantImg } = { ...this.state };
+      const { socket } = this.props;
+      this.props.sendInvitation(friends, restaurant, restaurantImg, socket);
+      this.setState({
+        friends       : [],
+        restaurant    : '',
+        restaurantImg : '',
+      });
     });
   }
 
@@ -66,26 +69,6 @@ class MakeInvitation extends Component {
       if (this.state.restaurant.length > 0)
         this.props.getRestaurants(this.state.restaurant);
     });
-  }
-
-  selectRestaurantImg = (img) => {
-    this.setState({ restaurantImg: img });
-  }
-
-  getImages = () => {
-    if (this.props.loading) {
-      return <img src="loading.gif" alt="loading" />;
-    }
-    if (this.props.imgs.length === 0)
-      return undefined;
-    return this.props.imgs.map((img, i) => (
-      <img
-        src={`/${img}`}
-        alt="restaurant"
-        key={i}
-        onClick={() => this.selectRestaurantImg(img)}
-      />
-    ));
   }
 
   render() {
