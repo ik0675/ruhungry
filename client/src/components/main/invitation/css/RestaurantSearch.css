@@ -16,12 +16,22 @@
   z-index: 2;
 }
 
-.RestaurantSearch-restaurants-panel > p {
+.restaurantNames {
   padding-bottom: 5px;
+  cursor: pointer;
 }
-.RestaurantSearch-restaurants-panel > p[selected] {
-  background-color: blue;
+
+.RestaurantSearch-restaurants-panel {
+  padding: 0;
 }
+
+.RestaurantSearch-restaurants-panel > p {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  border-bottom: 1px solid lightgray;
+}
+
 .RestaurantSearch-restaurants-panel > .noRestaurant {
   color: lightgray;
 }

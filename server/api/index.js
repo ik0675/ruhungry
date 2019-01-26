@@ -133,4 +133,15 @@ module.exports = (app, connection, crypto) => {
     const restaurant = req.params.restaurant;
     db.restaurantSearch(res, connection, restaurant);
   })
+
+  app.get('/api/addRestaurant/:restaurant/:imgPath', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    // const { restaurant, imgPath } = req.body;
+    const { restaurant, imgPath } = req.params;
+    console.log('params', restaurant, imgPath);
+    db.addRestaurant(res, connection, restaurant, imgPath);
+  })
 }

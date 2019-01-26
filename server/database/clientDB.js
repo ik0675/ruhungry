@@ -350,16 +350,16 @@ const rsvp = (res, connection, invitation_num, sent_to, status) => {
 
 const getImages = (res, connection, restaurant) => {
   const query = `SELECT DISTINCT
-                   restaurant_img_path
+                   img_path
                  FROM
-                   post_invitation
+                   restaurants
                  WHERE
-                   restaurant = '${restaurant}'`;
+                   name = '${restaurant}'`;
   connection.select(query)
   .then(img_path => {
     let imgs = [];
     for (let i = 0; i < img_path.length; ++i) {
-      imgs.push(img_path[i].restaurant_img_path);
+      imgs.push(img_path[i].img_path);
     }
     res.json({ status: true, imgs })
   })
@@ -444,22 +444,60 @@ const createInvitation = (res, connection, id, friends, restaurant, restaurant_i
 
 const restaurantSearch = (res, connection, restaurant) => {
   const query = `SELECT DISTINCT
-                   restaurant
+                   name
                  FROM
-                   post_invitation
+                   restaurants
                  WHERE
-                   restaurant LIKE '%${restaurant}%'`;
+                   name LIKE '%${restaurant}%'`;
   connection.select(query)
   .then(rows => {
     let restaurants = [];
     for (let i = 0; i < rows.length; ++i) {
-      restaurants.push(rows[i].restaurant);
+      restaurants.push(rows[i].name);
     }
     res.json({ status: true, restaurants });
   })
   .catch(err => {
     console.log(err);
     res.json({ status: false })
+  })
+}
+
+const addRestaurant = (res, conn, restaurant, imgPath) => {
+  let query = `SELECT
+                 name
+               FROM
+                 restaurants
+               WHERE
+                 name = '${restaurant}'`;
+  conn.select(query)
+  .then(rows => {
+    if (rows.length > 0) {
+      res.json({ status: false, data: 'Restaurant by the name given already exists' });
+      return false;
+    } else {
+      query = `INSERT INTO
+                 restaurants
+                   (
+                     name,
+                     img_path
+                   )
+               VALUES
+                 (
+                   '${restaurant}',
+                   '${imgPath}'
+                 )`;
+      return conn.insert(query);
+    }
+  })
+  .then(result => {
+    if (result) {
+      res.json({ status: true, data: 'Restaurant successfully added to the system'});
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.json({ status: false });
   })
 }
 
@@ -475,4 +513,5 @@ module.exports = {
   getImages       : getImages,
   createInvitation: createInvitation,
   restaurantSearch: restaurantSearch,
+  addRestaurant   : addRestaurant,
 }

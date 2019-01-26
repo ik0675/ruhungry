@@ -22,16 +22,10 @@ class RestaurantSearch extends Component {
     inFocus: false,
     index: -1,
   }
+  inputRef = React.createRef();
 
   handleFocus = () => {
     this.setState({ inFocus: true });
-  }
-
-  handleFocusOut = () => {
-    this.setState({ inFocus: false });
-    if (this.props.restaurant.length > 0) {
-      this.props.getImages(this.props.restaurant);
-    }
   }
 
   submitRestaurantName = () => {
@@ -39,10 +33,10 @@ class RestaurantSearch extends Component {
       this.props.getImages(this.props.restaurant);
     } else {
       const restaurant = this.props.restaurants[this.state.index ];
-      this.props.handleChange({ target: { value: restaurant }}, () => {
-        this.props.getImages(this.props.restaurants[this.state.index]);
-      });
+      this.props.handleChange({ target: { value: restaurant }});
+      this.props.getImages(restaurant);
     }
+    this.inputRef.current.focus();
     this.setState({ inFocus: false, index: -1 });
   }
 
@@ -83,6 +77,7 @@ class RestaurantSearch extends Component {
         restaurants = this.props.restaurants.map((restaurant, i) => {
           return (
             <p
+              className="restaurantNames"
               key={`restaurantNames${i}`}
               style={{
                 backgroundColor: i === this.state.index ? 'blue' : 'white',
@@ -100,17 +95,35 @@ class RestaurantSearch extends Component {
       } else if (this.props.restaurant.length === 0) {
         restaurants = <p className="noRestaurant">Please type a restaurant name</p>
       }
-      showRestaurantNames = <div className="RestaurantSearch-restaurants-panel">{restaurants}</div>
+      showRestaurantNames = (
+        <div className="RestaurantSearch-restaurants-panel">
+          {restaurants}
+          <div
+            style={{
+              margin: '0',
+              textAlign: 'right',
+              color: 'gray',
+              backgroundColor: 'lightgray',
+              paddingTop: '5px',
+              paddingBottom: '5px',
+              cursor: 'pointer'
+            }}
+            onClick={() => this.setState({ inFocus: false })}
+          >
+            CLOSE
+          </div>
+        </div>
+      )
     }
     return (
       <div className="type restaurant">
         <span>Restaurant :</span>
         <input
+          ref={this.inputRef}
           placeholder="restaurant name"
           value={this.props.restaurant}
           onChange={this.handleChange}
           onFocus={this.handleFocus}
-          onBlur={this.handleFocusOut}
           onKeyDown={this.handleKeyDown}
         />
         {showRestaurantNames}
