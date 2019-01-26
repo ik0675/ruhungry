@@ -22,10 +22,13 @@ class RestaurantSearch extends Component {
     inFocus: false,
     index: -1,
   }
-  inputRef = React.createRef();
 
   handleFocus = () => {
     this.setState({ inFocus: true });
+  }
+
+  handleFocusOut = () => {
+    this.setState({ inFocus: false });
   }
 
   submitRestaurantName = () => {
@@ -36,7 +39,6 @@ class RestaurantSearch extends Component {
       this.props.handleChange({ target: { value: restaurant }});
       this.props.getImages(restaurant);
     }
-    this.inputRef.current.focus();
     this.setState({ inFocus: false, index: -1 });
   }
 
@@ -82,7 +84,7 @@ class RestaurantSearch extends Component {
               style={{
                 backgroundColor: i === this.state.index ? 'blue' : 'white',
               }}
-              onClick={() => {
+              onMouseDown={() => {
                 this.setState({ index: i }, () => {
                   this.submitRestaurantName();
                 });
@@ -116,10 +118,9 @@ class RestaurantSearch extends Component {
       )
     }
     return (
-      <div className="type restaurant">
+      <div className="type restaurant" onBlur={this.handleFocusOut}>
         <span>Restaurant :</span>
         <input
-          ref={this.inputRef}
           placeholder="restaurant name"
           value={this.props.restaurant}
           onChange={this.handleChange}
