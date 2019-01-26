@@ -6,6 +6,7 @@
   left: 50%;
   transform: translateX(-50%);
   background-color: rgb(245, 245, 245);
+  padding-bottom: 10px;
 }
 
 #PostContainer #LoadingDiv {
