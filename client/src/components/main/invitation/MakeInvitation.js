@@ -102,7 +102,7 @@ class MakeInvitation extends Component {
     } else {
       selectedImg = this.props.imgs.length === 0
         ? undefined
-        : <img className="restaurant-selected" src={`/${this.props.imgs[0]}`} alt="restaurant selected" />;
+        : <img className="restaurant-selected" src={`/images/${this.props.imgs[0]}`} alt="restaurant selected" />;
     }
     return (
       <div

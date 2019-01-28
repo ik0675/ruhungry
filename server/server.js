@@ -47,14 +47,16 @@ app.use(session({...sessionObj, store: sessionStore}));  // to support session
 api(app, connection, crypto);
 ioHelper(io, connection);
 
-//static file declaration
-app.use(express.static(path.join(__dirname, '../client/build')));
-
 // production mode
 if (process.env.NODE_ENV === 'production') {
+  //static file declaration
+  app.use(express.static(path.join(__dirname, '../client/build')));
   app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
   });
+} else {
+  // dev mode
+  app.use(express.static(path.join(__dirname, '../client/public')));
 }
 
 http.listen(port, () => console.log(`API server running at ${port}`));

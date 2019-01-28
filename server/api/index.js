@@ -1,4 +1,7 @@
-let db = require('../database/clientDB');
+const db = require('../database/clientDB');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+const path = require('path');
 
 module.exports = (app, connection, crypto) => {
   app.post('/api/login', (req, res) => {
@@ -134,14 +137,20 @@ module.exports = (app, connection, crypto) => {
     db.restaurantSearch(res, connection, restaurant);
   })
 
-  app.get('/api/addRestaurant/:restaurant/:imgPath', (req, res) => {
+  app.post('/api/addRestaurant', upload.single('file'), (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
     }
-    // const { restaurant, imgPath } = req.body;
-    const { restaurant, imgPath } = req.params;
-    console.log('params', restaurant, imgPath);
-    db.addRestaurant(res, connection, restaurant, imgPath);
+    const { restaurant } = req.body;
+    const tempPath = path.join(__dirname, '../', req.file.path);
+    const imgName = `${restaurant}.${req.file.originalname.split('.').pop()}`;
+    let imgPath;
+    if (process.env.NODE_ENV === 'production') {
+      imgPath = path.join(__dirname, '../../client/build/images', imgName);
+    } else {
+      imgPath = path.join(__dirname, '../../client/public/images', imgName);
+    }
+    db.addRestaurant(res, connection, restaurant, tempPath, imgPath, imgName);
   })
 }

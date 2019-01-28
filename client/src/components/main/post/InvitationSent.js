@@ -66,8 +66,8 @@ class InvitationSent extends Component {
         />
         {showRSVP}
         <div className="invitation top">
-          <img src={`/${restaurantImgPath}`} alt="restaurant"/>
-          <img src={`/${userImg}`} alt="user" />
+          <img src={`/images/${restaurantImgPath}`} alt="restaurant"/>
+          <img src={`/images/${userImg}`} alt="user" />
         </div>
       </div>
     )

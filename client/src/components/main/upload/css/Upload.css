@@ -3,12 +3,59 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 50%;
+  width: 100%;
   max-width: 500px;
-  height: 30%;
-  max-height: 300px;
+  height: 100%;
+  max-height: 200px;
   background-color: white;
   z-index: 2;
-  border: 1px solid black;
+  border: 1px solid lightgray;
   border-radius: 5px;
+  padding: 10px;
+}
+
+.Upload > h1 {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid dimGray;
+  font-size: 25px;
+}
+.Upload > h1 > span {
+  float: right;
+  cursor: pointer;
+}
+
+.Upload > form {
+  margin-top: 10px;
+}
+.Upload p {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.Upload input {
+  display: inline-block;
+  width: 50%;
+  height: 25px;
+  padding-left: 10px;
+}
+.Upload img {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  magin-top: 40px;
+  float: right;
+}
+.Upload button {
+  background-color: #e3f2fd;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 40px;
+  float: right;
+  font-size: 15px;
+}
+.Upload .formResult {
+  margin-top: 10px;
+  font-weight: bold;
 }

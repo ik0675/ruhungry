@@ -1,4 +1,5 @@
 const uuid4 = require('uuid/v4');
+const fileSystem = require('../api/fileSystem');
 
 // database queries related to client
 const loginWithIdPw = (req, res, connection, id, password) => {
@@ -463,7 +464,7 @@ const restaurantSearch = (res, connection, restaurant) => {
   })
 }
 
-const addRestaurant = (res, conn, restaurant, imgPath) => {
+const addRestaurant = (res, conn, restaurant, tempPath, imgPath, imgName) => {
   let query = `SELECT
                  name
                FROM
@@ -473,7 +474,7 @@ const addRestaurant = (res, conn, restaurant, imgPath) => {
   conn.select(query)
   .then(rows => {
     if (rows.length > 0) {
-      res.json({ status: false, data: 'Restaurant by the name given already exists' });
+      res.json({ status: false, msg: 'Restaurant by the name given already exists.' });
       return false;
     } else {
       query = `INSERT INTO
@@ -485,19 +486,19 @@ const addRestaurant = (res, conn, restaurant, imgPath) => {
                VALUES
                  (
                    '${restaurant}',
-                   '${imgPath}'
+                   '${imgName}'
                  )`;
       return conn.insert(query);
     }
   })
   .then(result => {
     if (result) {
-      res.json({ status: true, data: 'Restaurant successfully added to the system'});
+      fileSystem(res, tempPath, imgPath);
     }
   })
   .catch(err => {
     console.log(err);
-    res.json({ status: false });
+    res.json({ status: false, msg: 'System err. Please try again.' });
   })
 }
 
