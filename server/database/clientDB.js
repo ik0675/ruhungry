@@ -370,52 +370,68 @@ const getImages = (res, connection, restaurant) => {
   })
 }
 
-const createInvitation = (res, connection, id, friends, restaurant, restaurant_img_path) => {
-  let values = '';
-  const invitation_num = uuid4();
-  for(let i = 0; i < friends.length; ++i) {
-    friend = friends[i];
-    values += `('${id}', '${friend.id}', NOW(),
-      '${restaurant}', '${restaurant_img_path}', '${invitation_num}')`;
-    if (i < friends.length - 1) {
-      values += ',';
-    }
-  }
-  const query = `INSERT INTO
-                   post_invitation
-                   (
-                     id,
-                     sent_to,
-                     created_at,
-                     restaurant,
-                     restaurant_img_path,
-                     invitation_num
-                   )
-                 VALUES
-                   ${values};
-                 SELECT
-                   GROUP_CONCAT(DISTINCT p.id SEPARATOR ',') inviter_id,
-                   GROUP_CONCAT(DISTINCT a.name SEPARATOR ',') inviter_name,
-                   GROUP_CONCAT(DISTINCT a.img SEPARATOR ',') inviter_img,
-                   GROUP_CONCAT(p.sent_to SEPARATOR ',') receiver_ids,
-                   GROUP_CONCAT(a_.name SEPARATOR ',') receiver_names,
-                   GROUP_CONCAT(a_.img SEPARATOR ',') receiver_imgs,
-                   GROUP_CONCAT(DISTINCT p.created_at SEPARATOR ',') created_at,
-                   GROUP_CONCAT(DISTINCT p.restaurant SEPARATOR ',') restaurant,
-                   GROUP_CONCAT(DISTINCT p.restaurant_img_path SEPARATOR ',') restaurant_img_path,
-                   GROUP_CONCAT(p.status SEPARATOR ',') status,
-                   p.invitation_num
-                 FROM
-                   post_invitation p
-                     JOIN account a
-                       ON p.id=a.id
-                     JOIN account a_
-                       ON p.sent_to=a_.id
-                 WHERE
-                   p.invitation_num = '${invitation_num}'
-                 GROUP BY
-                   p.invitation_num;`;
+const createInvitation = (res, connection, id, friends, restaurant) => {
+  let query = `SELECT
+                 img_path AS restaurant_img_path
+               FROM
+                 restaurants
+               WHERE
+                 name = '${restaurant}'`;
   connection.select(query)
+  .then(restaurants => {
+    if (restaurants.length > 1) {
+      throw new Error('multiple restaurant image files for name = ' + restaurant);
+    } else {
+      console.log('friends', friends);
+      const restaurant_img_path = restaurants[0].restaurant_img_path;
+      let values = '';
+      const invitation_num = uuid4();
+      for(let i = 0; i < friends.length; ++i) {
+        friend = friends[i];
+        values += `('${id}', '${friend.id}', NOW(),
+          '${restaurant}', '${restaurant_img_path}', '${invitation_num}')`;
+        if (i < friends.length - 1) {
+          values += ',';
+        }
+      }
+      query = `INSERT INTO
+                 post_invitation
+                 (
+                   id,
+                   sent_to,
+                   created_at,
+                   restaurant,
+                   restaurant_img_path,
+                   invitation_num
+                 )
+               VALUES
+                 ${values};
+               SELECT
+                 GROUP_CONCAT(DISTINCT p.id SEPARATOR ',') inviter_id,
+                 GROUP_CONCAT(DISTINCT a.name SEPARATOR ',') inviter_name,
+                 GROUP_CONCAT(DISTINCT a.img SEPARATOR ',') inviter_img,
+                 GROUP_CONCAT(p.sent_to SEPARATOR ',') receiver_ids,
+                 GROUP_CONCAT(a_.name SEPARATOR ',') receiver_names,
+                 GROUP_CONCAT(a_.img SEPARATOR ',') receiver_imgs,
+                 GROUP_CONCAT(DISTINCT p.created_at SEPARATOR ',') created_at,
+                 GROUP_CONCAT(DISTINCT p.restaurant SEPARATOR ',') restaurant,
+                 GROUP_CONCAT(DISTINCT p.restaurant_img_path SEPARATOR ',') restaurant_img_path,
+                 GROUP_CONCAT(p.status SEPARATOR ',') status,
+                 p.invitation_num
+               FROM
+                 post_invitation p
+                   JOIN account a
+                     ON p.id=a.id
+                   JOIN account a_
+                     ON p.sent_to=a_.id
+               WHERE
+                 p.invitation_num = '${invitation_num}'
+               GROUP BY
+                 p.invitation_num;`;
+      console.log(query);
+      return connection.select(query)
+    }
+  })
   .then((rows) => {
     const row = rows[1][0];
     const receiverIds = row.receiver_ids.split(',');
