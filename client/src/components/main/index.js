@@ -13,6 +13,7 @@ import FriendList from './friends/FriendList';
 import Posts from './post/Posts';
 import Chat from './chat/Chat';
 import MakeInvitation from './invitation/MakeInvitation';
+import Upload from './upload';
 
 const propTypes = {
   id      : PropTypes.string.isRequired,
@@ -21,6 +22,7 @@ const propTypes = {
   socket  : PropTypes.object,
   chatInfo: PropTypes.object,
   onInvite: PropTypes.object,
+  upload  : PropTypes.bool.isRequired,
   logout  : PropTypes.func.isRequired,
 }
 
@@ -68,6 +70,7 @@ class Main extends Component {
 
          {this.props.chatInfo != null && <Chat />}
          {this.props.onInvite != null && makeInvitation}
+         {this.props.upload && <Upload />}
       </div>
     )
   }
@@ -83,6 +86,7 @@ const mapStateToProps = state => ({
   socket  : state.login.socket,
   chatInfo: state.chat.chatInfo,
   onInvite: state.invitation.invitationReceiver,
+  upload  : state.upload.toggle,
 })
 
 const mapDispatchToProps = {

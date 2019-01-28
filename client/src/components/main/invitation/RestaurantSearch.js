@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { dispatchGetImages } from '../../../actions/invitation';
+import { dispatchToggleUpload } from '../../../actions/upload';
 
 import './css/RestaurantSearch.css';
 
@@ -11,6 +12,7 @@ const propTypes = {
   restaurants : PropTypes.array.isRequired,
   handleChange: PropTypes.func.isRequired,
   getImages   : PropTypes.func.isRequired,
+  toggleUpload: PropTypes.func.isRequired,
 }
 
 const defaultProps = {
@@ -21,6 +23,7 @@ class RestaurantSearch extends Component {
   state = {
     inFocus: false,
     index: -1,
+    upload: false,
   }
 
   handleFocus = () => {
@@ -102,17 +105,20 @@ class RestaurantSearch extends Component {
           {restaurants}
           <div
             style={{
+              width: '100%',
               margin: '0',
-              textAlign: 'right',
               color: 'gray',
               backgroundColor: 'lightgray',
               paddingTop: '5px',
               paddingBottom: '5px',
+              paddingLeft: '5px',
+              paddingRight: '5px',
               cursor: 'pointer'
             }}
             onClick={() => this.setState({ inFocus: false })}
           >
-            CLOSE
+            <span onMouseDown={this.props.toggleUpload}>Add a restaurant</span>
+            <span style={{ display: 'inline-block', float: 'right'}}>CLOSE</span>
           </div>
         </div>
       )
@@ -133,12 +139,16 @@ class RestaurantSearch extends Component {
   }
 }
 
+RestaurantSearch.propTypes = propTypes;
+RestaurantSearch.defaultProps = defaultProps;
+
 const mapStateToProps = state => ({
   restaurants: state.invitation.restaurants,
 })
 
 const mapDispatchToProps = {
-  getImages: dispatchGetImages,
+  getImages   : dispatchGetImages,
+  toggleUpload: dispatchToggleUpload,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RestaurantSearch);

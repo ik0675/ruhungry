@@ -34,3 +34,6 @@ export const EXIT_INVITATION    = 'EXIT_INVITATION';
 export const GETTING_IMAGES     = 'GETTING_IMAGES';
 export const LOAD_IMAGES        = 'LOAD_IMAGES';
 export const RESTAURANT_NAMES   = 'RESTAURANT_NAMES';
+
+// action types for upload
+export const TOGGLE_UPLOAD = 'TOGGLE_UPLOAD';

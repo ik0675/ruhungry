@@ -5,6 +5,7 @@ import friendReducers from './friends';
 import chatReducers from './chat';
 import postReducers from './posts';
 import invitationReducers from './invitation';
+import uploadReducers from './upload';
 
 export default combineReducers({
   login     : loginReducers,
@@ -12,4 +13,5 @@ export default combineReducers({
   chat      : chatReducers,
   posts     : postReducers,
   invitation: invitationReducers,
+  upload    : uploadReducers,
 });
