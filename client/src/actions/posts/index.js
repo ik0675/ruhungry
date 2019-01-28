@@ -30,7 +30,7 @@ export const dispatchRSVP = (invitation_num, sent_to, status, socket) => dispatc
       socket.emit('rsvp', { invitation_num, sent_to, status });
       return dispatch({
         type: types.RSVP_DONE,
-        data: { invitation_num, status }
+        data: { invitation_num, sent_to, status }
       });
     } else {
       return dispatch({ type: types.ERROR });

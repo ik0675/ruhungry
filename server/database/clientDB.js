@@ -382,7 +382,6 @@ const createInvitation = (res, connection, id, friends, restaurant) => {
     if (restaurants.length > 1) {
       throw new Error('multiple restaurant image files for name = ' + restaurant);
     } else {
-      console.log('friends', friends);
       const restaurant_img_path = restaurants[0].restaurant_img_path;
       let values = '';
       const invitation_num = uuid4();
@@ -428,7 +427,6 @@ const createInvitation = (res, connection, id, friends, restaurant) => {
                  p.invitation_num = '${invitation_num}'
                GROUP BY
                  p.invitation_num;`;
-      console.log(query);
       return connection.select(query)
     }
   })

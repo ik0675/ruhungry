@@ -43,9 +43,22 @@ export default function postReducers(state = initialState, action) {
         return state;
       }
 
+      const origPost = state.posts[index];
+      let sentToIndex = 0;
+      for (; sentToIndex < origPost.receiverIds.length; ++sentToIndex) {
+        if (origPost.receiverIds[sentToIndex] === action.data.sent_to) {
+          break;
+        }
+      }
+      if (sentToIndex === origPost.receiverIds.length) {
+        return state;
+      }
+      let newStatus = [ ...state.posts[index].status ];
+      newStatus[sentToIndex] = action.data.status;
+
       newPost = {
         ...state.posts[index],
-        status    : action.data.status,
+        status    : newStatus,
         isWaiting : false
       }
       return {
