@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter, Redirect } from 'react-router';
+import { withRouter, Redirect, Route, Switch } from 'react-router';
 import { connect } from 'react-redux';
 
 import { dispatchLogout } from '../../actions/login';
@@ -14,6 +14,8 @@ import Posts from './post/Posts';
 import Chat from './chat/Chat';
 import MakeInvitation from './invitation/MakeInvitation';
 import Upload from './upload';
+import Account from './account';
+import FindFriends from './findFriends';
 
 const propTypes = {
   id      : PropTypes.string.isRequired,
@@ -67,7 +69,20 @@ class Main extends Component {
 
         <FriendList />
 
-        <Posts />
+        <Switch>
+          <Route
+            path="/main/account"
+            component={Account}
+          />
+          <Route
+            path="/main/findFriends"
+            component={FindFriends}
+          />
+          <Route
+            path="/main"
+            component={Posts}
+          />
+        </Switch>
 
          {this.props.chatInfo != null && <Chat />}
          {this.props.onInvite != null && makeInvitation}

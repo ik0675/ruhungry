@@ -42,7 +42,7 @@ function Header(props) {
             <span> | </span>
             <span
               onClick={() => {
-                props.history.push(`/main/account/${props.id}`);
+                props.history.push(`/main/findFriends`);
               }}
               role="img"
               aria-label="friend"
