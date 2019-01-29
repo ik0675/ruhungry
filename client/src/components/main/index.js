@@ -71,7 +71,7 @@ class Main extends Component {
 
         <Switch>
           <Route
-            path="/main/account"
+            path="/main/account/:id"
             component={Account}
           />
           <Route

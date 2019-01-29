@@ -153,4 +153,13 @@ module.exports = (app, connection, crypto) => {
     }
     db.addRestaurant(res, connection, restaurant, tempPath, imgPath, imgName);
   })
+
+  app.get('/api/loadAccount/:id', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const id = req.params.id;
+    db.getAccountInfo(res, connection, id);
+  });
 }

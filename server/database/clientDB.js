@@ -516,6 +516,30 @@ const addRestaurant = (res, conn, restaurant, tempPath, imgPath, imgName) => {
   })
 }
 
+const getAccountInfo = (res, connection, id) => {
+  const query = `SELECT
+                   name,
+                   img
+                 FROM
+                   account
+                 WHERE
+                   id = '${id}'`;
+  connection.select(query)
+  .then(account => {
+    const { name, img } = account[0];
+    return res.json({
+      status: true,
+      id,
+      name,
+      userImg : img,
+    })
+  })
+  .catch(err => {
+    console.log(err);
+    return res.json({ status: false });
+  })
+}
+
 module.exports = {
   loginWithIdPw   : loginWithIdPw,
   signUp          : signUp,
@@ -529,4 +553,5 @@ module.exports = {
   createInvitation: createInvitation,
   restaurantSearch: restaurantSearch,
   addRestaurant   : addRestaurant,
+  getAccountInfo  : getAccountInfo,
 }

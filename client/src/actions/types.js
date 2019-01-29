@@ -36,8 +36,12 @@ export const LOAD_IMAGES        = 'LOAD_IMAGES';
 export const RESTAURANT_NAMES   = 'RESTAURANT_NAMES';
 
 // action types for upload
-export const UPLOAD_RESET = 'UPLOAD_RESET';
-export const TOGGLE_UPLOAD = 'TOGGLE_UPLOAD';
+export const UPLOAD_RESET   = 'UPLOAD_RESET';
+export const TOGGLE_UPLOAD  = 'TOGGLE_UPLOAD';
 export const UPLOAD_LOADING = 'UPLOAD_LOADING';
 export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
-export const UPLOAD_FAIL = 'UPLOAD_FAIL';
+export const UPLOAD_FAIL    = 'UPLOAD_FAIL';
+
+// action types for account page
+export const LOAD_ACCOUNT     = 'LOAD_ACCOUNT';
+export const LOAD_ACCOUNT_ERR = 'LOAD_ACCOUNT_ERR';
