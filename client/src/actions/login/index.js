@@ -21,9 +21,10 @@ export const dispatchLogin = ({ id, password }) => dispatch => {
       return dispatch({
         type: types.LOGIN,
         data: {
-          id    : data.user.id,
-          name  : data.user.name,
-          socket: socket,
+          id      : data.user.id,
+          name    : data.user.name,
+          userImg : data.user.userImg,
+          socket  : socket,
         }
       })
     }
@@ -73,9 +74,10 @@ export const dispatchCheckSession = () => dispatch => {
     return dispatch({
       type: types.LOGIN,
       data: {
-        id    : data.user.id,
-        name  : data.user.name,
-        socket: socket,
+        id      : data.user.id,
+        name    : data.user.name,
+        userImg : data.user.userImg,
+        socket  : socket,
       }
     })
   })

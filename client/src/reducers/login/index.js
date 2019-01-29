@@ -3,6 +3,7 @@ import * as types from '../../actions/types';
 const initialState = {
   id      : '',
   name    : '',
+  userImg : '',
   socket  : null,
   isLogin : 'pending',
   msg     : null,
@@ -14,6 +15,7 @@ export default function loginReducers(state = initialState, action) {
       return {
         id      : action.data.id,
         name    : action.data.name,
+        userImg : action.data.userImg,
         socket  : action.data.socket,
         isLogin : 'true',
         msg     : null
