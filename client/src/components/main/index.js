@@ -60,6 +60,7 @@ class Main extends Component {
     return (
       <div id="Main">
         <Header
+          id={this.props.id}
           name={this.props.name}
           handleLogout={this.handleLogout}
         />

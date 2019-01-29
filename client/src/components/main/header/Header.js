@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 import './css/Header.css';
 
 const propTypes = {
+  id          : PropTypes.string.isRequired,
   name        : PropTypes.string.isRequired,
   handleLogout: PropTypes.func.isRequired,
 }
@@ -19,7 +21,7 @@ function Header(props) {
         <div className="container-fluid">
           <a
             className="navbar-brand navbar-left"
-            href="localhost:3000"
+            href="/main"
           >
             <img
               className="nav-logo"
@@ -29,11 +31,30 @@ function Header(props) {
               height="30"
             /> RUHungry
           </a>
-
           <div className="navbar-text navbar-right">
-            Hello, {props.name}
-            <button className="logout
-            Button" onClick={props.handleLogout}>로그아웃</button>
+            <span
+              onClick={() => {
+                props.history.push(`/main/account/${props.id}`);
+              }}
+            >
+              {props.name}
+            </span>
+            <span> | </span>
+            <span
+              onClick={() => {
+                props.history.push(`/main/account/${props.id}`);
+              }}
+              role="img"
+              aria-label="friend"
+            >
+              👫
+            </span>
+            <button
+              className="logoutButton"
+              onClick={props.handleLogout}
+            >
+              Sign Out
+            </button>
           </div>
         </div>
       </nav>
@@ -44,4 +65,4 @@ function Header(props) {
 Header.propTypes = propTypes;
 Header.defaultProps = defaultProps;
 
-export default Header;
+export default withRouter(Header);

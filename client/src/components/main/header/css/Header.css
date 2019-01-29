@@ -6,6 +6,10 @@
 
 .navbar-right > button {
   margin-left: 10px;
+  border-radius: 5px;
+  background-color: white;
+  outline: 0;
+  cursor: pointer;
 }
 
 .nav-logo {
@@ -15,4 +19,12 @@
 
 .navbar-default {
   background-color: #e3f2fd;
+}
+
+.navbar-right > span {
+  cursor: pointer;
+}
+.navbar-right > span:hover,
+.navbar-right > span:active {
+  color: lightgray;
 }
