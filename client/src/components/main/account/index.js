@@ -7,6 +7,7 @@ import { dispatchLoadAccountInfo } from '../../../actions/account';
 import './css/Account.css';
 
 const propTypes = {
+  myId    : PropTypes.string.isRequired,
   id      : PropTypes.string.isRequired,
   name    : PropTypes.string.isRequired,
   userImg : PropTypes.string.isRequired,
@@ -23,7 +24,7 @@ class Account extends Component {
   };
 
   render() {
-    const { id, name, userImg, loaded } = this.props;
+    const { myId, id, name, userImg, loaded } = this.props;
     if (!loaded) {
       return (
         <div className="Account">
@@ -31,11 +32,42 @@ class Account extends Component {
           <img src="/loading.gif" alt="loading" />
         </div>
       )
+    } else if (id === '') {
+      return (
+        <div className="Account">
+          <p>The ID requested doesn't exist...</p>
+          <p>This is most likely because the user deactivated the account</p>
+        </div>
+      )
     }
     return (
       <div className="Account">
         <img src={`/images/${userImg}`} alt="user" />
-        <p>{name}</p>
+        <p className="account-info">
+          {name}
+          {myId !== id && <button>Send friend request</button>}
+        </p>
+        <div className="Account-panel">
+          <div className="Account-invitations">
+            <hr />
+            <p>Invitations</p>
+            <hr />
+          </div>
+          {myId === id &&
+            <div className="Account-friendRequest">
+              <hr />
+              <p>Friend Requests</p>
+              <hr />
+            </div>
+          }
+          {myId === id &&
+            <div className="Account-chat">
+              <hr />
+              <p>Open Chat Rooms</p>
+              <hr />
+            </div>
+          }
+        </div>
       </div>
     );
   };
@@ -44,6 +76,7 @@ class Account extends Component {
 Account.propTypes = propTypes;
 
 const mapStateToProps = state => ({
+  myId    : state.login.id,
   id      : state.account.id,
   name    : state.account.name,
   userImg : state.account.userImg,
