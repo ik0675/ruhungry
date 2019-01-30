@@ -28,6 +28,10 @@ const propTypes = {
 };
 
 class Account extends Component {
+  state = {
+    invitation: 2
+  };
+
   componentDidMount() {
     const id = this.props.match.params.id;
     if (!this.props.loaded) {
@@ -39,6 +43,12 @@ class Account extends Component {
       const id = this.props.myId;
       const friend_id = this.props.id;
       this.props.isFriends(id, friend_id);
+    }
+  }
+
+  handleInvitationFilter = (num) => {
+    if (this.state.invitation !== num) {
+      this.setState({ invitation: num });
     }
   }
 
@@ -110,9 +120,37 @@ class Account extends Component {
         <div className="Account-panel">
           <div className="Account-invitations">
             <hr />
-            <p>Invitations</p>
+            <div className="invitation-filter-buttons">
+              Invitations
+              <div>
+                <button
+                  active={this.state.invitation === 0 ? 'true' : 'false'}
+                  onClick={() => { this.handleInvitationFilter(0); }}
+                >
+                  Sent
+                </button>
+                <span> / </span>
+                <button
+                  active={this.state.invitation === 1 ? 'true' : 'false'}
+                  onClick={() => { this.handleInvitationFilter(1); }}
+                >
+                  Received
+                </button>
+                <span> / </span>
+                <button
+                  active={this.state.invitation === 2 ? 'true' : 'false'}
+                  onClick={() => { this.handleInvitationFilter(2); }}
+                >
+                  All
+                </button>
+              </div>
+            </div>
             <hr />
-            <Posts makePost={false} page="account" />
+            <Posts
+              makePost={false}
+              page="account"
+              filter={this.state.invitation}
+            />
           </div>
           {myId === id &&
             <div className="Account-friendRequest">

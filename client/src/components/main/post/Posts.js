@@ -22,11 +22,13 @@ const propTypes = {
   newPost : PropTypes.func.isRequired,
   makePost: PropTypes.bool,
   page    : PropTypes.string,
+  filter  : PropTypes.number,
 }
 
 const defaultProps = {
   makePost: true,
   page    : 'main',
+  filter  : 2,
 }
 
 class Posts extends Component {
@@ -102,9 +104,9 @@ class Posts extends Component {
       )
     }
 
-    const posts = this.props.posts;
+    const { posts, filter } = this.props;
     const renderPosts = posts.map( (post, i) => {
-      if (post.id === this.props.id) {
+      if ((filter === 2 || filter === 0) && post.id === this.props.id) {
         return (
           <InvitationSent
             key={post.invitationNum}
@@ -116,7 +118,7 @@ class Posts extends Component {
             status={post.status}
           />
         );
-      } else {
+      } else if (filter === 2 || filter === 1) {
         let status = post.status;
         if (status.constructor === Array) {
           const index = post.receiverIds.indexOf(this.props.id);

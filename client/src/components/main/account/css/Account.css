@@ -63,6 +63,24 @@
   }
 }
 
-.Account-panel > div > p {
+.Account-panel > div > p,
+.Account-panel > div > .invitation-filter-buttons {
   padding-left: 20px;
+}
+
+.invitation-filter-buttons > div {
+  float: right;
+  margin-right: 20px;
+}
+.invitation-filter-buttons button {
+  outline: 0;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+}
+.invitation-filter-buttons button[active="true"] {
+  border: 0;
+  background-color: skyblue;
+  color: white;
+  cursor: default;
 }
