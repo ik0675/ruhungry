@@ -162,4 +162,23 @@ module.exports = (app, connection, crypto) => {
     const id = req.params.id;
     db.getAccountInfo(res, connection, id);
   });
+
+  app.post('/api/isFriends', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const { id, friend_id } = req.body;
+    db.isFriends(res, connection, id, friend_id);
+  });
+
+  app.post('/api/friendRequest', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const id = req.session.loginInfo.id;
+    const friend_id = req.body.friend_id;
+    db.friendRequest(res, connection, id, friend_id);
+  });
 }

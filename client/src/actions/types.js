@@ -43,5 +43,9 @@ export const UPLOAD_SUCCESS = 'UPLOAD_SUCCESS';
 export const UPLOAD_FAIL    = 'UPLOAD_FAIL';
 
 // action types for account page
-export const LOAD_ACCOUNT     = 'LOAD_ACCOUNT';
-export const LOAD_ACCOUNT_ERR = 'LOAD_ACCOUNT_ERR';
+export const LOAD_ACCOUNT       = 'LOAD_ACCOUNT';
+export const LOAD_ACCOUNT_ERR   = 'LOAD_ACCOUNT_ERR';
+export const FRIEND_REQUEST     = 'FRIEND_REQUEST';
+export const LOADING_FRIEND     = 'LOADING_FRIEND';
+export const FRIEND_REQUEST_ERR = 'FRIEND_REQUEST_ERR';
+export const FRIEND_REQUEST_SENT= 'FRIEND_REQUEST_SENT';

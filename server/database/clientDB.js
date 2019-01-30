@@ -540,6 +540,71 @@ const getAccountInfo = (res, connection, id) => {
   })
 }
 
+const isFriends = (res, connection, id, friend_id) => {
+  const query = `SELECT
+                   id,
+                   friend_id
+                 FROM
+                   friend_list
+                 WHERE
+                   id = '${id}'
+                     AND
+                   friend_id = '${friend_id}'`;
+  connection.select(query)
+  .then(result => {
+    if (result.length > 0) {
+      // already friends
+      return res.json({ status: true, data: 'friend' });
+    }
+    isFriendRequestSent(res, connection, id, friend_id);
+  })
+  .catch(err => {
+    console.log(err);
+    return res.json({ status: false });
+  })
+}
+
+const isFriendRequestSent = (res, connection, id, friend_id) => {
+  const query = `SELECT
+                   id,
+                   friend_id
+                 FROM
+                   friend_request
+                 WHERE
+                   id = '${id}'
+                     AND
+                   friend_id = '${friend_id}'`;
+  connection.select(query)
+  .then(result => {
+    if (result.length > 0) {
+      return res.json({ status: true, data: 'sent' });
+    }
+    return res.json({ status: true, data: 'not sent' });
+  })
+}
+
+const friendRequest = (res, connection, id ,friend_id) => {
+  const query = `INSERT INTO
+                   friend_request
+                   (
+                     id,
+                     friend_id
+                   )
+                 VALUES
+                   (
+                     '${id}',
+                     '${friend_id}'
+                   )`;
+  connection.insert(query)
+  .then(result => {
+    return res.json({ status: true });
+  })
+  .catch(err => {
+    console.log(err);
+    return res.json({ status: false });
+  })
+}
+
 module.exports = {
   loginWithIdPw   : loginWithIdPw,
   signUp          : signUp,
@@ -554,4 +619,6 @@ module.exports = {
   restaurantSearch: restaurantSearch,
   addRestaurant   : addRestaurant,
   getAccountInfo  : getAccountInfo,
+  isFriends       : isFriends,
+  friendRequest   : friendRequest,
 }

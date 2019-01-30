@@ -12,11 +12,30 @@
 .Account > .account-info {
   padding-top: 10px;
 }
+.Account > .account-info > img {
+  margin-left: 10px;
+  width: 15px;
+  height: 15px;
+}
 .Account > .account-info > button {
   margin-left: 10px;
   border-radius: 5px;
   outline: 0;
   background-color: white;
+  cursor: pointer;
+}
+.Account > .account-info > .btn-friend {
+  background-color: skyblue;
+  border: 0;
+}
+.Account > .account-info > .btn-sent {
+  background-color: lightgray;
+  border: 0;
+}
+.Account > .account-info > .btn-err {
+  background-color: black;
+  color: white;
+  border: 0;  
 }
 
 .Account > .Account-panel {
