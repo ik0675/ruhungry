@@ -10,6 +10,7 @@ import {
 
 import FriendRequests from './FriendRequests';
 import Posts from '../post/Posts';
+import ChatRooms from '../chat';
 
 import './css/Account.css';
 
@@ -126,6 +127,7 @@ class Account extends Component {
               <hr />
               <p>Open Chat Rooms</p>
               <hr />
+              <ChatRooms />
             </div>
           }
         </div>
