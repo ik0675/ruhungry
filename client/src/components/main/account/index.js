@@ -41,7 +41,7 @@ class Account extends Component {
   }
 
   sendFriendRequest = _ => {
-    const { id, myId } = this.props;
+    const { id } = this.props;
     this.props.friendRequest(id);
   };
 
