@@ -607,7 +607,7 @@ const friendRequest = (res, connection, id ,friend_id) => {
 
 const getFriendRequests = (res, connection, id) => {
   const query = `SELECT
-                   f.num, a.name, a.img
+                   f.num, f.id, a.name, a.img
                  FROM
                    friend_request f
                      inner join account a
@@ -621,11 +621,43 @@ const getFriendRequests = (res, connection, id) => {
       const request = requests[i];
       result.push({
         num : request.num,
+        id  : request.id,
         name: request.name,
-        img : request.img
+        img : request.img,
       });
     }
     return res.json({ status: true, friendRequests: result });
+  })
+  .catch(err => {
+    console.log(err);
+    return res.json({ status: false });
+  })
+}
+
+const makeFriends = (res, connection, num, id, requestId, status) => {
+  let query = `DELETE FROM
+                 friend_request
+               WHERE
+                 num = '${num}';`;
+  if (status) {
+    query += `INSERT INTO
+                friend_list
+                (
+                  id, friend_id
+                )
+              VALUES
+                (
+                  '${id}',
+                  '${requestId}'
+                ),
+                (
+                  '${requestId}',
+                  '${id}'
+                )`;
+  }
+  connection.insert(query)
+  .then(result => {
+    return res.json({ status: true });
   })
   .catch(err => {
     console.log(err);
@@ -650,4 +682,5 @@ module.exports = {
   isFriends,
   friendRequest,
   getFriendRequests,
+  makeFriends,
 }

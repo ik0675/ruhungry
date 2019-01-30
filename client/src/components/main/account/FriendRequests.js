@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { dispatchGetFriendRequests } from '../../../actions/account';
+import { dispatchGetFriendRequests, dispatchMakeFriends } from '../../../actions/account';
 
 import FriendRequest from './FriendRequest';
 
@@ -33,9 +33,19 @@ class FriendRequests extends Component {
         <img src="/loading.gif" alt="loading" />
       )
     }
-    const requests = this.props.friendRequests.map((request, i) => (
-      <FriendRequest friendRequest={request} key={`request${i}`} />
-    ));
+    let requests;
+    if (this.props.friendRequests.length > 0) {
+      requests = this.props.friendRequests.map((request, i) => (
+        <FriendRequest
+          friendRequest={request}
+          key={`request${i}`}
+          makeFriends={this.props.makeFriends}
+          index={i}
+        />
+      ));
+    } else {
+      requests = <p>No more friend requests</p>
+    }
     return (
       <div className="FriendRequests">
         {requests}
@@ -51,7 +61,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  getFriendRequests: dispatchGetFriendRequests,
+  getFriendRequests : dispatchGetFriendRequests,
+  makeFriends       : dispatchMakeFriends,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FriendRequests);

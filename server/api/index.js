@@ -190,4 +190,14 @@ module.exports = (app, connection, crypto) => {
     const id = req.session.loginInfo.id;
     db.getFriendRequests(res, connection, id);
   });
+
+  app.post('/api/makeFriends', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const id = req.session.loginInfo.id;
+    const { num, requestId, status } = req.body;
+    db.makeFriends(res, connection, num, id, requestId, status);
+  });
 }

@@ -72,3 +72,18 @@ export const dispatchGetFriendRequests = handleLoaded => dispatch => {
     return dispatch({ type: types.LOAD_ACCOUNT_ERR });
   })
 }
+
+export const dispatchMakeFriends = (num, requestId, status, index) => dispatch => {
+  fetch('/api/makeFriends', {
+    method  : 'POST',
+    headers : { 'content-type': 'application/json' },
+    body    : JSON.stringify({ num, requestId, status })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status) {
+      return dispatch({ type: types.MAKE_FRIENDS, data: index });
+    }
+    return dispatch({ type: types.LOAD_ACCOUNT_ERR });
+  })
+}

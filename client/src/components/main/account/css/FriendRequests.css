@@ -5,3 +5,8 @@
   flex-direction: column;
   align-items: stretch;
 }
+
+.FriendRequests > p {
+  text-align: center;
+  font-style: italic;
+}

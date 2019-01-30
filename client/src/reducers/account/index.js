@@ -49,10 +49,16 @@ export default function accountReducers(state = initialState, action) {
         friendStatus: action.data ? 'sent' : 'err'
       }
     case types.GET_FRIEND_REQUESTS:
-      console.log(action.data)
       return {
         ...state,
         friendRequests: action.data
+      }
+    case types.MAKE_FRIENDS:
+      const friendRequests = [ ...state.friendRequests ];
+      friendRequests.splice(action.data, 1);
+      return {
+        ...state,
+        friendRequests,
       }
     default:
       return state;
