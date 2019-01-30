@@ -20,10 +20,13 @@ const propTypes = {
   getPosts: PropTypes.func.isRequired,
   rsvp    : PropTypes.func.isRequired,
   newPost : PropTypes.func.isRequired,
+  makePost: PropTypes.bool,
+  page    : PropTypes.string,
 }
 
 const defaultProps = {
-
+  makePost: true,
+  page    : 'main',
 }
 
 class Posts extends Component {
@@ -79,16 +82,18 @@ class Posts extends Component {
   render() {
     if (!this.props.loaded) {
       return (
-        <div id="Posts">
-          <div id="PostContainer">
-            <MakeInvitation
-              style={{
-                marginTop : '10px',
-                marginLeft: '2.5%'
-              }}
-              ref={this.makeInvitation}
-              displayExit={false}
-            />
+        <div id="Posts" page={this.props.page} >
+          <div id="PostContainer" page={this.props.page} >
+            {this.props.makePost &&
+              <MakeInvitation
+                style={{
+                  marginTop : '10px',
+                  marginLeft: '2.5%'
+                }}
+                ref={this.makeInvitation}
+                displayExit={false}
+              />
+            }
             <div id="LoadingDiv">
               <img src="/loading.gif" alt="loading" />
             </div>
@@ -134,15 +139,17 @@ class Posts extends Component {
     });
 
     return (
-          <div id="Posts">
-            <div id="PostContainer">
-              <MakeInvitation
-                style={{
-                  marginTop : '10px',
-                  marginLeft: '2.5%'
-                }}
-                displayExit={false}
-              />
+          <div id="Posts" page={this.props.page} >
+            <div id="PostContainer" page={this.props.page} >
+              {this.props.makePost &&
+                <MakeInvitation
+                  style={{
+                    marginTop : '10px',
+                    marginLeft: '2.5%'
+                  }}
+                  displayExit={false}
+                />
+              }
               { renderPosts }
             </div>
           </div>

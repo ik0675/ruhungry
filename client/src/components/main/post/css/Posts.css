@@ -1,12 +1,17 @@
 #PostContainer {
-  position: absolute;
+  position: relative;
   width: 100%;
   max-width: 500px;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
   background-color: rgb(245, 245, 245);
+  padding-top: 5px;
   padding-bottom: 10px;
+}
+#PostContainer[page="account"] {
+  padding-top: 0;
+  background-color: white;
 }
 
 #PostContainer #LoadingDiv {

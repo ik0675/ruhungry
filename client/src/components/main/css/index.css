@@ -26,13 +26,19 @@
   }
 }
 
-#Posts,
+#Posts[page="main"],
 .Account,
 .FindFriends {
   position: relative;
   width: calc(100% - 150px);
   top: 60px;
   left: 150px;
+}
+#Posts[page="account"] {
+  position: relative;
+  width: 100%;
+  top: 0;
+  left: 0;
 }
 @media screen and (max-width: 500px) {
   #Posts,

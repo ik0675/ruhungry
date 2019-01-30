@@ -9,6 +9,7 @@ import {
 } from '../../../actions/account';
 
 import FriendRequests from './FriendRequests';
+import Posts from '../post/Posts';
 
 import './css/Account.css';
 
@@ -110,6 +111,7 @@ class Account extends Component {
             <hr />
             <p>Invitations</p>
             <hr />
+            <Posts makePost={false} page="account" />
           </div>
           {myId === id &&
             <div className="Account-friendRequest">
