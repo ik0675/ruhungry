@@ -16,10 +16,11 @@ const propTypes = {
   id                  : PropTypes.string.isRequired,
   isWaiting           : PropTypes.bool.isRequired,
   rsvp                : PropTypes.func.isRequired,
+  filter              : PropTypes.bool,
 }
 
 const defaultProps = {
-
+  filter: true,
 }
 
 const InvitationReceived = (props) => {
@@ -75,7 +76,7 @@ const InvitationReceived = (props) => {
     }
   }
   return (
-    <div className="Post-invitation">
+    <div className="Post-invitation" style={{ display: props.filter ? 'block' : 'none' }} >
       <InvitationInfo
         inviter={inviter}
         receivers={receivers}

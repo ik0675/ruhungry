@@ -12,10 +12,11 @@ const propTypes = {
   restaurantImgPath   : PropTypes.string.isRequired,
   userImg             : PropTypes.string.isRequired,
   status              : PropTypes.arrayOf(PropTypes.string).isRequired,
+  filter              : PropTypes.bool
 }
 
 const defaultProps = {
-
+  filter: true,
 }
 
 class InvitationSent extends Component {
@@ -57,7 +58,7 @@ class InvitationSent extends Component {
       )
     }
     return (
-      <div className="Post-invitation">
+      <div className="Post-invitation" style={{ display: this.props.filter ? 'block' : 'none' }} >
         <InvitationInfo
           inviter={inviter}
           receivers={receivers}

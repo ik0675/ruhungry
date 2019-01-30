@@ -106,7 +106,7 @@ class Posts extends Component {
 
     const { posts, filter } = this.props;
     const renderPosts = posts.map( (post, i) => {
-      if ((filter === 2 || filter === 0) && post.id === this.props.id) {
+      if (post.id === this.props.id) {
         return (
           <InvitationSent
             key={post.invitationNum}
@@ -116,9 +116,10 @@ class Posts extends Component {
             restaurantImgPath={post.restaurantImgPath}
             userImg={post.img}
             status={post.status}
+            filter={filter !== 1}
           />
         );
-      } else if (filter === 2 || filter === 1) {
+      } else {
         let status = post.status;
         if (status.constructor === Array) {
           const index = post.receiverIds.indexOf(this.props.id);
@@ -136,6 +137,7 @@ class Posts extends Component {
                  isWaiting={post.isWaiting}
                  rsvp={this.handleRSVP}
                  invitationNum={post.invitationNum}
+                 filter={filter !== 0}
                />
       }
     });
