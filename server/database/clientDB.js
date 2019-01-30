@@ -605,20 +605,49 @@ const friendRequest = (res, connection, id ,friend_id) => {
   })
 }
 
+const getFriendRequests = (res, connection, id) => {
+  const query = `SELECT
+                   f.num, a.name, a.img
+                 FROM
+                   friend_request f
+                     inner join account a
+                     ON a.id = f.id
+                 WHERE
+                   f.friend_id = '${id}'`;
+  connection.select(query)
+  .then(requests => {
+    let result = [];
+    for (let i = 0; i < requests.length; ++i) {
+      const request = requests[i];
+      result.push({
+        num : request.num,
+        name: request.name,
+        img : request.img
+      });
+    }
+    return res.json({ status: true, friendRequests: result });
+  })
+  .catch(err => {
+    console.log(err);
+    return res.json({ status: false });
+  })
+}
+
 module.exports = {
-  loginWithIdPw   : loginWithIdPw,
-  signUp          : signUp,
-  getFriendList   : getFriendList,
-  getPosts        : getPosts,
-  getChatNumber   : getChatNumber,
-  sendMessage     : sendMessage,
-  getMessages     : getMessages,
-  rsvp            : rsvp,
-  getImages       : getImages,
-  createInvitation: createInvitation,
-  restaurantSearch: restaurantSearch,
-  addRestaurant   : addRestaurant,
-  getAccountInfo  : getAccountInfo,
-  isFriends       : isFriends,
-  friendRequest   : friendRequest,
+  loginWithIdPw,
+  signUp,
+  getFriendList,
+  getPosts,
+  getChatNumber,
+  sendMessage,
+  getMessages,
+  rsvp,
+  getImages,
+  createInvitation,
+  restaurantSearch,
+  addRestaurant,
+  getAccountInfo,
+  isFriends,
+  friendRequest,
+  getFriendRequests,
 }

@@ -1,0 +1,7 @@
+.FriendRequests {
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+  flex-direction: column;
+  align-items: stretch;
+}

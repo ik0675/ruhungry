@@ -181,4 +181,13 @@ module.exports = (app, connection, crypto) => {
     const friend_id = req.body.friend_id;
     db.friendRequest(res, connection, id, friend_id);
   });
+
+  app.get('/api/getFriendRequests', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const id = req.session.loginInfo.id;
+    db.getFriendRequests(res, connection, id);
+  });
 }

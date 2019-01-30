@@ -57,3 +57,18 @@ export const dispatchIsFriends = (id, friend_id) => dispatch => {
     return dispatch({ type: types.FRIEND_REQUEST_ERR });
   })
 }
+
+export const dispatchGetFriendRequests = handleLoaded => dispatch => {
+  fetch('/api/getFriendRequests')
+  .then(res => res.json())
+  .then(data => {
+    if (data.status) {
+      dispatch({
+        type: types.GET_FRIEND_REQUESTS,
+        data: data.friendRequests,
+      });
+      handleLoaded();
+    }
+    return dispatch({ type: types.LOAD_ACCOUNT_ERR });
+  })
+}

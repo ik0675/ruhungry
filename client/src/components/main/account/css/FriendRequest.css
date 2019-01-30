@@ -1,0 +1,56 @@
+.FriendRequest {
+  flex: 1;
+  height: 50px;
+  background-color: skyblue;
+  display: flex;
+  flex-direction: flex-start;
+  align-items: stretch;
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.FriendRequest-user {
+  flex: 0.6;
+  overflow: hidden;
+}
+.FriendRequest-user > img {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  height: 30px;
+  width: 20%;
+  float: left;
+}
+.FriendRequest-user > p {
+  line-height: 50px;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.FriendRequest-buttons {
+  flex: 0.4;
+  display: flex;
+}
+.FriendRequest-buttons > button {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 10px;
+  flex: 1;
+  height: 30px;
+  outline: 0;
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+.FriendRequest-buttons > button[status="accept"] {
+  background-color: MediumSeaGreen;
+}
+.FriendRequest-buttons > button[status="reject"] {
+  background-color: crimson;
+}
+.FriendRequest-buttons > button:active {
+  background-color: orange;
+}

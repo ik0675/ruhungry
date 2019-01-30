@@ -1,12 +1,13 @@
 import * as types from '../../actions/types';
 
 const initialState = {
-  id          : '',
-  name        : '',
-  userImg     : '',
-  loaded      : false,
-  friendLoaded: false,
-  friendStatus: 'not sent',
+  id            : '',
+  name          : '',
+  userImg       : '',
+  loaded        : false,
+  friendLoaded  : false,
+  friendStatus  : 'not sent',
+  friendRequests: [],
 };
 
 export default function accountReducers(state = initialState, action) {
@@ -46,6 +47,12 @@ export default function accountReducers(state = initialState, action) {
         ...state,
         friendLoaded: true,
         friendStatus: action.data ? 'sent' : 'err'
+      }
+    case types.GET_FRIEND_REQUESTS:
+      console.log(action.data)
+      return {
+        ...state,
+        friendRequests: action.data
       }
     default:
       return state;

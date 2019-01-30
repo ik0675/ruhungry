@@ -2,6 +2,12 @@
   text-align: center;
   padding-top: 10px;
   padding-bottom: 10px;
+  width: calc(100% - 150px);
+}
+@media screen and (max-width: 500px) {
+  .Account {
+    width: 100%;
+  }
 }
 
 .Account > img {
@@ -35,7 +41,7 @@
 .Account > .account-info > .btn-err {
   background-color: black;
   color: white;
-  border: 0;  
+  border: 0;
 }
 
 .Account > .Account-panel {
@@ -45,13 +51,16 @@
 }
 
 .Account > .Account-panel > div {
-  margin: 0 auto;
-  display: inline-block;
-  width: 100%;
-  min-width: 500px;
+  flex: 1;
   text-align: left;
   padding-left: 10px;
   padding-right: 10px;
+}
+@media screen and (max-width: 800px) {
+  .Account > .Account-panel {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 .Account-panel > div > p {

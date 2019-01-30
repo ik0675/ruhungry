@@ -8,6 +8,8 @@ import {
   dispatchIsFriends,
 } from '../../../actions/account';
 
+import FriendRequests from './FriendRequests';
+
 import './css/Account.css';
 
 const propTypes = {
@@ -114,6 +116,7 @@ class Account extends Component {
               <hr />
               <p>Friend Requests</p>
               <hr />
+              <FriendRequests />
             </div>
           }
           {myId === id &&
