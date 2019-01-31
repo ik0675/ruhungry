@@ -8,6 +8,7 @@ import {
   dispatchIsFriends,
 } from '../../../actions/account';
 
+import TopNav from './TopNav';
 import FriendRequests from './FriendRequests';
 import Posts from '../post/Posts';
 import ChatRooms from '../chat';
@@ -32,6 +33,10 @@ class Account extends Component {
     invitation: 2
   };
 
+  invitationRef = React.createRef();
+  friendRequestRef = React.createRef();
+  openChatRoomsRef = React.createRef();
+
   componentDidMount() {
     const id = this.props.match.params.id;
     if (!this.props.loaded) {
@@ -46,9 +51,10 @@ class Account extends Component {
     }
   }
 
-  handleInvitationFilter = (num) => {
-    if (this.state.invitation !== num) {
-      this.setState({ invitation: num });
+  handleInvitationFilter = (e) => {
+    const val = parseInt(e.target.value, 10);
+    if (this.state.invitation !== val) {
+      this.setState({ invitation: val });
     }
   }
 
@@ -110,39 +116,31 @@ class Account extends Component {
         )
       }
     }
+
+    const refs = {
+      invitation    : this.invitationRef,
+      friendRequest : this.friendRequestRef,
+      openChatRooms : this.openChatRoomsRef,
+    }
     return (
       <div className="Account">
+        <TopNav refs={refs} />
         <img src={`/images/${userImg}`} alt="user" />
         <p className="account-info">
           {name}
           {button}
         </p>
         <div className="Account-panel">
-          <div className="Account-invitations">
+          <div className="Account-invitations" ref={this.invitationRef} >
             <hr />
-            <div className="invitation-filter-buttons">
+            <div className="invitation-filter">
               Invitations
               <div>
-                <button
-                  active={this.state.invitation === 0 ? 'true' : 'false'}
-                  onClick={() => { this.handleInvitationFilter(0); }}
-                >
-                  Sent
-                </button>
-                <span> / </span>
-                <button
-                  active={this.state.invitation === 1 ? 'true' : 'false'}
-                  onClick={() => { this.handleInvitationFilter(1); }}
-                >
-                  Received
-                </button>
-                <span> / </span>
-                <button
-                  active={this.state.invitation === 2 ? 'true' : 'false'}
-                  onClick={() => { this.handleInvitationFilter(2); }}
-                >
-                  All
-                </button>
+                <select onChange={this.handleInvitationFilter}>
+                  <option value="2">All</option>
+                  <option value="0">Sent</option>
+                  <option value="1">Received</option>
+                </select>
               </div>
             </div>
             <hr />
@@ -153,7 +151,7 @@ class Account extends Component {
             />
           </div>
           {myId === id &&
-            <div className="Account-friendRequest">
+            <div className="Account-friendRequest" ref={this.friendRequestRef} >
               <hr />
               <p>Friend Requests</p>
               <hr />
@@ -161,7 +159,7 @@ class Account extends Component {
             </div>
           }
           {myId === id &&
-            <div className="Account-chat">
+            <div className="Account-chat" ref={this.openChatRoomsRef} >
               <hr />
               <p>Open Chat Rooms</p>
               <hr />

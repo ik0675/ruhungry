@@ -1,10 +1,9 @@
 .Account {
   text-align: center;
-  padding-top: 10px;
   padding-bottom: 10px;
   width: calc(100% - 150px);
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 650px) {
   .Account {
     width: 100%;
   }
@@ -13,6 +12,12 @@
 .Account > img {
   max-width: 300px;
   max-height: 200px;
+  margin-top: 30px;
+}
+@media screen and (max-width: 800px) {
+  .Account > img {
+    margin-top: 50px;
+  }
 }
 
 .Account > .account-info {
@@ -26,7 +31,7 @@
 .Account > .account-info > button {
   margin-left: 10px;
   border-radius: 5px;
-  outline: 0;
+  outline: none;
   background-color: white;
   cursor: pointer;
 }
@@ -64,23 +69,20 @@
 }
 
 .Account-panel > div > p,
-.Account-panel > div > .invitation-filter-buttons {
+.Account-panel > div > .invitation-filter {
   padding-left: 20px;
 }
 
-.invitation-filter-buttons > div {
+.invitation-filter > div {
   float: right;
   margin-right: 20px;
 }
-.invitation-filter-buttons button {
-  outline: 0;
-  border-radius: 5px;
-  background-color: white;
-  cursor: pointer;
-}
-.invitation-filter-buttons button[active="true"] {
+.invitation-filter select,
+.invitation-filter option {
   border: 0;
+  border-radius: 10px;
   background-color: skyblue;
-  color: white;
-  cursor: default;
+  width: 100%;
+  font-size: 12px;
+  outline: none;
 }

@@ -1,0 +1,36 @@
+.TopNav {
+  position: fixed;
+  margin:0 auto;
+  width: 100%;
+  background-color: skyblue;
+  color: white;
+  height: 30px;
+  overflow: hidden;
+  z-index: 2;
+}
+@media screen and (min-width: 651px) {
+  .TopNav {
+    width: calc(100% - 150px);
+  }
+}
+@media screen and (min-width: 801px) {
+  .TopNav {
+    display: none;
+  }
+}
+
+.TopNav ul {
+  list-style: none;
+}
+
+.TopNav ul li {
+  display: inline-block;
+  cursor: pointer;
+  font-size: 14px;
+}
+.TopNav ul li:last-child {
+  margin-right: 0;
+}
+.TopNav ul li > span[active="true"] {
+  color: orange;
+}

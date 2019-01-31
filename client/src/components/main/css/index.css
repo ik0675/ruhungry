@@ -20,7 +20,7 @@
   top: 60px;
   left: 0;
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 650px) {
   .friendList {
     display: none;
   }
@@ -40,8 +40,10 @@
   top: 0;
   left: 0;
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 650px) {
   #Posts,
+  #Posts[page="main"],
+  #Posts[page="account"],
   .Account,
   .FindFriends {
     width: 100%;

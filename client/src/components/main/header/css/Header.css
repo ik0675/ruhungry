@@ -8,7 +8,7 @@
   margin-left: 10px;
   border-radius: 5px;
   background-color: white;
-  outline: 0;
+  outline: none;
   cursor: pointer;
 }
 
