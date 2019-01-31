@@ -665,6 +665,64 @@ const makeFriends = (res, connection, num, id, requestId, status) => {
   })
 }
 
+const getChatRooms = (res, connection, id) => {
+  const query = `SELECT
+                   m.chat_id,
+                   GROUP_CONCAT(DISTINCT c.id SEPARATOR ',') ids,
+                   GROUP_CONCAT(a.name SEPARATOR ',') names,
+                   GROUP_CONCAT(a.img SEPARATOR ',') imgs
+                 FROM
+                   chat_meta m
+                     INNER JOIN chat_meta c
+                       ON m.chat_id = c.chat_id AND m.id != c.id
+                     INNER JOIN account a
+                       ON c.id = a.id
+                 WHERE
+                   m.id = '${id}'
+                 GROUP BY m.chat_id`;
+  connection.select(query)
+  .then(chatRooms => {
+    let result = [];
+    for (let i = 0; i < chatRooms.length; ++i) {
+      const chatRoom = chatRooms[i];
+      const ids = chatRoom.ids.split(',');
+      const names = chatRoom.names.split(',');
+      const imgs = chatRoom.imgs.split(',');
+      result.push({
+        chatId: chatRoom.chat_id,
+        ids,
+        names,
+        imgs,
+      });
+    }
+    return res.json({ status: true, chatRooms: result });
+  })
+  .catch(err => {
+    console.log(err);
+    return res.json({ status: false });
+  })
+}
+
+const getLastMsg = (res, connection, chat_id) => {
+  const query = `SELECT
+                   message
+                 FROM
+                   chat_messages
+                 WHERE
+                   chat_id = '${chat_id}'
+                 ORDER BY
+                   sent_at DESC
+                 LIMIT 1`;
+  connection.select(query)
+  .then(msg => {
+    return res.json({ status: true, msg: msg[0].message });
+  })
+  .catch(err => {
+    console.log(err);
+    return res.json({ status: false });
+  })
+}
+
 module.exports = {
   loginWithIdPw,
   signUp,
@@ -683,4 +741,6 @@ module.exports = {
   friendRequest,
   getFriendRequests,
   makeFriends,
+  getChatRooms,
+  getLastMsg,
 }

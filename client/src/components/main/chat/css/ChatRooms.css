@@ -1,5 +1,10 @@
 .ChatRooms {
-  width: calc(100% - 20px);
-  padding-left: 10px;
-  padding-right: 10px;
+  width: calc(100%);
+  /* padding-left: 10px;
+  padding-right: 10px; */
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+  flex-direction: column;
+  align-items: stretch;
 }

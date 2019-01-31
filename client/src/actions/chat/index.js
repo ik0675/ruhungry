@@ -82,3 +82,34 @@ export const dispatchGetMessages = (chat_id, offset) => dispatch => {
     }
   })
 }
+
+export const dispatchGetChatRooms = (success, err) => dispatch => {
+  fetch('/api/getChatRooms')
+  .then(res => res.json())
+  .then(data => {
+    if (data.status) {
+      dispatch({
+        type: types.GET_CHAT_ROOMS,
+        data: data.chatRooms
+      });
+      return success();
+    }
+    return err();
+  })
+}
+
+export const dispatchGetLastMsg = (chat_id, success, err) => dispatch => {
+  fetch(`/api/getLastMsg/${chat_id}`)
+  .then(res => res.json())
+  .then(data => {
+    if (data.status) {
+      dispatch({
+        type  : types.LAST_MSG,
+        data  : data.msg,
+        chatId: chat_id,
+      });
+      return success();
+    }
+    return err();
+  })
+}

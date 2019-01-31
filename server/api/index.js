@@ -200,4 +200,22 @@ module.exports = (app, connection, crypto) => {
     const { num, requestId, status } = req.body;
     db.makeFriends(res, connection, num, id, requestId, status);
   });
+
+  app.get('/api/getChatRooms', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const id = req.session.loginInfo.id;
+    db.getChatRooms(res, connection, id);
+  });
+
+  app.get('/api/getLastMsg/:chat_id', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const chat_id = req.params.chat_id;
+    db.getLastMsg(res, connection, chat_id);
+  });
 }
