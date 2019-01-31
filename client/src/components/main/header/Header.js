@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import './css/Header.css';
 
@@ -19,9 +19,9 @@ function Header(props) {
     <div className="header">
       <nav className="navbar navbar-default">
         <div className="container-fluid">
-          <a
+          <Link
             className="navbar-brand navbar-left"
-            href="/main"
+            to="/main"
           >
             <img
               className="nav-logo"
@@ -30,7 +30,7 @@ function Header(props) {
               width="30"
               height="30"
             /> RUHungry
-          </a>
+          </Link>
           <div className="navbar-text navbar-right">
             <span
               onClick={() => {
