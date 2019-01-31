@@ -32,6 +32,8 @@ class MakeInvitation extends Component {
     restaurantImg : '',
   }
 
+  selectRef = React.createRef();
+
   sendInvitation = () => {
     const img = this.props.imgs[0];
     this.setState({ restaurantImg: img }, () => {
@@ -60,7 +62,10 @@ class MakeInvitation extends Component {
     if (!this.checkIfSelected(friend)) {
       this.setState(prevState => ({
         friends: [ ...prevState.friends, friend ]
-      }))
+      }), () => {
+        // after a friend has been selected, reset the select tag
+        this.selectRef.current.selectedIndex = 0;
+      })
     }
   }
 
@@ -115,7 +120,7 @@ class MakeInvitation extends Component {
         </h1>
         <div className="select friends">
           <p>Select friends to invite</p>
-          <select onChange={this.handleFriendSelect}>
+          <select onChange={this.handleFriendSelect} ref={this.selectRef}>
             <option hidden>--select a friend--</option>
             {printFriendOptions}
           </select>
