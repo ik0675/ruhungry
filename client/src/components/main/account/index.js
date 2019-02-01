@@ -32,7 +32,7 @@ const propTypes = {
 class Account extends Component {
   state = {
     invitation: 2,
-    id: this.props.match.params.id
+    id        : this.props.match.params.id,
   };
 
   invitationRef = React.createRef();

@@ -16,7 +16,6 @@ const propTypes = {
   id        : PropTypes.string.isRequired,
   socket    : PropTypes.object.isRequired,
   posts     : PropTypes.array.isRequired,
-  loaded    : PropTypes.bool.isRequired,
   getPosts  : PropTypes.func.isRequired,
   rsvp      : PropTypes.func.isRequired,
   newPost   : PropTypes.func.isRequired,

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { dispatchGetImages } from '../../../actions/invitation';
 import { dispatchToggleUpload } from '../../../actions/upload';
 
 import './css/RestaurantSearch.css';

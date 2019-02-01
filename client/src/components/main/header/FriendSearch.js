@@ -10,7 +10,6 @@ import FriendSuggest from './FriendSuggest';
 import './css/FriendSearch.css';
 
 const propTypes = {
-  id            : PropTypes.string.isRequired,
   friendSuggests: PropTypes.array.isRequired,
   friendSearch  : PropTypes.func.isRequired,
 };
