@@ -30,6 +30,7 @@ class MakeInvitation extends Component {
     friends       : [],
     restaurant    : '',
     restaurantImg : '',
+    loading       : false,
   }
 
   selectRef = React.createRef();
@@ -76,6 +77,12 @@ class MakeInvitation extends Component {
     });
   }
 
+  getImages = (restaurant) => {
+    this.setState({ loading: true }, () => {
+      this.props.getImages(restaurant, () => this.setState({ loading: false }));
+    });
+  }
+
   render() {
     const friends = [
       ...this.props.onlineFriends,
@@ -102,12 +109,12 @@ class MakeInvitation extends Component {
       <span key={friend.id}>{friend.name} </span>
     ))
     let selectedImg = undefined;
-    if (this.props.loading) {
+    if (this.state.loading) {
       selectedImg = <img className="restaurant-loading" src="/loading.gif" alt="loading" />
     } else {
-      selectedImg = this.props.imgs.length === 0
-        ? undefined
-        : <img className="restaurant-selected" src={`/images/${this.props.imgs[0]}`} alt="restaurant selected" />;
+      selectedImg = this.props.imgs.length === 0 ?
+        undefined :
+        <img className="restaurant-selected" src={`/images/${this.props.imgs[0]}`} alt="restaurant selected" />;
     }
     return (
       <div
@@ -132,6 +139,7 @@ class MakeInvitation extends Component {
         <RestaurantSearch
           restaurant={this.state.restaurant}
           handleChange={this.handleChange}
+          getImages={this.getImages}
         />
         <div className="selected img">
           <p>Selected restaurant image</p>
@@ -157,7 +165,6 @@ const mapStateToProps = state => ({
   onlineFriends : state.friends.onlineFriends,
   offlineFriends: state.friends.offlineFriends,
   imgs          : state.invitation.imgs,
-  loading       : state.invitation.loading,
   socket        : state.login.socket,
 })
 

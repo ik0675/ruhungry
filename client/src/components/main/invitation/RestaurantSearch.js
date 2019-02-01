@@ -148,7 +148,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  getImages   : dispatchGetImages,
   toggleUpload: dispatchToggleUpload,
 }
 

@@ -8,16 +8,16 @@ export const dispatchCreateInvitation = friend => dispatch => {
   });
 }
 
-export const dispatchGetImages = (restaurant) => dispatch => {
-  dispatch({ type: types.GETTING_IMAGES });
+export const dispatchGetImages = (restaurant, loaded) => dispatch => {
   fetch(`/api/getImages?restaurant=${restaurant}`)
   .then(res => res.json())
   .then(data => {
     if (data.status) {
-      return dispatch({ type: types.LOAD_IMAGES, data: data.imgs })
+      dispatch({ type: types.LOAD_IMAGES, data: data.imgs })
     } else {
-      return dispatch({ type: types.ERROR })
+      dispatch({ type: types.ERROR })
     }
+    loaded();
   });
 }
 

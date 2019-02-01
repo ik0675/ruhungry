@@ -3,7 +3,6 @@ import * as types from '../../actions/types';
 const initialState = {
   invitationReceiver: null,
   imgs              : [],
-  loading           : false,
   restaurants       : [],
 }
 
@@ -16,16 +15,10 @@ export default function invitationReducers(state = initialState, action) {
       }
     case types.EXIT_INVITATION:
       return initialState;
-    case types.GETTING_IMAGES:
-      return {
-        ...state,
-        loading: true
-      }
     case types.LOAD_IMAGES:
       return {
         ...state,
         imgs    : action.data,
-        loading : false
       }
     case types.RESTAURANT_NAMES:
       return {
