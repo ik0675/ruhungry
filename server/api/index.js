@@ -59,14 +59,14 @@ module.exports = (app, connection, crypto) => {
     }
   })
 
-  app.get('/api/getChatNumber', (req, res) => {
+  app.get('/api/getChatNumber/:ids', (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       res.json({ status: false });
-    } else if (req.query.ids === undefined) {
+    } else if (req.params.ids === undefined) {
       res.json({ status: false });
     } else {
-      const ids = JSON.parse(req.query.ids);
+      const ids = JSON.parse(req.params.ids);
       let included = false;
       for (let i = 0; i < ids.length; ++i) {
         if (ids[i].id === loginInfo.id) {

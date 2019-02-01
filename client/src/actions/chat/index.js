@@ -2,7 +2,7 @@ import * as types from '../types';
 
 export const dispatchCreateChat = ids => dispatch => {
   const queryIds = JSON.stringify(ids);
-  fetch(`/api/getChatNumber?ids=${queryIds}`)
+  fetch(`/api/getChatNumber/${queryIds}`)
   .then(res => res.json())
   .then(data => {
     if (data.status) {

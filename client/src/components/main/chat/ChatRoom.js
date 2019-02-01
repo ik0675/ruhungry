@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import './css/ChatRoom.css';
 
 const propTypes = {
+  myId    : PropTypes.string.isRequired,
   chatId  : PropTypes.string.isRequired,
   ids     : PropTypes.array.isRequired,
   names   : PropTypes.array.isRequired,
   imgs    : PropTypes.array.isRequired,
   lastMsg : PropTypes.string,
   loadMsg : PropTypes.func.isRequired,
+  openChat: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -19,9 +21,10 @@ const defaultProps = {
 class ChatRoom extends Component {
   state = {
     togglePeople: false,
-    toggleMsg   : false,
     msgLoaded   : false,
   };
+
+  lastMsgRef = React.createRef();
 
   componentDidMount() {
     if (!this.state.msgLoaded) {
@@ -30,7 +33,7 @@ class ChatRoom extends Component {
         () => this.setState({ msgLoaded: 'loaded' })
       );
     }
-  }
+  };
 
   handleToggle = (e) => {
     const name = e.target.getAttribute('name');
@@ -38,6 +41,15 @@ class ChatRoom extends Component {
       [name]: !prevState[name]
     }));
     e.stopPropagation();
+  };
+
+  openChat = () => {
+    const ids = this.props.ids;
+    let ids_json = [ { id: this.props.myId }];
+    for (let i = 0; i < ids.length; ++i) {
+      ids_json.push({ id: ids[i] });
+    }
+    this.props.openChat(ids_json);
   };
 
   render() {
@@ -54,7 +66,10 @@ class ChatRoom extends Component {
     }
 
     return (
-      <div className="ChatRoom" onClick={()=> { alert('hey') }} >
+      <div
+        className="ChatRoom"
+        onClick={this.openChat}
+      >
         <div
           className="ChatRoom-users"
           showall={this.state.togglePeople ? 'true' : 'false'}
@@ -80,21 +95,8 @@ class ChatRoom extends Component {
         <div
           className="ChatRoom-message-panel"
           showall={this.state.toggleMsg ? 'true' : 'false'}
-          style={{
-            height: this.state.toggleMsg ? 'auto' : '50px',
-          }}
         >
           <p className="ChatRoom-titles">Last Message</p>
-          <div className="ChatRoom-icon">
-            <span
-              role="img"
-              aria-label="black down pointing triangle"
-              name="toggleMsg"
-              onClick={this.handleToggle}
-            >
-              ▼
-            </span>
-          </div>
           <div
             className="ChatRoom-message"
             style={{
@@ -122,9 +124,11 @@ class ChatRoom extends Component {
             }
             {this.state.msgLoaded === 'loaded' &&
               <p
+                ref={this.lastMsgRef}
+                className="ChatRoom-lastMsg"
                 style={{
                   marginLeft: '10px',
-                  color: 'lightgray'
+                  color: 'lightgray',
                 }}
               >
                 {this.props.lastMsg}

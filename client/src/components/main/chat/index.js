@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {
   dispatchGetChatRooms,
   dispatchGetLastMsg,
+  dispatchCreateChat,
 } from '../../../actions/chat';
 
 import ChatRoom from './ChatRoom';
@@ -12,9 +13,11 @@ import ChatRoom from './ChatRoom';
 import './css/ChatRooms.css';
 
 const propTypes = {
+  myId        : PropTypes.string.isRequired,
   chatRooms   : PropTypes.array.isRequired,
   getChatRooms: PropTypes.func.isRequired,
   getLastMsg  : PropTypes.func.isRequired,
+  createChat  : PropTypes.func.isRequired,
 };
 
 class ChatRooms extends Component {
@@ -51,6 +54,7 @@ class ChatRooms extends Component {
     const chatRooms = this.props.chatRooms.map((chatRoom, i) => {
       return (
         <ChatRoom
+          myId={this.props.myId}
           chatId={chatRoom.chatId}
           ids={chatRoom.ids}
           names={chatRoom.names}
@@ -58,6 +62,7 @@ class ChatRooms extends Component {
           key={`chatRoom${i}`}
           lastMsg={chatRoom.lastMsg}
           loadMsg={this.props.getLastMsg}
+          openChat={this.props.createChat}
         />
       )
     });
@@ -73,12 +78,14 @@ class ChatRooms extends Component {
 ChatRooms.propTypes = propTypes;
 
 const mapStateToProps = state => ({
-  chatRooms: state.chat.chatRooms,
+  myId      : state.login.id,
+  chatRooms : state.chat.chatRooms,
 });
 
 const mapDispatchToProps = {
   getChatRooms: dispatchGetChatRooms,
   getLastMsg  : dispatchGetLastMsg,
+  createChat  : dispatchCreateChat,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatRooms);
