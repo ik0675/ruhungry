@@ -1,19 +1,20 @@
 import * as types from '../types';
 
-export const dispatchGetPosts = () => dispatch => {
-  fetch(`/api/getPosts?offset=0`)
+export const dispatchGetPosts = (id, loaded) => dispatch => {
+  fetch(`/api/getPosts/${id}`)
   .then(res => res.json())
   .then(data => {
     if (data.status) {
-      return dispatch({
+      dispatch({
         type: types.GET_POSTS,
         data: data.posts
       })
     } else {
-      return dispatch({
+      dispatch({
         type: types.ERROR
       })
     }
+    loaded();
   })
 }
 

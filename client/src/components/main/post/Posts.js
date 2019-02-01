@@ -13,31 +13,39 @@ import InvitationReceived from './InvitationReceived';
 import './css/Posts.css';
 
 const propTypes = {
-  id      : PropTypes.string.isRequired,
-  socket  : PropTypes.object.isRequired,
-  posts   : PropTypes.array.isRequired,
-  loaded  : PropTypes.bool.isRequired,
-  getPosts: PropTypes.func.isRequired,
-  rsvp    : PropTypes.func.isRequired,
-  newPost : PropTypes.func.isRequired,
-  makePost: PropTypes.bool,
-  page    : PropTypes.string,
-  filter  : PropTypes.number,
+  id        : PropTypes.string.isRequired,
+  socket    : PropTypes.object.isRequired,
+  posts     : PropTypes.array.isRequired,
+  loaded    : PropTypes.bool.isRequired,
+  getPosts  : PropTypes.func.isRequired,
+  rsvp      : PropTypes.func.isRequired,
+  newPost   : PropTypes.func.isRequired,
+  makePost  : PropTypes.bool,
+  page      : PropTypes.string,
+  filter    : PropTypes.number,
+  accountId : PropTypes.string,
 }
 
 const defaultProps = {
-  makePost: true,
-  page    : 'main',
-  filter  : 2,
+  makePost  : true,
+  page      : 'main',
+  filter    : 2,
+  accountId : '',
 }
 
 class Posts extends Component {
+  state = {
+    loaded: false,
+  };
+
   makeInvitation = React.createRef();
 
   componentDidMount() {
-    if (!this.props.loaded) {
-      this.props.getPosts();
-    }
+    if (!this.state.loaded) {
+      const id = this.props.accountId.length > 0 ?
+        this.props.accountId : this.props.id;
+      this.props.getPosts(id, () => this.setState({ loaded: true }));
+    };
 
     this.props.socket.on('newInvitation', (invitation) => {
       this.props.newPost(invitation);
@@ -45,44 +53,21 @@ class Posts extends Component {
 
     this.props.socket.on('rsvp', (rsvp) => {
       this.props.updateRSVP(rsvp);
-    })
-  }
+    });
+  };
 
   handlePostChange = (e) => {
     this.setState({
       [e.target.name] : e.target.value
-    })
-  }
+    });
+  };
 
   handleRSVP = (invitationNum, status) => {
     this.props.rsvp(invitationNum, this.props.id, status, this.props.socket);
-  }
-
-  onSubmit = (e) => {
-    e.preventDefault();
-    let { userPost } = this.state;
-    fetch('/api/createPost', {
-      method : 'POST',
-      headers: {
-                  'Content-Type': 'application/json'
-               },
-      body   : JSON.stringify({ post: userPost })
-    })
-    .then(data => data.json())
-    .then(result => {
-      if (result.status) {
-        this.props.addPost(result);
-      } else {
-        alert('database err. Please try again');
-      }
-      this.setState({
-        userPost: '',
-      })
-    })
-  }
+  };
 
   render() {
-    if (!this.props.loaded) {
+    if (!this.state.loaded) {
       return (
         <div id="Posts" page={this.props.page} >
           <div id="PostContainer" page={this.props.page} >
@@ -101,7 +86,7 @@ class Posts extends Component {
             </div>
           </div>
         </div>
-      )
+      );
     }
 
     const { posts, filter } = this.props;
@@ -125,20 +110,22 @@ class Posts extends Component {
           const index = post.receiverIds.indexOf(this.props.id);
           status = status[index];
         }
-        return <InvitationReceived
-                 key={post.invitationNum}
-                 inviter={post.name}
-                 receivers={post.receiverNames}
-                 restaurant={post.restaurant}
-                 restaurantImgPath={post.restaurantImgPath}
-                 userImg={post.img}
-                 status={status}
-                 id={this.props.id}
-                 isWaiting={post.isWaiting}
-                 rsvp={this.handleRSVP}
-                 invitationNum={post.invitationNum}
-                 filter={filter !== 0}
-               />
+        return (
+          <InvitationReceived
+            key={post.invitationNum}
+            inviter={post.name}
+            receivers={post.receiverNames}
+            restaurant={post.restaurant}
+            restaurantImgPath={post.restaurantImgPath}
+            userImg={post.img}
+            status={status}
+            id={this.props.id}
+            isWaiting={post.isWaiting}
+            rsvp={this.handleRSVP}
+            invitationNum={post.invitationNum}
+            filter={filter !== 0}
+          />
+        );
       }
     });
 
@@ -168,14 +155,13 @@ const mapStateToProps = state => ({
   id      : state.login.id,
   socket  : state.login.socket,
   posts   : state.posts.posts,
-  loaded  : state.posts.loaded,
-})
+});
 
 const mapDispatchToProps = {
   getPosts  : dispatchGetPosts,
   rsvp      : dispatchRSVP,
   newPost   : dispatchNewPost,
   updateRSVP: dispatchUpdateRSVP,
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);

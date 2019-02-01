@@ -2,17 +2,17 @@ import * as types from '../../actions/types';
 
 const initialState = {
   posts : [],
-  loaded: false,
 }
 
 export default function postReducers(state = initialState, action) {
   let index, newPost, posts, post;
   switch(action.type) {
+    case types.RESET_POSTS:
+      return initialState;
     case types.GET_POSTS:
       return {
         ...state,
         posts : action.data,
-        loaded: true
       }
     case types.RSVP_WAIT:
       for(index = 0; index < state.posts.length; ++index) {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import {
   dispatchLoadAccountInfo,
@@ -158,6 +159,7 @@ class Account extends Component {
               makePost={false}
               page="account"
               filter={this.state.invitation}
+              accountId={this.props.match.params.id}
             />
           </div>
           {myId === id &&
@@ -200,4 +202,4 @@ const mapDispatchToProps = {
   isFriends     : dispatchIsFriends,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Account);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Account));

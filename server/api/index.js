@@ -48,15 +48,13 @@ module.exports = (app, connection, crypto) => {
     res.send('loggout');
   });
 
-  app.get('/api/getPosts', (req, res) => {
+  app.get('/api/getPosts/:id', (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
-      res.json({ status: false })
-    } else {
-      const id = loginInfo.id;
-      const offset = req.query.offset;
-      db.getPosts(res, connection, id, offset);
+      return res.json({ status: false })
     }
+    const id = req.params.id;
+    db.getPosts(res, connection, id, 0);
   })
 
   app.get('/api/getChatNumber/:ids', (req, res) => {

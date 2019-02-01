@@ -2,6 +2,7 @@ import * as types from '../types';
 
 export const dispatchLoadAccountInfo = id => dispatch => {
   dispatch({ type: types.RESET_ACCOUNT });
+  dispatch({ type: types.RESET_POSTS });
   fetch(`/api/loadAccount/${id}`)
   .then(res => res.json())
   .then(data => {

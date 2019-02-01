@@ -31,6 +31,7 @@ export const RSVP_WAIT  = 'RSVP_WAIT';
 export const RSVP_DONE  = 'RSVP_DONE';
 export const NEW_POST   = 'NEW_POST';
 export const RSVP_UPDATE= 'RSVP_UPDATE';
+export const RESET_POSTS= 'RESET_POSTS';
 
 // action types for invitation
 export const CREATE_INVITATION  = 'CREATE_INVITATION';
