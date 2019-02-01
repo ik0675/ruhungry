@@ -4,7 +4,6 @@ const initialState = {
   onlineFriends     : [],
   offlineFriends    : [],
   friendSuggests    : [],
-  isLoading         : true,
 }
 
 export default function friendReducers(state = initialState, action) {
@@ -14,7 +13,6 @@ export default function friendReducers(state = initialState, action) {
     case types.FRIEND_DISCONNECT:
       return {
         ...action.data,
-        isLoading     : false,
         friendSuggests: state.friendSuggests,
       }
     case types.FRIEND_SUGGEST:

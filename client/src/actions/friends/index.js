@@ -1,6 +1,6 @@
 import * as types from '../types';
 
-export const dispatchGetFriendList = id => dispatch => {
+export const dispatchGetFriendList = (id, loaded) => dispatch => {
   fetch('/api/getFriendList', {
       method : 'POST',
       headers: {
@@ -10,10 +10,11 @@ export const dispatchGetFriendList = id => dispatch => {
   })
   .then(res => res.json())
   .then((data) => {
-    return dispatch({
+    dispatch({
       type: types.GET_FRIENDLIST,
       data
-    })
+    });
+    loaded();
   })
 }
 

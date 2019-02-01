@@ -16,7 +16,6 @@ const propTypes = {
   name            : PropTypes.string.isRequired,
   onlineFriends   : PropTypes.array.isRequired,
   offlineFriends  : PropTypes.array.isRequired,
-  isLoading       : PropTypes.bool.isRequired,
   getFriendList   : PropTypes.func.isRequired,
   friendConnect   : PropTypes.func.isRequired,
   friendDisconnect: PropTypes.func.isRequired,
@@ -33,11 +32,15 @@ class FriendList extends Component {
     clickedFriend   : null,
     toggleChat      : false,
     toggleInvitation: false,
+    isLoading       : true,
   }
 
   componentDidMount() {
-    if (this.props.isLoading) {
-      this.props.getFriendList(this.props.id);
+    if (this.state.isLoading) {
+      this.props.getFriendList(
+        this.props.id,
+        () => this.setState({ isLoading: false })
+      );
     }
 
     this.props.socket.on('friendConnected', (friend) => {
@@ -83,7 +86,7 @@ class FriendList extends Component {
   }
 
   render() {
-    if (this.props.isLoading) {
+    if (this.state.isLoading) {
       return (
         <div className="friendList" >
           <img src="/loading.gif" alt="loading" />
@@ -168,7 +171,6 @@ const mapStateToProps = state => ({
   name          : state.login.name,
   onlineFriends : state.friends.onlineFriends,
   offlineFriends: state.friends.offlineFriends,
-  isLoading     : state.friends.isLoading,
 })
 
 const mapDispatchToProps = {
