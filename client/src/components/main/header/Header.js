@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 
+import FriendSearch from './FriendSearch';
+
 import './css/Header.css';
 
 const propTypes = {
@@ -31,6 +33,7 @@ function Header(props) {
               height="30"
             /> RUHungry
           </Link>
+          <FriendSearch id={props.match.params.id}/>
           <div className="navbar-text navbar-right">
             <span
               onClick={() => {

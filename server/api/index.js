@@ -218,4 +218,13 @@ module.exports = (app, connection, crypto) => {
     const chat_id = req.params.chat_id;
     db.getLastMsg(res, connection, chat_id);
   });
+
+  app.get('/api/friendSearch/:name', (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const name = req.params.name;
+    db.searchName(res, connection, name);
+  });
 }

@@ -30,7 +30,8 @@ const propTypes = {
 
 class Account extends Component {
   state = {
-    invitation: 2
+    invitation: 2,
+    id: this.props.match.params.id
   };
 
   invitationRef = React.createRef();
@@ -43,13 +44,22 @@ class Account extends Component {
       this.props.load(id);
     }
   };
-  componentDidUpdate() {
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.id !== nextProps.match.params.id) {
+      this.setState({
+        id: nextProps.match.params.id
+      }, () => this.props.load(this.state.id));
+    }
+  };
+
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.id !== this.props.myId && !this.props.friendLoaded) {
       const id = this.props.myId;
       const friend_id = this.props.id;
       this.props.isFriends(id, friend_id);
     }
-  }
+  };
 
   handleInvitationFilter = (e) => {
     const val = parseInt(e.target.value, 10);

@@ -11,6 +11,7 @@ export const LOGOUT     = 'LOGOUT';
 export const GET_FRIENDLIST     = 'GET_FRIENDLIST';
 export const FRIEND_CONNECT     = 'FRIEND_CONNECT';
 export const FRIEND_DISCONNECT  = 'FRIEND_DISCONNECT';
+export const FRIEND_SUGGEST     = 'FRIEND_SUGGEST';
 
 // action types for chat
 export const GET_MESSAGES       = 'GET_MESSAGES';
@@ -54,3 +55,4 @@ export const FRIEND_REQUEST_ERR = 'FRIEND_REQUEST_ERR';
 export const FRIEND_REQUEST_SENT= 'FRIEND_REQUEST_SENT';
 export const GET_FRIEND_REQUESTS= 'GET_FRIEND_REQUESTS';
 export const MAKE_FRIENDS       = 'MAKE_FRIENDS';
+export const RESET_ACCOUNT      = 'RESET_ACCOUNT';

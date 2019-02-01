@@ -723,6 +723,33 @@ const getLastMsg = (res, connection, chat_id) => {
   })
 }
 
+const searchName = (res, connection, name) => {
+  const query = `SELECT
+                   id,
+                   name,
+                   img
+                 FROM
+                   account
+                 WHERE
+                   name LIKE '%${name}%'`;
+  connection.select(query)
+  .then(accounts => {
+    let result = [];
+    for (let i = 0; i < accounts.length; ++i) {
+      result.push({
+        id  : accounts[i].id,
+        name: accounts[i].name,
+        img : accounts[i].img,
+      });
+    }
+    return res.json({ status: true, result });
+  })
+  .catch(err => {
+    console.log(err);
+    return res.json({ status: false });
+  })
+}
+
 module.exports = {
   loginWithIdPw,
   signUp,
@@ -743,4 +770,5 @@ module.exports = {
   makeFriends,
   getChatRooms,
   getLastMsg,
+  searchName,
 }

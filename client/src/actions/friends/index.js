@@ -54,3 +54,18 @@ export const dispatchFriendDisconnect = (friend, friends) => dispatch => {
     })
   }
 }
+
+export const dispatchFriendSearch = (name, success, err) => dispatch => {
+  fetch(`/api/friendSearch/${name}`)
+  .then(res => res.json())
+  .then(data => {
+    if (data.status) {
+      dispatch({
+        type: types.FRIEND_SUGGEST,
+        data: data.result
+      })
+      return success();
+    }
+    return err();
+  });
+}

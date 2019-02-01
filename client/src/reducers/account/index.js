@@ -60,6 +60,8 @@ export default function accountReducers(state = initialState, action) {
         ...state,
         friendRequests,
       }
+    case types.RESET_ACCOUNT:
+      return initialState;
     default:
       return state;
   }
