@@ -66,7 +66,7 @@ export const dispatchReceiveMessage = (data) => dispatch => {
   })
 }
 
-export const dispatchGetMessages = (chat_id, offset) => dispatch => {
+export const dispatchGetMessages = (chat_id, offset, loaded) => dispatch => {
   fetch(`/api/getMessages?chat_id=${chat_id}&offset=${offset}`)
   .then(res => res.json())
   .then(data => {
@@ -80,6 +80,7 @@ export const dispatchGetMessages = (chat_id, offset) => dispatch => {
         type: types.GET_MESSAGES_ERR,
       })
     }
+    loaded();
   })
 }
 

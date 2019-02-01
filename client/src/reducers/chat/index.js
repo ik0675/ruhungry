@@ -4,7 +4,6 @@ const initialState = {
   chatRooms : [],
   messages  : [],
   chatInfo  : null,
-  loaded    : false,
 }
 
 export default function chatReducers(state = initialState, action) {
@@ -23,7 +22,6 @@ export default function chatReducers(state = initialState, action) {
       return {
         ...state,
         messages: [ ...action.data, ...state.messages ],
-        loaded  : true,
       }
     case types.NEW_MESSAGE:
       return {
