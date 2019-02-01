@@ -8,8 +8,7 @@ export const dispatchToggleUpload = _ => dispatch => {
   return dispatch({ type: types.TOGGLE_UPLOAD });
 }
 
-export const dispatchUploadRestaurant = (restaurant, image) => dispatch => {
-  dispatch({ type: types.UPLOAD_LOADING });
+export const dispatchUploadRestaurant = (restaurant, image, loaded) => dispatch => {
   let formData = new FormData();
   formData.append('restaurant', restaurant);
   formData.append('file', image[0]);
@@ -20,8 +19,10 @@ export const dispatchUploadRestaurant = (restaurant, image) => dispatch => {
   .then(res => res.json())
   .then(data => {
     if (data.status) {
-      return dispatch({ type: types.UPLOAD_SUCCESS, data: data.msg });
+      dispatch({ type: types.UPLOAD_SUCCESS, data: data.msg });
+    } else {
+      dispatch({ type: types.UPLOAD_FAIL, data: data.msg });
     }
-    return dispatch({ type: types.UPLOAD_FAIL, data: data.msg });
+    loaded();
   });
 }

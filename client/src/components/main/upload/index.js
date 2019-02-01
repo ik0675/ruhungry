@@ -21,6 +21,7 @@ class Upload extends Component {
   state = {
     restaurant: '',
     image     : null,
+    loading   : false,
   }
 
   exitUpload = () => {
@@ -42,12 +43,17 @@ class Upload extends Component {
 
   submit = (e) => {
     e.preventDefault();
-    if (!this.props.loading) {
+    if (!this.state.loading) {
       const { restaurant, image } = this.state;
       if (restaurant === '' || image == null) {
         return alert('Please provide a valid restaurant name and a image');
       }
-      this.props.upload(restaurant, image);
+      this.setState({ loading: true }, () => {
+        this.props.upload(
+          restaurant, image,
+          () => this.setState({ loading: false })
+        );
+      });
     }
   }
 
@@ -78,7 +84,7 @@ class Upload extends Component {
           </label>
           <p>Select a restaurant image</p>
           <input type="file" name="file" onChange={this.handleFile} />
-          {this.props.loading && <img src="/loading.gif" alt="loading" />}
+          {this.state.loading && <img src="/loading.gif" alt="loading" />}
           <button onClick={this.submit} >Add a restaurant</button>
           {this.props.msg !== '' && <p className="formResult">{this.props.msg}</p>}
         </form>

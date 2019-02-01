@@ -1,9 +1,8 @@
 import * as types from '../../actions/types';
 
 const initialState = {
-  loading : false,
   toggle  : false,
-  msg     : ''
+  msg     : '',
 }
 
 export default function uploadReducers(state = initialState, action) {
@@ -18,21 +17,14 @@ export default function uploadReducers(state = initialState, action) {
         ...state,
         toggle: !state.toggle
       }
-    case types.UPLOAD_LOADING:
-      return {
-        ...state,
-        loading: true,
-      }
     case types.UPLOAD_SUCCESS:
       return {
         ...state,
-        loading: false,
         msg: action.data
       }
     case types.UPLOAD_FAIL:
       return {
         ...state,
-        loading: false,
         msg: action.data
       }
     default:
