@@ -16,8 +16,8 @@ const defaultProps = {
 const TypeMessage = (props) => {
   return (
     <form
-        id="TypeMessage"
-        onSubmit={props.onSubmit}
+      id="TypeMessage"
+      onSubmit={props.onSubmit}
     >
       <input
         type="text"
@@ -26,6 +26,7 @@ const TypeMessage = (props) => {
         placeholder="type messages here..."
         value={props.message}
         onChange={props.handleMessage}
+        autoComplete="off"
       />
       <input
         type="submit"

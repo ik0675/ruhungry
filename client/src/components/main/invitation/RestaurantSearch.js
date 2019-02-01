@@ -132,6 +132,7 @@ class RestaurantSearch extends Component {
           onChange={this.handleChange}
           onFocus={this.handleFocus}
           onKeyDown={this.handleKeyDown}
+          autoComplete="off"
         />
         {showRestaurantNames}
       </div>

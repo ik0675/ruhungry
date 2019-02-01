@@ -73,6 +73,7 @@ class Upload extends Component {
               value={this.state.restaurant}
               onChange={this.handleChange}
               name="restaurant"
+              autoComplete="off"
             />
           </label>
           <p>Select a restaurant image</p>
