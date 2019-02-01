@@ -18,15 +18,17 @@ class TopNav extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     const refs = this.props.refs;
-    switch(nextState.current) {
-      case 0:
-        return window.scrollTo(0, refs.invitation.current.offsetTop);
-      case 1:
-        return window.scrollTo(0, refs.friendRequest.current.offsetTop);
-      case 2:
-        return window.scrollTo(0, refs.openChatRooms.current.offsetTop);
-      default:
-        return;
+    if (this.state.current !== nextState.current) {
+      switch(nextState.current) {
+        case 0:
+          return window.scrollTo(0, refs.invitation.current.offsetTop);
+        case 1:
+          return window.scrollTo(0, refs.friendRequest.current.offsetTop);
+        case 2:
+          return window.scrollTo(0, refs.openChatRooms.current.offsetTop);
+        default:
+          return;
+      }
     }
   }
 
