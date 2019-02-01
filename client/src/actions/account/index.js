@@ -1,13 +1,13 @@
 import * as types from '../types';
 
-export const dispatchLoadAccountInfo = id => dispatch => {
+export const dispatchLoadAccountInfo = (id, loaded) => dispatch => {
   dispatch({ type: types.RESET_ACCOUNT });
   dispatch({ type: types.RESET_POSTS });
   fetch(`/api/loadAccount/${id}`)
   .then(res => res.json())
   .then(data => {
     if (data.status) {
-      return dispatch({
+      dispatch({
         type: types.LOAD_ACCOUNT,
         data: {
           id      : data.id,
@@ -15,13 +15,14 @@ export const dispatchLoadAccountInfo = id => dispatch => {
           userImg : data.userImg,
         }
       });
+    } else {
+      dispatch({ type: types.LOAD_ACCOUNT_ERR });
     }
-    return dispatch({ type: types.LOAD_ACCOUNT_ERR });
+    return loaded();
   })
 };
 
-export const dispatchFriendRequest = (friend_id) => dispatch => {
-  dispatch({ type: types.LOADING_FRIEND });
+export const dispatchFriendRequest = (friend_id, loaded) => dispatch => {
   fetch('/api/friendRequest', {
     method  : 'POST',
     headers : { 'content-type': 'application/json' },
@@ -29,16 +30,11 @@ export const dispatchFriendRequest = (friend_id) => dispatch => {
   })
   .then(res => res.json())
   .then(data => {
-    if (data.status) {
-      return dispatch({
-        type: types.FRIEND_REQUEST_SENT,
-        data: true,
-      })
-    }
-    return dispatch({
+    dispatch({
       type: types.FRIEND_REQUEST_SENT,
-      data: false
-    })
+      data: data.status,
+    });
+    loaded();
   })
 };
 

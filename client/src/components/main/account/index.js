@@ -21,8 +21,6 @@ const propTypes = {
   id            : PropTypes.string.isRequired,
   name          : PropTypes.string.isRequired,
   userImg       : PropTypes.string.isRequired,
-  loaded        : PropTypes.bool.isRequired,
-  friendLoaded  : PropTypes.bool.isRequired,
   friendStatus  : PropTypes.string.isRequired,
   load          : PropTypes.func.isRequired,
   friendRequest : PropTypes.func.isRequired,
@@ -31,8 +29,10 @@ const propTypes = {
 
 class Account extends Component {
   state = {
-    invitation: 2,
-    id        : this.props.match.params.id,
+    invitation  : 2,
+    id          : this.props.match.params.id,
+    loaded      : false,
+    friendLoaded: false,
   };
 
   invitationRef = React.createRef();
@@ -42,7 +42,7 @@ class Account extends Component {
   componentDidMount() {
     const id = this.props.match.params.id;
     if (!this.props.loaded) {
-      this.props.load(id);
+      this.props.load(id, () => this.setState({ loaded: true }));
     }
   };
 
@@ -71,15 +71,15 @@ class Account extends Component {
 
   sendFriendRequest = _ => {
     const { id } = this.props;
-    this.props.friendRequest(id);
+    this.props.friendRequest(id, () => this.setState({ loaded: true }));
   };
 
   render() {
     const {
       myId, id, name, userImg,
-      loaded, friendLoaded, friendStatus
+      friendLoaded, friendStatus
     } = this.props;
-    if (!loaded) {
+    if (!this.state.loaded) {
       return (
         <div className="Account">
           <p>Loading account information...</p>
@@ -191,8 +191,6 @@ const mapStateToProps = state => ({
   id          : state.account.id,
   name        : state.account.name,
   userImg     : state.account.userImg,
-  loaded      : state.account.loaded,
-  friendLoaded: state.account.friendLoaded,
   friendStatus: state.account.friendStatus,
 });
 
