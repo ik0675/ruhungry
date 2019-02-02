@@ -38,7 +38,7 @@ export const dispatchFriendRequest = (friend_id, loaded) => dispatch => {
   })
 };
 
-export const dispatchIsFriends = (id, friend_id) => dispatch => {
+export const dispatchIsFriends = (id, friend_id, loaded) => dispatch => {
   fetch('/api/isFriends', {
     method  : 'POST',
     headers : { 'content-type': 'application/json' },
@@ -47,12 +47,14 @@ export const dispatchIsFriends = (id, friend_id) => dispatch => {
   .then(res => res.json())
   .then(data => {
     if (data.status) {
-      return dispatch({
+      dispatch({
         type: types.FRIEND_REQUEST,
         data: data.data
       })
+    } else {
+      dispatch({ type: types.FRIEND_REQUEST_ERR });
     }
-    return dispatch({ type: types.FRIEND_REQUEST_ERR });
+    loaded();
   })
 }
 

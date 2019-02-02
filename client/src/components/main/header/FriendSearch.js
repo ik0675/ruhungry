@@ -26,7 +26,6 @@ class FriendSearch extends Component {
     this.setState({
       val: e.target.value,
     }, () => {
-      console.log(this.state.val)
       if (this.state.val.length > 0) {
         this.props.friendSearch(
           this.state.val,

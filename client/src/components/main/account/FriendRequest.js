@@ -21,7 +21,6 @@ function FriendRequest(props) {
           status="accept"
           onClick={() => {
             const { num, id } = props.friendRequest;
-            console.log(num, id);
             props.makeFriends(num, id, true, props.index);
           }}
         >

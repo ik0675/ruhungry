@@ -90,7 +90,9 @@ class Posts extends Component {
 
     const { posts, filter } = this.props;
     const renderPosts = posts.map( (post, i) => {
-      if (post.id === this.props.id) {
+      const id = this.props.accountId.length > 0
+        ? this.props.accountId : this.props.id;
+      if (post.id === id) {
         return (
           <InvitationSent
             key={post.invitationNum}
@@ -106,7 +108,7 @@ class Posts extends Component {
       } else {
         let status = post.status;
         if (status.constructor === Array) {
-          const index = post.receiverIds.indexOf(this.props.id);
+          const index = post.receiverIds.indexOf(id);
           status = status[index];
         }
         return (

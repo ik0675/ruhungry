@@ -41,7 +41,7 @@ class Account extends Component {
 
   componentDidMount() {
     const id = this.props.match.params.id;
-    if (!this.props.loaded) {
+    if (!this.state.loaded) {
       this.props.load(id, () => this.setState({ loaded: true }));
     }
   };
@@ -49,16 +49,17 @@ class Account extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.state.id !== nextProps.match.params.id) {
       this.setState({
-        id: nextProps.match.params.id
-      }, () => this.props.load(this.state.id));
+        id    : nextProps.match.params.id,
+        loaded: false,
+      }, () => this.props.load(this.state.id, () => this.setState({ loaded: true })));
     }
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.id !== this.props.myId && !this.props.friendLoaded) {
+    if (this.props.id !== this.props.myId && !this.state.friendLoaded) {
       const id = this.props.myId;
       const friend_id = this.props.id;
-      this.props.isFriends(id, friend_id);
+      this.props.isFriends(id, friend_id, () => this.setState({ friendLoaded: true }));
     }
   };
 
@@ -71,14 +72,13 @@ class Account extends Component {
 
   sendFriendRequest = _ => {
     const { id } = this.props;
-    this.props.friendRequest(id, () => this.setState({ loaded: true }));
+    this.setState({ friendLoaded: false }, () => {
+      this.props.friendRequest(id, () => this.setState({ friendLoaded: true }));
+    });
   };
 
   render() {
-    const {
-      myId, id, name, userImg,
-      friendLoaded, friendStatus
-    } = this.props;
+    const { myId, id, name, userImg, friendStatus } = this.props;
     if (!this.state.loaded) {
       return (
         <div className="Account">
@@ -96,7 +96,7 @@ class Account extends Component {
     }
     let button;
     if (myId !== id) {
-      if (!friendLoaded) {
+      if (!this.state.friendLoaded) {
         button = <img src="/loading.gif" alt="loading" />;
       } else if (friendStatus === 'friend') {
         button = (
