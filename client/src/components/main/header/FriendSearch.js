@@ -22,11 +22,16 @@ class FriendSearch extends Component {
     err     : false,
   };
 
-  handleChange = e => {
+  inputRef = React.createRef();
+
+  handleChange = (e, url) => {
     this.setState({
       val: e.target.value,
     }, () => {
-      if (this.state.val.length > 0) {
+      if (url !== undefined) {
+        this.inputRef.current.value = '';
+        this.props.history.push(url);
+      } else if (this.state.val.length > 0) {
         this.props.friendSearch(
           this.state.val,
           () => this.setState({ loading: false }),
@@ -47,6 +52,7 @@ class FriendSearch extends Component {
       <div className="FriendSearch" >
         <label>
           <input
+            ref={this.inputRef}
             type="text"
             value={this.state.value}
             onChange={this.handleChange}

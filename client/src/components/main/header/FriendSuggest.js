@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import './css/FriendSuggest.css';
 
@@ -15,8 +15,7 @@ function FriendSuggest(props) {
     <div
       className="FriendSuggest"
       onMouseDown={() => {
-        props.handleChange({ target: { value: '' } });
-        props.history.push(`/main/account/${person.id}`);
+        props.handleChange({ target: { value: '' } }, `/main/account/${person.id}`);
       }}
     >
       <img src={`/images/${person.img}`} alt="user" />
