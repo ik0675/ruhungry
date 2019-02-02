@@ -9,30 +9,12 @@ const propTypes = {
   ids     : PropTypes.array.isRequired,
   names   : PropTypes.array.isRequired,
   imgs    : PropTypes.array.isRequired,
-  lastMsg : PropTypes.string,
-  loadMsg : PropTypes.func.isRequired,
   openChat: PropTypes.func.isRequired,
 };
-
-const defaultProps = {
-  lastMsg: '',
-}
 
 class ChatRoom extends Component {
   state = {
     togglePeople: false,
-    msgLoaded   : false,
-  };
-
-  lastMsgRef = React.createRef();
-
-  componentDidMount() {
-    if (!this.state.msgLoaded) {
-      this.props.loadMsg(
-        this.props.chatId,
-        () => this.setState({ msgLoaded: 'loaded' })
-      );
-    }
   };
 
   handleToggle = (e) => {
@@ -92,56 +74,11 @@ class ChatRoom extends Component {
           </div>
           {result}
         </div>
-        <div
-          className="ChatRoom-message-panel"
-          showall={this.state.toggleMsg ? 'true' : 'false'}
-        >
-          <p className="ChatRoom-titles">Last Message</p>
-          <div
-            className="ChatRoom-message"
-            style={{
-              textAlign: this.state.msgLoaded ? 'left' : 'center',
-            }}
-          >
-            {!this.state.msgLoaded &&
-              <img
-                src="/loading.gif" alt="loading"
-                style={{
-                  width: '20px',
-                  height: '20px',
-                }}
-              />
-            }
-            {this.state.msgLoaded === 'err' &&
-              <p
-                style={{
-                  color: 'red',
-                  fontStyle: 'italic'
-                }}
-              >
-                Server Error...
-              </p>
-            }
-            {this.state.msgLoaded === 'loaded' &&
-              <p
-                ref={this.lastMsgRef}
-                className="ChatRoom-lastMsg"
-                style={{
-                  marginLeft: '10px',
-                  color: 'lightgray',
-                }}
-              >
-                {this.props.lastMsg}
-              </p>
-            }
-          </div>
-        </div>
       </div>
     );
   };
 };
 
 ChatRoom.propTypes = propTypes;
-ChatRoom.defaultProps = defaultProps;
 
 export default ChatRoom;

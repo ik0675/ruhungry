@@ -251,7 +251,7 @@ const getMessages = (res, connection, chat_id, offset) => {
                    ON c.id=a.id
                WHERE
                  c.chat_id = '${chat_id}'
-               ORDER BY sent_at DESC
+               ORDER BY c.sent_at
                LIMIT 50
                OFFSET ${offset}`;
   connection.select(query)

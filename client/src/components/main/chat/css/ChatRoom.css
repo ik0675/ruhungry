@@ -1,7 +1,7 @@
 .ChatRoom {
   flex: 1;
   min-height: 50px;
-  background-color: darkblue;
+  background-color: #3b7cde;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -19,9 +19,8 @@
 }
 
 .ChatRoom-users {
-  flex: 0.4;
+  flex: 1;
   height: 55px;
-  border-bottom: 1px solid lightgray;
   overflow: hidden;
 }
 .ChatRoom-users[showall="true"] {
@@ -64,16 +63,5 @@
   display: inline-block;
   width: calc(100% - 25px);
   text-overflow: ellipsis;
-  color: lightgray;
-}
-.ChatRoom-message-panel {
-  flex: 0.6;
-  width: calc(100% - 10px);
-  height: 50px;
   color: white;
-  overflow: hidden;
-  margin-top: 10px;
-}
-.ChatRoom-message {
-  overflow: hidden;
 }
