@@ -12,16 +12,20 @@ module.exports = (io, connection) => {
     socket.on('sendMessage', (data) => {
       console.log(`Received message from ${data.id} to ${data.chatId}, ${data.message}`)
       db.sendMessage(io, connection, data);
-    })
+    });
 
     socket.on('newInvitation', (invitation) => {
       console.log(`Received new invitation`);
       db.newInvitation(io, connection, invitation);
-    })
+    });
 
     socket.on('rsvp', (invitationInfo) => {
       db.rsvp(io, connection, invitationInfo);
-    })
+    });
+
+    socket.on('newFriend', (friends) => {
+      db.newFriend(io, connection, friends);
+    });
 
     // user logged out
     socket.on('logout', () => {
@@ -29,7 +33,8 @@ module.exports = (io, connection) => {
       delete socketToId[socket.id];
       console.log('Logout: a user with id=%s and socketId=%s logged out', user.id, socket.id);
       db.userLogout(io, connection, user);
-    })
+    });
+
     // user closed out the browser
     socket.on('disconnect', () => {
       let user = { ...socketToId[socket.id] };

@@ -147,6 +147,43 @@ const rsvp = (io, connection, { invitation_num, sent_to, status }) => {
       io.to(socketId).emit('rsvp', { invitation_num, sent_to, status });
     }
   })
+  .catch(err => {
+    console.log('IO error in rsvp', err);
+  })
+}
+
+const newFriend = (io, connection, { id, requestId }) => {
+  const query = `SELECT
+                   name,
+                   img,
+                   socket_id,
+                   TIMESTAMPDIFF(MINUTE, account.logout, now()) AS logout
+                 FROM
+                   account
+                 WHERE
+                   id = '${id}'
+                     OR
+                   id = '${requestId}'`;
+  connection.select(query)
+  .then(accounts => {
+    for (let i = 0; i < accounts.length; ++i) {
+      const friend = {
+        id    : accounts[i].id,
+        name  : accounts[i].name,
+        img   : accounts[i].img,
+        logout: accounts[i].logout,
+      }
+      const tgtSocket = accounts[(i + 1) % 2].socket_id;
+      if (tgtSocket !== null) {
+        io.to(tgtSocket).emit('friendConnected', friend);
+      } else if (friend.id === id) {
+        io.to(tgtSocket).emit('friendDisconnected', friend);
+      }
+    }
+  })
+  .catch(err => {
+    console.log('IO error in newFriend', err);
+  })
 }
 
 module.exports = {
