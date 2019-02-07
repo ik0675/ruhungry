@@ -33,6 +33,7 @@ class Account extends Component {
     id          : this.props.match.params.id,
     loaded      : false,
     friendLoaded: false,
+    friendStatus: 'not sent',
   };
 
   invitationRef = React.createRef();
@@ -59,7 +60,10 @@ class Account extends Component {
     if (this.props.id !== this.props.myId && !this.state.friendLoaded) {
       const id = this.props.myId;
       const friend_id = this.props.id;
-      this.props.isFriends(id, friend_id, () => this.setState({ friendLoaded: true }));
+      this.props.isFriends(
+        id, friend_id,
+        (status) => this.setState({ friendLoaded: true, friendStatus: status })
+      );
     }
   };
 
@@ -78,8 +82,9 @@ class Account extends Component {
   };
 
   render() {
-    const { myId, id, name, userImg, friendStatus } = this.props;
-    if (!this.state.loaded) {
+    const { myId, id, name, userImg } = this.props;
+    const { loaded, friendLoaded, friendStatus } = this.state;
+    if (!loaded) {
       return (
         <div className="Account">
           <p>Loading account information...</p>
@@ -96,7 +101,7 @@ class Account extends Component {
     }
     let button;
     if (myId !== id) {
-      if (!this.state.friendLoaded) {
+      if (!friendLoaded) {
         button = <img src="/loading.gif" alt="loading" />;
       } else if (friendStatus === 'friend') {
         button = (

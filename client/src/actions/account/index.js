@@ -51,9 +51,9 @@ export const dispatchIsFriends = (id, friend_id, loaded) => dispatch => {
         type: types.FRIEND_REQUEST,
         data: data.data
       })
-    } else {
-      dispatch({ type: types.FRIEND_REQUEST_ERR });
+      return loaded(data.data);
     }
+    dispatch({ type: types.FRIEND_REQUEST_ERR });
     loaded();
   })
 }
