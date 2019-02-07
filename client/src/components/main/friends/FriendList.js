@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import * as friendActions from '../../../actions/friends';
 import { dispatchCreateChat } from '../../../actions/chat';
@@ -69,8 +70,14 @@ class FriendList extends Component {
     }
   }
 
+  goToAccount = () => {
+    const friend = { ...this.state.clickedFriend.friend };
+    this.onFriendClick(this.state.clickedFriend);
+    this.props.history.push(`/main/account/${friend.id}`);
+  }
+
   createChat = () => {
-    const friend = { ...this.state.clickedFriend.friend }
+    const friend = { ...this.state.clickedFriend.friend };
     const ids = [
       { id: this.props.id, name: this.props.name },
       { id: friend.id, name: friend.name }
@@ -80,7 +87,7 @@ class FriendList extends Component {
   }
 
   createInvitation = () => {
-    const friend = { ...this.state.clickedFriend }
+    const friend = { ...this.state.clickedFriend };
     this.onFriendClick(this.state.clickedFriend);
     this.props.createInvitation(friend);
   }
@@ -94,18 +101,14 @@ class FriendList extends Component {
       )
     }
     const { clickedFriend } = this.state;
-    const friendAction = () => {
-      if (this.state.clickedFriend != null) {
-        return (
-          <FriendAction
-            clickedFriend={this.state.clickedFriend}
-            createChat={this.createChat}
-            createInvitation={this.createInvitation}
-          />
-        );
-      }
-      return undefined;
-    }
+    const friendAction = (
+      <FriendAction
+        clickedFriend={this.state.clickedFriend}
+        goToAccount={this.goToAccount}
+        createChat={this.createChat}
+        createInvitation={this.createInvitation}
+      />
+    );
     const onlineFriendList = this.props.onlineFriends.map((friend, i) => {
       const clickedFriend = {
         index : i,
@@ -156,7 +159,7 @@ class FriendList extends Component {
       <div className="friendList" >
         {onlineFriendList}
         {offlineFriendList}
-        {clickedFriend !== null && friendAction()}
+        {clickedFriend !== null && friendAction}
       </div>
     );
   }
@@ -181,4 +184,4 @@ const mapDispatchToProps = {
   createInvitation: dispatchCreateInvitation,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FriendList);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FriendList));

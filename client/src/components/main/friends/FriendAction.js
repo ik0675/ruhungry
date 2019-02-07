@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import './css/FriendAction.css';
 
 const propTypes = {
-  clickedFriend   : PropTypes.object.isRequired,
+  clickedFriend   : PropTypes.object,
   createChat      : PropTypes.func.isRequired,
   createInvitation: PropTypes.func.isRequired,
 }
 
 const defaultProps = {
-
+  clickedFriend: null,
 }
 
 function FriendAction(props) {
@@ -24,14 +24,13 @@ function FriendAction(props) {
   return (
     <div id="FriendAction" style={style}>
       <ul>
-        <li
-            onClick={props.createChat}
-        >
+        <li onClick={props.goToAccount}>
+          account profile
+        </li>
+        <li onClick={props.createChat} >
           open chat
         </li>
-        <li
-            onClick={props.createInvitation}
-        >
+        <li onClick={props.createInvitation} >
           send invitation
         </li>
       </ul>
