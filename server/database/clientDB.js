@@ -105,7 +105,8 @@ const getFriendList = (res, connection, id) => {
                   account.id,
                   account.name,
                   account.socket_id,
-                  TIMESTAMPDIFF(MINUTE, account.logout, now()) as logout
+                  TIMESTAMPDIFF(MINUTE, account.logout, now()) as logout,
+                  account.img
                 FROM
                   account,
                   (
@@ -122,7 +123,12 @@ const getFriendList = (res, connection, id) => {
   .then(users => {
     let friendUsers = {onlineFriends: [], offlineFriends: []};
     for (let i = 0; i < users.length; ++i) {
-      let friend = {id: users[i].id, name: users[i].name, logout: users[i].logout};
+      let friend = {
+        id    : users[i].id, 
+        name  : users[i].name,
+        logout: users[i].logout,
+        img   : users[i].img,
+      };
       let status = users[i].socket_id;
       if (status) {
         friendUsers.onlineFriends.push(friend);

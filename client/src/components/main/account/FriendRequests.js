@@ -9,7 +9,11 @@ import FriendRequest from './FriendRequest';
 import './css/FriendRequests.css';
 
 const propTypes = {
-  friendRequests: PropTypes.array.isRequired,
+  myId              : PropTypes.string.isRequired,
+  socket            : PropTypes.object.isRequired,
+  friendRequests    : PropTypes.array.isRequired,
+  getFriendRequests : PropTypes.func.isRequired,
+  makeFriends       : PropTypes.func.isRequired,
 };
 
 class FriendRequests extends Component {
@@ -37,6 +41,8 @@ class FriendRequests extends Component {
     if (this.props.friendRequests.length > 0) {
       requests = this.props.friendRequests.map((request, i) => (
         <FriendRequest
+          myId={this.props.myId}
+          socket={this.props.socket}
           friendRequest={request}
           key={`request${i}`}
           makeFriends={this.props.makeFriends}
@@ -57,6 +63,8 @@ class FriendRequests extends Component {
 FriendRequests.propTypes = propTypes;
 
 const mapStateToProps = state => ({
+  myId          : state.login.id,
+  socket        : state.login.socket,
   friendRequests: state.account.friendRequests,
 });
 

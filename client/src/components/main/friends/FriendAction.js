@@ -5,6 +5,7 @@ import './css/FriendAction.css';
 
 const propTypes = {
   clickedFriend   : PropTypes.object,
+  offsetTop       : PropTypes.number.isRequired,
   goToAccount     : PropTypes.func.isRequired,
   createChat      : PropTypes.func.isRequired,
   createInvitation: PropTypes.func.isRequired,
@@ -15,11 +16,11 @@ const defaultProps = {
 }
 
 function FriendAction(props) {
-  const yOff = props.clickedFriend.index;
+  const yOff = props.offsetTop;
   const style = {
     position: 'absolute',
     left: 'calc(100% - 100px)',
-    top: `${yOff * 25}px`
+    top: yOff,
   }
 
   return (

@@ -31,6 +31,7 @@ const defaultProps = {
 class FriendList extends Component {
   state = {
     clickedFriend   : null,
+    offsetTop       : 0,
     toggleChat      : false,
     toggleInvitation: false,
     isLoading       : true,
@@ -64,9 +65,9 @@ class FriendList extends Component {
     const prevClickedFriend = this.state.clickedFriend;
     if (prevClickedFriend != null
           && prevClickedFriend.friend.id === clickedFriend.friend.id) {
-        this.setState({ clickedFriend: null })
+        this.setState({ clickedFriend: null, offsetTop: 0 })
     } else {
-      this.setState({ clickedFriend })
+      this.setState({ clickedFriend, offsetTop: this.refs[`friend${clickedFriend.index}`].offsetTop })
     }
   }
 
@@ -104,6 +105,7 @@ class FriendList extends Component {
     const friendAction = (
       <FriendAction
         clickedFriend={this.state.clickedFriend}
+        offsetTop={this.state.offsetTop}
         goToAccount={this.goToAccount}
         createChat={this.createChat}
         createInvitation={this.createInvitation}
@@ -118,10 +120,18 @@ class FriendList extends Component {
       return (
         <li
           className="friend online"
-          key={friend.id}
+          key={`onlineFriend${friend.id}`}
           onClick={() => { this.onFriendClick(clickedFriend) }}
+          ref={`friend${i}`}
         >
+          <img src={`/images/${friend.img}`} alt="friend" />
           {friend.name}
+          <span
+            role="img"
+            aria-label="blue circle"
+          >
+            🔵
+          </span>
         </li>
       );
     })
@@ -147,9 +157,11 @@ class FriendList extends Component {
        return (
          <li
            className="friend offline"
-           key={friend.id}
+           key={`offlineFriend${friend.id}`}
            onClick={() => { this.onFriendClick(clickedFriend) }}
+           ref={`friend${clickedFriend.index}`}
          >
+           <img src={`/images/${friend.img}`} alt="friend" />
            {friend.name}
            <span>{logout}</span>
          </li>

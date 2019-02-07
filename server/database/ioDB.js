@@ -153,7 +153,10 @@ const rsvp = (io, connection, { invitation_num, sent_to, status }) => {
 }
 
 const newFriend = (io, connection, { id, requestId }) => {
+  const receiver = id, sender = requestId;
+  console.log(sender, receiver);
   const query = `SELECT
+                   id,
                    name,
                    img,
                    socket_id,
@@ -161,9 +164,9 @@ const newFriend = (io, connection, { id, requestId }) => {
                  FROM
                    account
                  WHERE
-                   id = '${id}'
+                   id = '${sender}'
                      OR
-                   id = '${requestId}'`;
+                   id = '${receiver}'`;
   connection.select(query)
   .then(accounts => {
     for (let i = 0; i < accounts.length; ++i) {
@@ -172,11 +175,12 @@ const newFriend = (io, connection, { id, requestId }) => {
         name  : accounts[i].name,
         img   : accounts[i].img,
         logout: accounts[i].logout,
+        socket: accounts[i].socket_id,
       }
       const tgtSocket = accounts[(i + 1) % 2].socket_id;
-      if (tgtSocket !== null) {
+      if (friend.socket !== null) {
         io.to(tgtSocket).emit('friendConnected', friend);
-      } else if (friend.id === id) {
+      } else {
         io.to(tgtSocket).emit('friendDisconnected', friend);
       }
     }
@@ -192,4 +196,5 @@ module.exports = {
   sendMessage           : sendMessage,
   newInvitation         : newInvitation,
   rsvp                  : rsvp,
+  newFriend             : newFriend,
 }

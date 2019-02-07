@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import './css/FriendRequest.css';
 
 const propTypes = {
+  myId          : PropTypes.string.isRequired,
+  socket        : PropTypes.object.isRequired,
   friendRequest : PropTypes.object.isRequired,
   makeFriends   : PropTypes.func.isRequired,
   index         : PropTypes.number.isRequired,
@@ -21,7 +23,8 @@ function FriendRequest(props) {
           status="accept"
           onClick={() => {
             const { num, id } = props.friendRequest;
-            props.makeFriends(num, id, true, props.index);
+            const { myId, socket } = props;
+            props.makeFriends(num, myId, id, true, props.index, socket);
           }}
         >
           Accept
@@ -30,7 +33,8 @@ function FriendRequest(props) {
           status="reject"
           onClick={() => {
             const { num, id } = props.friendRequest;
-            props.makeFriends(num, id, false, props.index);
+            const { myId, socket } = props;
+            props.makeFriends(num, myId, id, false, props.index, socket);
           }}
         >
           Reject

@@ -73,7 +73,7 @@ export const dispatchGetFriendRequests = handleLoaded => dispatch => {
   })
 }
 
-export const dispatchMakeFriends = (num, requestId, status, index) => dispatch => {
+export const dispatchMakeFriends = (num, id, requestId, status, index, socket) => dispatch => {
   fetch('/api/makeFriends', {
     method  : 'POST',
     headers : { 'content-type': 'application/json' },
@@ -82,6 +82,8 @@ export const dispatchMakeFriends = (num, requestId, status, index) => dispatch =
   .then(res => res.json())
   .then(data => {
     if (data.status) {
+      // friend added successfully. Send socket msg
+      socket.emit('newFriend', { id, requestId });
       return dispatch({ type: types.MAKE_FRIENDS, data: index });
     }
     return dispatch({ type: types.LOAD_ACCOUNT_ERR });
