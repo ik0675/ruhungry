@@ -5,6 +5,7 @@ import './css/FriendAction.css';
 
 const propTypes = {
   clickedFriend   : PropTypes.object,
+  goToAccount     : PropTypes.func.isRequired,
   createChat      : PropTypes.func.isRequired,
   createInvitation: PropTypes.func.isRequired,
 }
