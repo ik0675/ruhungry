@@ -6,7 +6,6 @@ import './css/FriendSuggest.css';
 
 const propTypes = {
   person      : PropTypes.object.isRequired,
-  handleChange: PropTypes.func.isRequired,
 };
 
 function FriendSuggest(props) {
@@ -14,8 +13,8 @@ function FriendSuggest(props) {
   return (
     <div
       className="FriendSuggest"
-      onMouseDown={() => {
-        props.handleChange({ target: { value: '' } }, `/main/account/${person.id}`);
+      onClick={() => {
+        props.history.push(`/main/account/${person.id}`);
       }}
     >
       <img src={`/images/${person.img}`} alt="user" />

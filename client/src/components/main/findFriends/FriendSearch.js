@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { dispatchFriendSearch } from '../../../actions/friends';
+import { dispatchFriendSearchInFriends } from '../../../actions/friends';
 
 import FriendSuggest from './FriendSuggest';
 
@@ -110,7 +110,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  friendSearch:  dispatchFriendSearch
+  friendSearch:  dispatchFriendSearchInFriends
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FriendSearch));

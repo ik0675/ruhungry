@@ -3,7 +3,10 @@ import * as types from '../../actions/types';
 const initialState = {
   onlineFriends     : [],
   offlineFriends    : [],
-  friendSuggests    : [],
+  friendSuggests    : {
+    inFriends   : [],
+    notInFriends: [],
+  },
 }
 
 export default function friendReducers(state = initialState, action) {
@@ -15,10 +18,21 @@ export default function friendReducers(state = initialState, action) {
         ...action.data,
         friendSuggests: state.friendSuggests,
       }
-    case types.FRIEND_SUGGEST:
+    case types.FRIEND_SUGGEST_FRIENDS:
       return {
         ...state,
-        friendSuggests: action.data
+        friendSuggests: {
+          inFriends   : [ ...state.friendSuggests.inFriends ],
+          notInFriends: action.data
+        }
+      }
+    case types.FRIEND_SUGGEST_NOT_FRIENDS:
+      return {
+        ...state,
+        friendSuggests: {
+          inFriends   : action.data,
+          notInFriends: [ ...state.friendSuggests.inFriends ]
+        }
       }
     default:
       return state;

@@ -1,0 +1,36 @@
+.FriendSuggest {
+  background-color: #3b7cde;
+  color: white;
+  margin-bottom: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 100%;
+}
+@media screen and (min-width: 801px) {
+  .FriendSuggest {
+    max-width: 45%;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+@media screen and (min-width: 1001px) {
+  .FriendSuggest {
+    max-width: 30%;
+  }
+}
+@media screen and (min-width: 1101px) {
+  .FriendSuggest {
+    max-width: 31%;
+  }
+}
+.FriendSuggest > img {
+  margin-left: 10px;
+  width: 30px;
+  height: 30px;
+}
+.FriendSuggest > span {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 20px;
+  line-height: 30px;
+}

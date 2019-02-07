@@ -60,13 +60,28 @@ export const dispatchFriendDisconnect = (friend, friends) => dispatch => {
   }
 }
 
-export const dispatchFriendSearch = (name, success, err) => dispatch => {
-  fetch(`/api/friendSearch/${name}`)
+export const dispatchFriendSearchInFriends = (name, success, err) => dispatch => {
+  fetch(`/api/friendSearch/true/${name}`)
   .then(res => res.json())
   .then(data => {
     if (data.status) {
       dispatch({
-        type: types.FRIEND_SUGGEST,
+        type: types.FRIEND_SUGGEST_FRIENDS,
+        data: data.result
+      })
+      return success();
+    }
+    return err();
+  });
+}
+
+export const dispatchFriendSearchNotInFriends = (name, success, err) => dispatch => {
+  fetch(`/api/friendSearch/false/${name}`)
+  .then(res => res.json())
+  .then(data => {
+    if (data.status) {
+      dispatch({
+        type: types.FRIEND_SUGGEST_NOT_FRIENDS,
         data: data.result
       })
       return success();

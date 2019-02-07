@@ -217,12 +217,18 @@ module.exports = (app, connection, crypto) => {
     db.getLastMsg(res, connection, chat_id);
   });
 
-  app.get('/api/friendSearch/:name', (req, res) => {
+  app.get('/api/friendSearch/:inFriends/:name', (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
     }
+    const id = loginInfo.id;
+    const inFriends = req.params.inFriends;
     const name = req.params.name;
-    db.searchName(res, connection, name);
+    if (inFriends) {
+      db.searchNameInFriends(res, connection, id, name, inFriends);
+    } else {
+      db.searchNameNotInFriends(res, connection, id, name, inFriends);
+    }
   });
 }

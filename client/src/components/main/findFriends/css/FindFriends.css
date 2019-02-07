@@ -1,0 +1,24 @@
+.FindFriends {
+  width: calc(98% - 150px);
+  padding-left: 2%;
+  padding-right: 2%;
+}
+@media screen and (max-width: 650px) {
+  .FindFriends {
+    width: 98%;
+  }
+}
+
+.FindFriends h1 {
+  font-size: 30px;
+  padding-top: 10px;
+  padding-bottom: 0;
+  text-align: center;
+}
+
+.FindFriends > input {
+  width: 100%;
+  padding-left: 10px;
+  margin-bottom: 20px;
+  outline: none;
+}

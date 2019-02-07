@@ -124,7 +124,7 @@ const getFriendList = (res, connection, id) => {
     let friendUsers = {onlineFriends: [], offlineFriends: []};
     for (let i = 0; i < users.length; ++i) {
       let friend = {
-        id    : users[i].id, 
+        id    : users[i].id,
         name  : users[i].name,
         logout: users[i].logout,
         img   : users[i].img,
@@ -729,15 +729,19 @@ const getLastMsg = (res, connection, chat_id) => {
   })
 }
 
-const searchName = (res, connection, name) => {
+const searchNameInFriends = (res, connection, id, name) => {
   const query = `SELECT
-                   id,
-                   name,
-                   img
+                   a.id,
+                   a.name,
+                   a.img
                  FROM
-                   account
+                   friend_list f
+                 JOIN account a
+                   ON a.id = f.friend_id
                  WHERE
-                   name LIKE '%${name}%'`;
+                   f.id = '${id}'
+                     AND
+                   a.name LIKE '%${name}%'`;
   connection.select(query)
   .then(accounts => {
     let result = [];
@@ -754,6 +758,51 @@ const searchName = (res, connection, name) => {
     console.log(err);
     return res.json({ status: false });
   })
+}
+
+const searchNameNotInFriends = (res, connection, id, name) => {
+  let query = `SELECT DISTINCT
+                 friend_id
+               FROM
+                 friend_list
+               WHERE
+                 id = '${id}'`;
+  connection.select(query)
+  .then(friend_ids => {
+    let ids = "";
+    for (let i = 0; i < friend_ids.length; ++i) {
+      ids += friend_ids[i].friend_id;
+      if (i < friend_ids.length - 1) {
+        ids += ','; 
+      }
+    }
+    query = `SELECT
+               id,
+               name,
+               img
+             FROM
+               account
+             WHERE
+               id NOT IN (${ids})
+                 AND
+               id != '${id}'`;
+    connection.select(query)
+  })
+  .then(accounts => {
+    let result = [];
+    for (let i = 0; i < accounts.length; ++i) {
+      result.push({
+        id  : accounts[i].id,
+        name: accounts[i].name,
+        img : accounts[i].img,
+      });
+    }
+    return res.json({ status: true, result });
+  })
+  .catch(err => {
+    console.log(err)
+    return res.json({ status: false });
+  });
 }
 
 module.exports = {
@@ -776,5 +825,6 @@ module.exports = {
   makeFriends,
   getChatRooms,
   getLastMsg,
-  searchName,
+  searchNameInFriends,
+  searchNameNotInFriends,
 }

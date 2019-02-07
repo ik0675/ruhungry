@@ -8,10 +8,11 @@ export const NO_SESSION = 'NO_SESSION';
 export const LOGOUT     = 'LOGOUT';
 
 // action types for friends
-export const GET_FRIENDLIST     = 'GET_FRIENDLIST';
-export const FRIEND_CONNECT     = 'FRIEND_CONNECT';
-export const FRIEND_DISCONNECT  = 'FRIEND_DISCONNECT';
-export const FRIEND_SUGGEST     = 'FRIEND_SUGGEST';
+export const GET_FRIENDLIST             = 'GET_FRIENDLIST';
+export const FRIEND_CONNECT             = 'FRIEND_CONNECT';
+export const FRIEND_DISCONNECT          = 'FRIEND_DISCONNECT';
+export const FRIEND_SUGGEST_FRIENDS     = 'FRIEND_SUGGEST_FRIENDS';
+export const FRIEND_SUGGEST_NOT_FRIENDS = 'FRIEND_SUGGEST_NOT_FRIENDS';
 
 // action types for chat
 export const GET_MESSAGES       = 'GET_MESSAGES';

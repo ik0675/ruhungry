@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 
-import FriendSearch from './FriendSearch';
+import FriendSearch from '../findFriends/FriendSearch';
 
 import './css/Header.css';
 
