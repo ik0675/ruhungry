@@ -7,19 +7,19 @@
   width: 100%;
 }
 @media screen and (min-width: 801px) {
-  .FriendSuggest {
+  .FriendSuggest[type="page"] {
     max-width: 45%;
     margin-left: 10px;
     margin-right: 10px;
   }
 }
 @media screen and (min-width: 1001px) {
-  .FriendSuggest {
+  .FriendSuggest[type="page"] {
     max-width: 30%;
   }
 }
 @media screen and (min-width: 1101px) {
-  .FriendSuggest {
+  .FriendSuggest[type="page"] {
     max-width: 31%;
   }
 }

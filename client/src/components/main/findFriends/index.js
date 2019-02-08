@@ -12,10 +12,15 @@ import FindFriend from './FindFriend';
 import './css/FindFriends.css';
 
 const propTypes = {
+  type            : PropTypes.string,
   friendSuggests  : PropTypes.object.isRequired,
   searchFriends   : PropTypes.func.isRequired,
   searchNotFriends: PropTypes.func.isRequired,
 };
+
+const defaultProps = {
+  type: 'page',
+}
 
 class FindFriends extends Component {
   state = {
@@ -23,6 +28,7 @@ class FindFriends extends Component {
     inFriendsLoaded   : true,
     notInFriendsLoaded: true,
     err               : false,
+    toggle            : false,
   };
 
   handleChange = (e) => {
@@ -49,24 +55,37 @@ class FindFriends extends Component {
 
   render() {
     return (
-      <div className="FindFriends">
-        <h1>Find Friends</h1>
+      <div
+        className="FindFriends"
+        type={this.props.type}
+      >
+        <h1 type={this.props.type} >Find Friends</h1>
         <input
+          page={this.props.type}
           type="text"
           value={this.state.name}
           onChange={this.handleChange}
+          onFocus={() => this.setState({ toggle: true })}
           placeholder="Search for a friend here..."
         />
         <FindFriend
+          type={this.props.type}
+          name={this.state.name}
+          toggle={this.state.toggle}
           friendSuggests={this.props.friendSuggests}
           inFriendsLoaded={this.state.inFriendsLoaded}
           notInFriendsLoaded={this.state.notInFriendsLoaded}
           err={this.state.err}
+          handleClose={() => this.setState({ toggle: false })}
+          handleChange={this.handleChange}
         />
       </div>
     );
   };
 };
+
+FindFriends.propTypes = propTypes;
+FindFriends.defaultProps = defaultProps;
 
 const mapStateToProps = state => ({
   friendSuggests: state.friends.friendSuggests,

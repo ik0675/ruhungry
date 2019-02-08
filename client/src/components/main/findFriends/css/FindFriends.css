@@ -3,9 +3,21 @@
   padding-left: 2%;
   padding-right: 2%;
 }
+.FindFriends[type="header"] {
+  display: none;
+}
 @media screen and (max-width: 650px) {
   .FindFriends {
     width: 98%;
+  }
+}
+@media screen and (min-width: 801px) {
+  .FindFriends[type="header"] {
+    display: block;
+    width: 300px;
+    padding: 0;
+    position: relative;
+    top: 10px;
   }
 }
 
@@ -15,10 +27,15 @@
   padding-bottom: 0;
   text-align: center;
 }
+.FindFriends h1[type="header"] {
+  display: none;
+}
 
 .FindFriends > input {
   width: 100%;
   padding-left: 10px;
   margin-bottom: 20px;
   outline: none;
+  /* color: rgb(47, 132, 254); */
+  /* color: rgb(0, 59, 143); */
 }

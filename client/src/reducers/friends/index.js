@@ -18,7 +18,12 @@ export default function friendReducers(state = initialState, action) {
         ...action.data,
         friendSuggests: state.friendSuggests,
       }
-    case types.FRIEND_SUGGEST_FRIENDS:
+    case types.RESET_FRIEND_SUGGESTS:
+      return {
+        ...state,
+        friendSuggests: initialState.friendSuggests,
+      }
+    case types.FRIEND_SUGGEST_NOT_FRIENDS:
       return {
         ...state,
         friendSuggests: {
@@ -26,7 +31,7 @@ export default function friendReducers(state = initialState, action) {
           notInFriends: action.data
         }
       }
-    case types.FRIEND_SUGGEST_NOT_FRIENDS:
+    case types.FRIEND_SUGGEST_FRIENDS:
       return {
         ...state,
         friendSuggests: {

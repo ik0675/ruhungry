@@ -6,14 +6,22 @@ import './css/FriendSuggest.css';
 
 const propTypes = {
   person      : PropTypes.object.isRequired,
+  type        : PropTypes.string,
+};
+
+const defaultProps = {
+  type: 'page'
 };
 
 function FriendSuggest(props) {
   const person = props.person;
   return (
     <div
+      type={props.type}
       className="FriendSuggest"
       onClick={() => {
+        props.handleChange({ target: { value: '' } });
+        props.handleClose();
         props.history.push(`/main/account/${person.id}`);
       }}
     >
@@ -24,5 +32,6 @@ function FriendSuggest(props) {
 };
 
 FriendSuggest.propTypes = propTypes;
+FriendSuggest.defaultProps = defaultProps;
 
 export default withRouter(FriendSuggest);

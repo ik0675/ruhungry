@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 
-import FriendSearch from '../findFriends/FriendSearch';
+import FindFriends from '../findFriends';
 
 import './css/Header.css';
 
@@ -33,7 +33,7 @@ function Header(props) {
               height="30"
             /> RUHungry
           </Link>
-          <FriendSearch id={props.match.params.id}/>
+          <FindFriends type="header" />
           <div className="navbar-text navbar-right">
             <span
               onClick={() => {

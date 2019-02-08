@@ -7,19 +7,33 @@ import FriendSuggest from './FriendSuggest';
 import './css/FindFriend.css';
 
 const propTypes = {
-  type              : PropTypes.string,
+  type              : PropTypes.string.isRequired,
+  name              : PropTypes.string,
+  toggle            : PropTypes.bool,
   friendSuggests    : PropTypes.object.isRequired,
   err               : PropTypes.bool.isRequired,
   inFriendsLoaded   : PropTypes.bool.isRequired,
   notInFriendsLoaded: PropTypes.bool.isRequired,
+  handleClose       : PropTypes.func.isRequired,
+  handleChange      : PropTypes.func.isRequired,
 };
 
 const defaultProps = {
-  type: 'page',
+  name  : '',
+  toggle: true,
 };
 
 class FindFriend extends Component {
   render() {
+    let style = {};
+    if (this.props.type === 'header' && !this.props.toggle) {
+      style.display = 'none';
+    }
+    const noName = (
+      <p className="FindFriend-noName">
+        Enter a name to search for
+      </p>
+    );
     const err = (
       <p className="FindFriend-err">
         Server Err... Please try again later
@@ -32,6 +46,9 @@ class FindFriend extends Component {
     if (this.props.err) {
       inFriendsSearch = err;
       notInFriendsSearch = err;
+    } else if (this.props.name.length === 0) {
+      inFriendsSearch = noName;
+      notInFriendsSearch = noName;
     } else {
       if (!this.props.inFriendsLoaded) {
         inFriendsSearch = (
@@ -45,9 +62,11 @@ class FindFriend extends Component {
         inFriendsSearch = inFriends.map((person, i) => {
           return (
             <FriendSuggest
+              type={this.props.type}
               person={person}
               key={`person${i}`}
-              handleChange={this.handleChange}
+              handleClose={this.props.handleClose}
+              handleChange={this.props.handleChange}
             />
           );
         });
@@ -65,9 +84,11 @@ class FindFriend extends Component {
         notInFriendsSearch = notInFriends.map((person, i) => {
           return (
             <FriendSuggest
+              type={this.props.type}
               person={person}
               key={`personNotFriend${i}`}
-              handleChange={this.handleChange}
+              handleClose={this.props.handleClose}
+              handleChange={this.props.handleChange}
             />
           );
         });
@@ -75,18 +96,35 @@ class FindFriend extends Component {
     }
 
     return (
-      <div className="FindFriend" type={this.props.type}>
-        <p className="FindFriend-header" >Friends</p>
-        <div>
-          {inFriendsSearch}
+      <div
+        className="FindFriend"
+        type={this.props.type}
+        style={style}
+      >
+        <div className="FindFriend-panel">
+          <p className="FindFriend-header" >
+            Friends
+          </p>
+          <div>
+            {inFriendsSearch}
+          </div>
+          <p className="FindFriend-header" >Not Friends</p>
+          <div>
+            {notInFriendsSearch}
+          </div>
         </div>
-        <p className="FindFriend-header" >Not Friends</p>
-        <div>
-          {notInFriendsSearch}
+        <div
+          type={this.props.type}
+          className="FindFriend-header-display"
+        >
+          <span onClick={this.props.handleClose}>CLOSE</span>
         </div>
       </div>
     );
   };
 };
+
+FindFriend.propTypes = propTypes;
+FindFriend.defaultProps = defaultProps;
 
 export default withRouter(FindFriend);

@@ -771,9 +771,9 @@ const searchNameNotInFriends = (res, connection, id, name) => {
   .then(friend_ids => {
     let ids = "";
     for (let i = 0; i < friend_ids.length; ++i) {
-      ids += friend_ids[i].friend_id;
+      ids += "'" + friend_ids[i].friend_id + "'";
       if (i < friend_ids.length - 1) {
-        ids += ','; 
+        ids += ',';
       }
     }
     query = `SELECT
@@ -785,8 +785,10 @@ const searchNameNotInFriends = (res, connection, id, name) => {
              WHERE
                id NOT IN (${ids})
                  AND
-               id != '${id}'`;
-    connection.select(query)
+               id != '${id}'
+                 AND
+               name LIKE '%${name}%'`;
+    return connection.select(query)
   })
   .then(accounts => {
     let result = [];

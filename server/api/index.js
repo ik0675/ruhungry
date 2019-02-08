@@ -225,7 +225,7 @@ module.exports = (app, connection, crypto) => {
     const id = loginInfo.id;
     const inFriends = req.params.inFriends;
     const name = req.params.name;
-    if (inFriends) {
+    if (inFriends === 'true') {
       db.searchNameInFriends(res, connection, id, name, inFriends);
     } else {
       db.searchNameNotInFriends(res, connection, id, name, inFriends);

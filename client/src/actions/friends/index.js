@@ -61,6 +61,7 @@ export const dispatchFriendDisconnect = (friend, friends) => dispatch => {
 }
 
 export const dispatchFriendSearchInFriends = (name, success, err) => dispatch => {
+  dispatch({ type: types.RESET_FRIEND_SUGGESTS });
   fetch(`/api/friendSearch/true/${name}`)
   .then(res => res.json())
   .then(data => {
