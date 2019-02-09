@@ -35,14 +35,14 @@ const defaultProps = {
 class Posts extends Component {
   state = {
     loaded: false,
+    id    : this.props.accountId !== '' ? this.props.accountId : this.props.id
   };
 
   makeInvitation = React.createRef();
 
   componentDidMount() {
     if (!this.state.loaded) {
-      const id = this.props.accountId.length > 0 ?
-        this.props.accountId : this.props.id;
+      const id = this.state.id;
       this.props.getPosts(id, () => this.setState({ loaded: true }));
     };
 
@@ -62,7 +62,7 @@ class Posts extends Component {
   };
 
   handleRSVP = (invitationNum, status) => {
-    this.props.rsvp(invitationNum, this.props.id, status, this.props.socket);
+    this.props.rsvp(invitationNum, this.state.id, status, this.props.socket);
   };
 
   render() {
@@ -90,8 +90,7 @@ class Posts extends Component {
 
     const { posts, filter } = this.props;
     const renderPosts = posts.map( (post, i) => {
-      const id = this.props.accountId.length > 0
-        ? this.props.accountId : this.props.id;
+      const id = this.state.id;
       if (post.id === id) {
         return (
           <InvitationSent
@@ -120,11 +119,12 @@ class Posts extends Component {
             restaurantImgPath={post.restaurantImgPath}
             userImg={post.img}
             status={status}
-            id={this.props.id}
+            id={this.state.id}
             isWaiting={post.isWaiting}
             rsvp={this.handleRSVP}
             invitationNum={post.invitationNum}
             filter={filter !== 0}
+            loginId={this.props.id}
           />
         );
       }

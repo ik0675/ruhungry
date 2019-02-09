@@ -17,6 +17,7 @@ const propTypes = {
   isWaiting           : PropTypes.bool.isRequired,
   rsvp                : PropTypes.func.isRequired,
   filter              : PropTypes.bool,
+  loginId             : PropTypes.string.isRequired,
 }
 
 const defaultProps = {
@@ -39,26 +40,30 @@ const InvitationReceived = (props) => {
     )
   }
   else if (status === 'pending') {
-    invitationStatus = () => (
-      <div className="invitation bottom">
-        <button
-          className="btn accept"
-          onClick={ () => {
-            props.rsvp(invitationNum, 'accepted')
-          }}
-        >
-          수락
-        </button>
-        <button
-          className="btn deny"
-          onClick={ () => {
-            props.rsvp(invitationNum, 'rejected')
-          }}
-        >
-          거절
-        </button>
-      </div>
-    )
+    invitationStatus = () => {
+      if (props.id === props.loginId) {
+        return (
+          <div className="invitation bottom">
+            <button
+              className="btn accept"
+              onClick={ () => {
+                props.rsvp(invitationNum, 'accepted')
+              }}
+            >
+              수락
+            </button>
+            <button
+              className="btn deny"
+              onClick={ () => {
+                props.rsvp(invitationNum, 'rejected')
+              }}
+            >
+              거절
+            </button>
+          </div>
+        );
+      }
+    }
   } else {
     invitationStatus = () => {
       if (status === 'accepted') {
