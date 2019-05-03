@@ -1,10 +1,10 @@
-const db = require('../database/clientDB');
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
-const path = require('path');
+const db = require("../database/clientDB");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const path = require("path");
 
 module.exports = (app, connection, crypto) => {
-  app.post('/api/login', (req, res) => {
+  app.post("/api/login", (req, res) => {
     let id = req.body.id;
     let password = req.body.password;
     password = crypto.cryptoCipher(password);
@@ -12,7 +12,7 @@ module.exports = (app, connection, crypto) => {
     db.loginWithIdPw(req, res, connection, id, password);
   });
 
-  app.post('/api/signUp', (req, res) => {
+  app.post("/api/signUp", (req, res) => {
     let userInfo = req.body;
     let id = userInfo.id;
     let password = crypto.cryptoCipher(userInfo.password);
@@ -21,12 +21,12 @@ module.exports = (app, connection, crypto) => {
     db.signUp(res, connection, id, password, name);
   });
 
-  app.post('/api/getFriendList', (req, res) => {
+  app.post("/api/getFriendList", (req, res) => {
     let id = req.body.id;
     db.getFriendList(res, connection, id);
   });
 
-  app.get('/api/session', (req, res) => {
+  app.get("/api/session", (req, res) => {
     if (req.session.loginInfo === undefined) {
       res.json({
         status: false
@@ -35,29 +35,29 @@ module.exports = (app, connection, crypto) => {
       res.json({
         status: true,
         user: {
-          id      : req.session.loginInfo.id,
-          name    : req.session.loginInfo.name,
-          userImg : req.session.loginInfo.userImg,
+          id: req.session.loginInfo.id,
+          name: req.session.loginInfo.name,
+          userImg: req.session.loginInfo.userImg
         }
       });
     }
   });
 
-  app.get('/api/logout', (req, res) => {
+  app.get("/api/logout", (req, res) => {
     delete req.session.loginInfo;
-    res.send('loggout');
+    res.send("loggout");
   });
 
-  app.get('/api/getPosts/:id', (req, res) => {
+  app.get("/api/getPosts/:id", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
-      return res.json({ status: false })
+      return res.json({ status: false });
     }
     const id = req.params.id;
     db.getPosts(res, connection, id, 0);
-  })
+  });
 
-  app.get('/api/getChatNumber/:ids', (req, res) => {
+  app.get("/api/getChatNumber/:ids", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       res.json({ status: false });
@@ -80,18 +80,18 @@ module.exports = (app, connection, crypto) => {
         res.json({ status: false });
       }
     }
-  })
+  });
 
-  app.post('/api/sendMessage', (req, res) => {
+  app.post("/api/sendMessage", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
     }
     const data = req.body;
     db.sendMessage(res, connection, data);
-  })
+  });
 
-  app.get('/api/getMessages', (req, res) => {
+  app.get("/api/getMessages", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
@@ -99,32 +99,39 @@ module.exports = (app, connection, crypto) => {
     const chat_id = req.query.chat_id;
     const offset = req.query.offset;
     db.getMessages(res, connection, chat_id, offset);
-  })
+  });
 
-  app.post('/api/rsvp', (req, res) => {
+  app.post("/api/rsvp", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
     }
     const { invitation_num, sent_to, status } = req.body;
     db.rsvp(res, connection, invitation_num, sent_to, status);
-  })
+  });
 
-  app.get('/api/getImages', (req, res) => {
+  app.get("/api/getImages", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
     }
     const restaurant = req.query.restaurant;
     db.getImages(res, connection, restaurant);
-  })
+  });
 
-  app.post('/api/createInvitation', (req, res) => {
+  app.post("/api/createInvitation", (req, res) => {
     const loginInfo = req.session.loginInfo;
     const id = loginInfo.id;
     const { friends, restaurant, restaurantImgPath } = req.body;
-    db.createInvitation(res, connection, id, friends, restaurant, restaurantImgPath);
-  })
+    db.createInvitation(
+      res,
+      connection,
+      id,
+      friends,
+      restaurant,
+      restaurantImgPath
+    );
+  });
 
   app.get(`/api/restaurant/:restaurant`, (req, res) => {
     const loginInfo = req.session.loginInfo;
@@ -133,26 +140,26 @@ module.exports = (app, connection, crypto) => {
     }
     const restaurant = req.params.restaurant;
     db.restaurantSearch(res, connection, restaurant);
-  })
+  });
 
-  app.post('/api/addRestaurant', upload.single('file'), (req, res) => {
+  app.post("/api/addRestaurant", upload.single("file"), (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
     }
     const { restaurant } = req.body;
-    const tempPath = path.join(__dirname, '../', req.file.path);
-    const imgName = `${restaurant}.${req.file.originalname.split('.').pop()}`;
+    const tempPath = path.join(__dirname, "../", req.file.path);
+    const imgName = `${restaurant}.${req.file.originalname.split(".").pop()}`;
     let imgPath;
-    if (process.env.NODE_ENV === 'production') {
-      imgPath = path.join(__dirname, '../../client/build/images', imgName);
+    if (process.env.NODE_ENV === "production") {
+      imgPath = path.join(__dirname, "../../client/build/images", imgName);
     } else {
-      imgPath = path.join(__dirname, '../../client/public/images', imgName);
+      imgPath = path.join(__dirname, "../../client/public/images", imgName);
     }
     db.addRestaurant(res, connection, restaurant, tempPath, imgPath, imgName);
-  })
+  });
 
-  app.get('/api/loadAccount/:id', (req, res) => {
+  app.get("/api/loadAccount/:id", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
@@ -161,7 +168,7 @@ module.exports = (app, connection, crypto) => {
     db.getAccountInfo(res, connection, id);
   });
 
-  app.post('/api/isFriends', (req, res) => {
+  app.post("/api/isFriends", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
@@ -170,7 +177,7 @@ module.exports = (app, connection, crypto) => {
     db.isFriends(res, connection, id, friend_id);
   });
 
-  app.post('/api/friendRequest', (req, res) => {
+  app.post("/api/friendRequest", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
@@ -180,7 +187,7 @@ module.exports = (app, connection, crypto) => {
     db.friendRequest(res, connection, id, friend_id);
   });
 
-  app.get('/api/getFriendRequests', (req, res) => {
+  app.get("/api/getFriendRequests", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
@@ -189,7 +196,7 @@ module.exports = (app, connection, crypto) => {
     db.getFriendRequests(res, connection, id);
   });
 
-  app.post('/api/makeFriends', (req, res) => {
+  app.post("/api/makeFriends", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
@@ -199,7 +206,7 @@ module.exports = (app, connection, crypto) => {
     db.makeFriends(res, connection, num, id, requestId, status);
   });
 
-  app.get('/api/getChatRooms', (req, res) => {
+  app.get("/api/getChatRooms", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
@@ -208,7 +215,7 @@ module.exports = (app, connection, crypto) => {
     db.getChatRooms(res, connection, id);
   });
 
-  app.get('/api/getLastMsg/:chat_id', (req, res) => {
+  app.get("/api/getLastMsg/:chat_id", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
@@ -217,7 +224,7 @@ module.exports = (app, connection, crypto) => {
     db.getLastMsg(res, connection, chat_id);
   });
 
-  app.get('/api/friendSearch/:inFriends/:name', (req, res) => {
+  app.get("/api/friendSearch/:inFriends/:name", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
@@ -225,10 +232,11 @@ module.exports = (app, connection, crypto) => {
     const id = loginInfo.id;
     const inFriends = req.params.inFriends;
     const name = req.params.name;
-    if (inFriends === 'true') {
+    console.log(id, inFriends, name);
+    if (inFriends === "true") {
       db.searchNameInFriends(res, connection, id, name, inFriends);
     } else {
       db.searchNameNotInFriends(res, connection, id, name, inFriends);
     }
   });
-}
+};
