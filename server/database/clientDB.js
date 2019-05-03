@@ -789,14 +789,16 @@ const searchNameNotInFriends = (res, connection, id, name) => {
   connection
     .select(query)
     .then(friend_ids => {
-      let ids = "";
-      for (let i = 0; i < friend_ids.length; ++i) {
-        ids += "'" + friend_ids[i].friend_id + "'";
-        if (i < friend_ids.length - 1) {
-          ids += ",";
+      let query = "";
+      if (friend_ids.length > 0) {
+        let ids = "";
+        for (let i = 0; i < friend_ids.length; ++i) {
+          ids += "'" + friend_ids[i].friend_id + "'";
+          if (i < friend_ids.length - 1) {
+            ids += ",";
+          }
         }
-      }
-      query = `SELECT
+        query = `SELECT
                id,
                name,
                img
@@ -808,7 +810,18 @@ const searchNameNotInFriends = (res, connection, id, name) => {
                id != '${id}'
                  AND
                name LIKE '%${name}%'`;
-      console.log(query);
+      } else {
+        query = `SELECT
+               id,
+               name,
+               img
+             FROM
+               account
+             WHERE
+               id != '${id}'
+                 AND
+               name LIKE '%${name}%'`;
+      }
       return connection.select(query);
     })
     .then(accounts => {
