@@ -9,6 +9,7 @@ class promiseifyDB {
       if (err.code === "PROTOCOL_CONNECTION_LOST") {
         this.db = mysql.createConnection(info);
       } else {
+        console.log("MYSQL ERROR CODE = ", err.code);
         throw err;
       }
     });
