@@ -3,16 +3,17 @@ let mysql = require("mysql");
 class promiseifyDB {
   constructor(info) {
     this.db = mysql.createConnection(info);
-
-    this.db.on("error", err => {
-      console.log("db error", err);
-      if (err.code === "PROTOCOL_CONNECTION_LOST") {
-        this.db = mysql.createConnection(info);
-      } else {
-        console.log("MYSQL ERROR CODE = ", err.code);
-        throw err;
-      }
-    });
+    this.db.connect(err => console.log(err));
+    this.handleDisconnect(info);
+    // this.db.on("error", err => {
+    //   console.log("db error", err);
+    //   if (err.code === "PROTOCOL_CONNECTION_LOST") {
+    //     this.db = mysql.createConnection(info);
+    //   } else {
+    //     console.log("MYSQL ERROR CODE = ", err.code);
+    //     throw err;
+    //   }
+    // });
   }
 
   close() {
@@ -59,6 +60,24 @@ class promiseifyDB {
 
   escape(string) {
     return this.db.escape(string);
+  }
+
+  handleDisconnect(info) {
+    this.db.on("error", err => {
+      if (!err.fatal) {
+        return;
+      }
+
+      if (err.code !== "PROTOCOL_CONNECTION_LOST") {
+        throw err;
+      }
+
+      console.log("Re-connecting lost connection: " + err.stack);
+
+      this.db = mysql.createConnection(info);
+      this.handleDisconnect(info);
+      this.db.connect(err => console.log(err));
+    });
   }
 }
 
