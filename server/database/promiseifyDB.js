@@ -1,53 +1,50 @@
-let mysql = require('mysql');
+let mysql = require("mysql");
 
 class promiseifyDB {
   constructor(info) {
     this.db = mysql.createConnection(info);
   }
 
-  connect() {
-    this.db.connect((err) => {
-      if (err)
-        throw err;
-      console.log(`Connected to database at localhost`);
+  close() {
+    return new Promise((resolve, reject) => {
+      this.db.end(err => {
+        if (err) return reject(err);
+        resolve();
+      });
     });
   }
 
-  close() {
-    this.db.close();
-  }
-
   select(query) {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.db.query(query, (err, rows) => {
         if (err) {
-          reject(err);
+          return reject(new Error(err));
         }
         resolve(rows);
-      })
-    })
+      });
+    });
   }
 
   insert(query) {
-    return new Promise( (resolve, reject) => {
-      this.db.query(query, (err) => {
+    return new Promise((resolve, reject) => {
+      this.db.query(query, err => {
         if (err) {
-          reject(err);
+          return reject(err);
         }
         resolve(true);
-      })
-    })
+      });
+    });
   }
 
   update(query) {
-    return new Promise( (resolve, reject) => {
-      this.db.query(query, (err) => {
+    return new Promise((resolve, reject) => {
+      this.db.query(query, err => {
         if (err) {
-          reject(err);
+          return reject(err);
         }
         resolve(true);
-      })
-    })
+      });
+    });
   }
 
   escape(string) {

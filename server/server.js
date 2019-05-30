@@ -36,7 +36,7 @@ const sessionStore = new mySQLStore({
   connectionLimit: 1
 });
 
-connection.connect();
+// connection.connect();
 
 let port = process.env.PORT || 4000;
 
