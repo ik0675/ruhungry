@@ -230,7 +230,7 @@ const sendMessage = (res, connection, { chat_id, id, message }) => {
                 a.name
               FROM
                 chat_messages c
-                  JOIN account a
+                  LEFT JOIN account a
                   ON a.id=c.id
               WHERE
                 c.num=LAST_INSERT_ID();`;
@@ -255,7 +255,7 @@ const getMessages = (res, connection, chat_id, offset) => {
                  DATE_FORMAT(c.sent_at, '%b %d %Y at %h:%i%p') sent_at
                FROM
                  chat_messages c
-                   JOIN account a
+                   LEFT JOIN account a
                    ON c.id=a.id
                WHERE
                  c.chat_id = '${chat_id}'
@@ -292,9 +292,9 @@ const getPosts = (res, connection, id, offset) => {
                    p.invitation_num
                  FROM
                    post_invitation p
-                     JOIN account a
+                     LEFT JOIN account a
                        ON p.id=a.id
-                     JOIN account a_
+                     LEFT JOIN account a_
                        ON p.sent_to=a_.id
                  GROUP BY
                    p.invitation_num
@@ -432,9 +432,9 @@ const createInvitation = (res, connection, id, friends, restaurant) => {
                  p.invitation_num
                FROM
                  post_invitation p
-                   JOIN account a
+                   LEFT JOIN account a
                      ON p.id=a.id
-                   JOIN account a_
+                   LEFT JOIN account a_
                      ON p.sent_to=a_.id
                WHERE
                  p.invitation_num = '${invitation_num}'
@@ -754,7 +754,7 @@ const searchNameInFriends = (res, connection, id, name) => {
                    a.img
                  FROM
                    friend_list f
-                 JOIN account a
+                 LEFT JOIN account a
                    ON a.id = f.friend_id
                  WHERE
                    f.id = '${id}'
