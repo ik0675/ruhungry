@@ -1,6 +1,14 @@
 const db = require("../database/clientDB");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "uploads");
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now());
+  }
+});
+const upload = multer({ storage });
 const path = require("path");
 
 module.exports = (app, connection, crypto) => {
@@ -148,7 +156,7 @@ module.exports = (app, connection, crypto) => {
       return res.json({ status: false });
     }
     const { restaurant } = req.body;
-    const tempPath = path.join(__dirname, "../", req.file.path);
+    const tempPath = req.file.path;
     const imgName = `${restaurant}.${req.file.originalname.split(".").pop()}`;
     let imgPath;
     if (process.env.NODE_ENV === "production") {
