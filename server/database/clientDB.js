@@ -492,24 +492,8 @@ const restaurantSearch = (res, connection, restaurant) => {
     });
 };
 
-const addRestaurant = (res, conn, restaurant, tempPath, imgPath, imgName) => {
-  let query = `SELECT
-                 name
-               FROM
-                 restaurants
-               WHERE
-                 name = '${restaurant}'`;
-  conn
-    .select(query)
-    .then(rows => {
-      if (rows.length > 0) {
-        res.json({
-          status: false,
-          msg: "Restaurant by the name given already exists."
-        });
-        return false;
-      } else {
-        query = `INSERT INTO
+const addRestaurant = (res, conn, restaurant, imgPath) => {
+  let query = `INSERT INTO
                  restaurants
                    (
                      name,
@@ -518,14 +502,18 @@ const addRestaurant = (res, conn, restaurant, tempPath, imgPath, imgName) => {
                VALUES
                  (
                    '${restaurant}',
-                   '${imgName}'
+                   '${imgPath}'
                  )`;
-        return conn.insert(query);
-      }
-    })
+  conn
+    .insert(query)
     .then(result => {
       if (result) {
-        fileSystem(res, tempPath, imgPath);
+        res.json({ status: true });
+      } else {
+        res.json({
+          status: false,
+          msg: "Internal Err. Could not save to the database."
+        });
       }
     })
     .catch(err => {
@@ -841,6 +829,30 @@ const searchNameNotInFriends = (res, connection, id, name) => {
     });
 };
 
+const checkIfRestaurantExists = (res, conn, restaurant) => {
+  const query = `SELECT
+                   name
+                 FROM
+                   restaurants
+                 WHERE
+                   name='${restaurant}'`;
+  conn
+    .select(query)
+    .then(rows => {
+      if (rows.length > 0) {
+        return res.json({ status: true, msg: "The restaurant already exists" });
+      }
+      return res.json({ status: false });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.json({
+        status: true,
+        msg: "Internal DB Err... Please try again"
+      });
+    });
+};
+
 module.exports = {
   loginWithIdPw,
   signUp,
@@ -862,5 +874,6 @@ module.exports = {
   getChatRooms,
   getLastMsg,
   searchNameInFriends,
-  searchNameNotInFriends
+  searchNameNotInFriends,
+  checkIfRestaurantExists
 };

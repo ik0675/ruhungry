@@ -1,14 +1,5 @@
 const db = require("../database/clientDB");
-const multer = require("multer");
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, "uploads");
-  },
-  filename: function(req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now());
-  }
-});
-const upload = multer({ storage });
+const s3 = require("../s3");
 const path = require("path");
 
 module.exports = (app, connection, crypto) => {
@@ -150,21 +141,49 @@ module.exports = (app, connection, crypto) => {
     db.restaurantSearch(res, connection, restaurant);
   });
 
-  app.post("/api/addRestaurant", upload.single("file"), (req, res) => {
+  app.get("/api/checkIfRestaurantExists/:restaurant", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
       return res.json({ status: false });
     }
-    const { restaurant } = req.body;
-    const tempPath = req.file.path;
-    const imgName = `${restaurant}.${req.file.originalname.split(".").pop()}`;
-    let imgPath;
-    if (process.env.NODE_ENV === "production") {
-      imgPath = path.join(__dirname, "../../client/build/images", imgName);
-    } else {
-      imgPath = path.join(__dirname, "../../client/public/images", imgName);
+    const restaurant = req.params.restaurant;
+    db.checkIfRestaurantExists(res, connection, restaurant);
+  });
+
+  app.get("/api/getS3Url", (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
     }
-    db.addRestaurant(res, connection, restaurant, tempPath, imgPath, imgName);
+    const { fileName, fileType } = req.query;
+    const s3Params = {
+      Bucket: process.env.AMAZON_S3_BUCKET,
+      Key: fileName,
+      Expires: 60,
+      ContentType: fileType,
+      ACL: "public-read"
+    };
+
+    s3.getSignedUrl("putObject", s3Params, (err, data) => {
+      if (err) {
+        console.log(err);
+        return res.json({ status: false, msg: "Internal err with s3" });
+      }
+      const returnData = {
+        signedRequest: data,
+        getUrl: `https://${s3Params.Bucket}.s3.amazonaws.com/${fileName}`
+      };
+      return res.json({ status: true, data: returnData });
+    });
+  });
+
+  app.put("/api/addRestaurant", (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const { restaurant, imgPath } = req.body;
+    db.addRestaurant(res, connection, restaurant, imgPath);
   });
 
   app.get("/api/loadAccount/:id", (req, res) => {

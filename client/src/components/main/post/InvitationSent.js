@@ -1,53 +1,54 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import InvitationInfo from './InvitationInfo';
+import InvitationInfo from "./InvitationInfo";
 
-import './css/Invitation.css';
+import "./css/Invitation.css";
 
 const propTypes = {
-  inviter             : PropTypes.string.isRequired,
-  receivers           : PropTypes.arrayOf(PropTypes.string).isRequired,
-  restaurant          : PropTypes.string.isRequired,
-  restaurantImgPath   : PropTypes.string.isRequired,
-  userImg             : PropTypes.string.isRequired,
-  status              : PropTypes.arrayOf(PropTypes.string).isRequired,
-  filter              : PropTypes.bool
-}
+  inviter: PropTypes.string.isRequired,
+  receivers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  restaurant: PropTypes.string.isRequired,
+  restaurantImgPath: PropTypes.string.isRequired,
+  userImg: PropTypes.string.isRequired,
+  status: PropTypes.arrayOf(PropTypes.string).isRequired,
+  filter: PropTypes.bool
+};
 
 const defaultProps = {
-  filter: true,
-}
+  filter: true
+};
 
 class InvitationSent extends Component {
   state = {
-    toggleStatus: false,
-  }
+    toggleStatus: false
+  };
 
   handleToggle = () => {
     this.setState(prevState => ({
       toggleStatus: !prevState.toggleStatus
-    }))
-  }
+    }));
+  };
 
   render() {
     const {
-      inviter, receivers, restaurant,
-      status, restaurantImgPath, userImg
+      inviter,
+      receivers,
+      restaurant,
+      status,
+      restaurantImgPath,
+      userImg
     } = this.props;
 
     const printStatus = receivers.map((receiver, i) => {
       const receiverStatus = status[i];
       return (
-        <p
-          key={receiver}
-          className="receiver status"
-        >
+        <p key={receiver} className="receiver status">
           <span>{receiver}</span> :
           <span status={receiverStatus}> {receiverStatus}</span>
         </p>
       );
-    })
+    });
     let showRSVP;
     if (this.state.toggleStatus) {
       showRSVP = (
@@ -55,10 +56,13 @@ class InvitationSent extends Component {
           RSVP status
           {printStatus}
         </div>
-      )
+      );
     }
     return (
-      <div className="Post-invitation" style={{ display: this.props.filter ? 'block' : 'none' }} >
+      <div
+        className="Post-invitation"
+        style={{ display: this.props.filter ? "block" : "none" }}
+      >
         <InvitationInfo
           inviter={inviter}
           receivers={receivers}
@@ -67,11 +71,11 @@ class InvitationSent extends Component {
         />
         {showRSVP}
         <div className="invitation top">
-          <img src={`/images/${restaurantImgPath}`} alt="restaurant"/>
+          <img src={`${restaurantImgPath}`} alt="restaurant" />
           <img src={`/images/${userImg}`} alt="user" />
         </div>
       </div>
-    )
+    );
   }
 }
 
