@@ -1,6 +1,5 @@
 const db = require("../database/clientDB");
 const s3 = require("../s3");
-const path = require("path");
 
 module.exports = (app, connection, crypto) => {
   app.post("/api/login", (req, res) => {
@@ -192,7 +191,7 @@ module.exports = (app, connection, crypto) => {
       return res.json({ status: false });
     }
     const id = req.params.id;
-    db.getAccountInfo(res, connection, id);
+    db.getAccountInfo(res, connection, loginInfo.id, id);
   });
 
   app.post("/api/isFriends", (req, res) => {

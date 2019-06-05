@@ -1,5 +1,4 @@
 const uuid4 = require("uuid/v4");
-const fileSystem = require("../api/fileSystem");
 
 // database queries related to client
 const loginWithIdPw = (req, res, connection, id, password) => {
@@ -522,29 +521,57 @@ const addRestaurant = (res, conn, restaurant, imgPath) => {
     });
 };
 
-const getAccountInfo = (res, connection, id) => {
-  const query = `SELECT
+const getAccountInfo = async (res, conn, myId, id) => {
+  try {
+    let query = `SELECT
                    name,
                    img
                  FROM
                    account
                  WHERE
                    id = '${id}'`;
-  connection
-    .select(query)
-    .then(account => {
-      const { name, img } = account[0];
-      return res.json({
-        status: true,
-        id,
-        name,
-        userImg: img
-      });
-    })
-    .catch(err => {
-      console.log(err);
-      return res.json({ status: false });
+    const account = await conn.select(query);
+    let friendStatus = "myself";
+    if (myId !== id) {
+      query = `SELECT 
+                   * 
+                 FROM 
+                   friend_list 
+                 WHERE 
+                   id = '${myId}' 
+                     AND 
+                   friend_id = '${id}'`;
+      const isFriend = await conn.select(query);
+      if (isFriend.length > 0) {
+        friendStatus = "friend";
+      } else {
+        query = `SELECT
+                 *
+               FROM
+                 friend_request
+               WHERE
+                 id = '${myId}'
+                   AND
+                 friend_id = '${id}'`;
+        const isFriendRequestSent = await conn.select(query);
+        if (isFriendRequestSent.length > 0) {
+          friendStatus = "sent";
+        } else {
+          friendStatus = "not sent";
+        }
+      }
+    }
+    return res.json({
+      status: true,
+      id,
+      name: account[0].name,
+      userImg: account[0].img,
+      friendStatus
     });
+  } catch (err) {
+    console.log(err);
+    res.json({ status: false });
+  }
 };
 
 const isFriends = (res, connection, id, friend_id) => {

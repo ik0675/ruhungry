@@ -5,8 +5,7 @@ import { withRouter } from "react-router-dom";
 
 import {
   dispatchLoadAccountInfo,
-  dispatchFriendRequest,
-  dispatchIsFriends
+  dispatchFriendRequest
 } from "../../../actions/account";
 
 import TopNav from "./TopNav";
@@ -21,19 +20,16 @@ const propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   userImg: PropTypes.string.isRequired,
-  friendStatus: PropTypes.string.isRequired,
+  friendStatus: PropTypes.string,
   load: PropTypes.func.isRequired,
-  friendRequest: PropTypes.func.isRequired,
-  isFriends: PropTypes.func.isRequired
+  friendRequest: PropTypes.func.isRequired
 };
 
 class Account extends Component {
   state = {
     invitation: 2,
     id: this.props.match.params.id,
-    loaded: false,
-    friendLoaded: false,
-    friendStatus: null
+    loaded: false
   };
 
   invitationRef = React.createRef();
@@ -60,16 +56,6 @@ class Account extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.id !== this.props.myId && !this.state.friendLoaded) {
-      const id = this.props.myId;
-      const friend_id = this.props.id;
-      this.props.isFriends(id, friend_id, status =>
-        this.setState({ friendLoaded: true, friendStatus: status })
-      );
-    }
-  }
-
   handleInvitationFilter = e => {
     const val = parseInt(e.target.value, 10);
     if (this.state.invitation !== val) {
@@ -85,8 +71,8 @@ class Account extends Component {
   };
 
   render() {
-    const { myId, id, name, userImg } = this.props;
-    const { loaded, friendLoaded, friendStatus } = this.state;
+    const { myId, id, name, userImg, friendStatus } = this.props;
+    const { loaded } = this.state;
     if (!loaded) {
       return (
         <div className="Account">
@@ -104,9 +90,7 @@ class Account extends Component {
     }
     let button;
     if (myId !== id) {
-      if (!friendLoaded) {
-        button = <img src="/loading.gif" alt="loading" />;
-      } else if (friendStatus === "friend") {
+      if (friendStatus === "friend") {
         button = <button className="btn-friend">Friends!</button>;
       } else if (friendStatus === "not sent") {
         button = (
@@ -189,8 +173,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   load: dispatchLoadAccountInfo,
-  friendRequest: dispatchFriendRequest,
-  isFriends: dispatchIsFriends
+  friendRequest: dispatchFriendRequest
 };
 
 export default withRouter(
