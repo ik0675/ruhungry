@@ -41,7 +41,7 @@ const sessionStore = new mySQLStore({
 let port = process.env.PORT || 4000;
 
 app.use(express.json()); // to support JSON-encoded bodies
-app.use(express.urlencoded()); // to support URL-encoded bodies
+app.use(express.urlencoded({ extended: true })); // to support URL-encoded bodies
 app.use(session({ ...sessionObj, store: sessionStore })); // to support session
 
 api(app, connection, crypto);
