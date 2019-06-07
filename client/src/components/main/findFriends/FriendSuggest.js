@@ -1,16 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import React from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 
-import './css/FriendSuggest.css';
+import "./css/FriendSuggest.css";
 
 const propTypes = {
-  person      : PropTypes.object.isRequired,
-  type        : PropTypes.string,
+  person: PropTypes.object.isRequired,
+  type: PropTypes.string
 };
 
 const defaultProps = {
-  type: 'page'
+  type: "page"
 };
 
 function FriendSuggest(props) {
@@ -20,16 +20,16 @@ function FriendSuggest(props) {
       type={props.type}
       className="FriendSuggest"
       onClick={() => {
-        props.handleChange({ target: { value: '' } });
+        props.handleChange({ target: { value: "" } });
         props.handleClose();
         props.history.push(`/main/account/${person.id}`);
       }}
     >
-      <img src={`/images/${person.img}`} alt="user" />
+      <img src={`${person.img}`} alt="user" />
       <span>{person.name}</span>
     </div>
   );
-};
+}
 
 FriendSuggest.propTypes = propTypes;
 FriendSuggest.defaultProps = defaultProps;

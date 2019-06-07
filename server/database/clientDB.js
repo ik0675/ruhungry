@@ -880,6 +880,19 @@ const checkIfRestaurantExists = (res, conn, restaurant) => {
     });
 };
 
+const addProfilePic = (res, conn, id, img) => {
+  const query = `UPDATE account SET img = '${img}' WHERE id = '${id}'`;
+  conn
+    .select(query)
+    .then(result => {
+      res.json({ status: result });
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({ status: false });
+    });
+};
+
 module.exports = {
   loginWithIdPw,
   signUp,
@@ -902,5 +915,6 @@ module.exports = {
   getLastMsg,
   searchNameInFriends,
   searchNameNotInFriends,
-  checkIfRestaurantExists
+  checkIfRestaurantExists,
+  addProfilePic
 };

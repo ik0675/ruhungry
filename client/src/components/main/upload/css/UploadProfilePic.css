@@ -1,0 +1,61 @@
+.UploadProfilePic {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  max-height: 150px;
+  background-color: white;
+  z-index: 2;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.UploadProfilePic > h1 {
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid dimGray;
+  font-size: 25px;
+}
+.UploadProfilePic > h1 > span {
+  float: right;
+  cursor: pointer;
+}
+
+.UploadProfilePic > form {
+  margin-top: 10px;
+}
+.UploadProfilePic p {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.UploadProfilePic input {
+  display: inline-block;
+  width: 50%;
+  height: 25px;
+  padding-left: 10px;
+}
+.UploadProfilePic img {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  magin-top: 40px;
+  float: right;
+}
+.UploadProfilePic button {
+  background-color: #e3f2fd;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 40px;
+  float: right;
+  font-size: 15px;
+}
+.UploadProfilePic .formResult {
+  margin-top: 10px;
+  font-weight: bold;
+}

@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import './css/ChatRoom.css';
+import "./css/ChatRoom.css";
 
 const propTypes = {
-  myId    : PropTypes.string.isRequired,
-  chatId  : PropTypes.string.isRequired,
-  ids     : PropTypes.array.isRequired,
-  names   : PropTypes.array.isRequired,
-  imgs    : PropTypes.array.isRequired,
-  openChat: PropTypes.func.isRequired,
+  myId: PropTypes.string.isRequired,
+  chatId: PropTypes.string.isRequired,
+  ids: PropTypes.array.isRequired,
+  names: PropTypes.array.isRequired,
+  imgs: PropTypes.array.isRequired,
+  openChat: PropTypes.func.isRequired
 };
 
 class ChatRoom extends Component {
   state = {
-    togglePeople: false,
+    togglePeople: false
   };
 
-  handleToggle = (e) => {
-    const name = e.target.getAttribute('name');
+  handleToggle = e => {
+    const name = e.target.getAttribute("name");
     this.setState(prevState => ({
       [name]: !prevState[name]
     }));
@@ -27,7 +27,7 @@ class ChatRoom extends Component {
 
   openChat = () => {
     const ids = this.props.ids;
-    let ids_json = [ { id: this.props.myId }];
+    let ids_json = [{ id: this.props.myId }];
     for (let i = 0; i < ids.length; ++i) {
       ids_json.push({ id: ids[i] });
     }
@@ -41,22 +41,19 @@ class ChatRoom extends Component {
       const img = this.props.imgs[i];
       result.push(
         <div className="ChatRoom-user" key={`chatRoom${i}`}>
-          <img src={`/images/${img}`} alt={name} />
+          <img src={`${img}`} alt={name} />
           <span>{name}</span>
         </div>
       );
     }
 
     return (
-      <div
-        className="ChatRoom"
-        onClick={this.openChat}
-      >
+      <div className="ChatRoom" onClick={this.openChat}>
         <div
           className="ChatRoom-users"
-          showall={this.state.togglePeople ? 'true' : 'false'}
+          showall={this.state.togglePeople ? "true" : "false"}
           style={{
-            height: this.state.togglePeople ? 'auto' : '50px',
+            height: this.state.togglePeople ? "auto" : "50px"
           }}
         >
           <p className="ChatRoom-titles">
@@ -76,8 +73,8 @@ class ChatRoom extends Component {
         </div>
       </div>
     );
-  };
-};
+  }
+}
 
 ChatRoom.propTypes = propTypes;
 

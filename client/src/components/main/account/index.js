@@ -12,6 +12,7 @@ import TopNav from "./TopNav";
 import FriendRequests from "./FriendRequests";
 import Posts from "../post/Posts";
 import ChatRooms from "../chat";
+import UploadProfilePic from "../upload/ProfilePic";
 
 import "./css/Account.css";
 
@@ -29,7 +30,8 @@ class Account extends Component {
   state = {
     invitation: 2,
     id: this.props.match.params.id,
-    loaded: false
+    loaded: false,
+    editProfilePic: false
   };
 
   invitationRef = React.createRef();
@@ -55,6 +57,12 @@ class Account extends Component {
       );
     }
   }
+
+  handleEditProfilePic = _ => {
+    this.setState(prevState => ({
+      editProfilePic: !prevState.editProfilePic
+    }));
+  };
 
   handleInvitationFilter = e => {
     const val = parseInt(e.target.value, 10);
@@ -88,7 +96,7 @@ class Account extends Component {
         </div>
       );
     }
-    let button;
+    let button, editProfilePic;
     if (myId !== id) {
       if (friendStatus === "friend") {
         button = <button className="btn-friend">Friends!</button>;
@@ -103,6 +111,12 @@ class Account extends Component {
       } else if (friendStatus === "err") {
         button = <button className="btn-err">Server Error...</button>;
       }
+    } else {
+      editProfilePic = (
+        <button onClick={this.handleEditProfilePic}>
+          Edit profile picture
+        </button>
+      );
     }
 
     const refs = {
@@ -113,10 +127,11 @@ class Account extends Component {
     return (
       <div className="Account">
         <TopNav refs={refs} />
-        <img src={`/images/${userImg}`} alt="user" />
+        <img src={`${userImg}`} alt="user" />
         <p className="account-info">
           {name}
           {button}
+          {editProfilePic}
         </p>
         <div className="Account-panel">
           <div className="Account-invitations" ref={this.invitationRef}>
@@ -154,6 +169,9 @@ class Account extends Component {
               <hr />
               <ChatRooms />
             </div>
+          )}
+          {this.state.editProfilePic && (
+            <UploadProfilePic toggleUpload={this.handleEditProfilePic} />
           )}
         </div>
       </div>

@@ -96,7 +96,7 @@ const InvitationReceived = props => {
       />
       <div className="invitation top">
         <img src={`${restaurantImgPath}`} alt="restaurant" />
-        <img src={`/images/${userImg}`} alt="user" />
+        <img src={`${userImg}`} alt="user" />
       </div>
       {invitationStatus()}
     </div>

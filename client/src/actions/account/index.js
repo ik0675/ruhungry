@@ -77,3 +77,7 @@ export const dispatchMakeFriends = (
       return dispatch({ type: types.LOAD_ACCOUNT_ERR });
     });
 };
+
+export const dispatchProfileImgChange = img => dispatch => {
+  return dispatch({ type: types.PROFILE_IMG_CHANGE, data: img });
+};

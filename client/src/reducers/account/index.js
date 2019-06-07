@@ -47,6 +47,11 @@ export default function accountReducers(state = initialState, action) {
       };
     case types.RESET_ACCOUNT:
       return initialState;
+    case types.PROFILE_IMG_CHANGE:
+      return {
+        ...state,
+        userImg: action.data
+      };
     default:
       return state;
   }

@@ -185,6 +185,16 @@ module.exports = (app, connection, crypto) => {
     db.addRestaurant(res, connection, restaurant, imgPath);
   });
 
+  app.put("/api/addProfilePic", (req, res) => {
+    const loginInfo = req.session.loginInfo;
+    if (loginInfo === undefined) {
+      return res.json({ status: false });
+    }
+    const imgPath = req.body.imgPath;
+    const id = loginInfo.id;
+    db.addProfilePic(res, connection, id, imgPath);
+  });
+
   app.get("/api/loadAccount/:id", (req, res) => {
     const loginInfo = req.session.loginInfo;
     if (loginInfo === undefined) {
