@@ -1,5 +1,7 @@
 # RUHungry
 
+###### Developed by `Gyuwon Kim` and `Ick Namgung`
+
 #### `ruhungry.herokuapp.com`
 
 ### A web application connecting users to dine together with invitations
